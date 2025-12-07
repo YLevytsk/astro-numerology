@@ -1,0 +1,66 @@
+.footerNav {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* центрируем ссылки на мобилке */
+  gap: 24px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+}
+
+.footerNavItem {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.footerNavLink {
+  font-weight: 600;
+  font-size: 16px;
+  color: #ffffff;
+  text-decoration: none;
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.footerNavLink:hover,
+.footerNavLink:focus {
+  color: #71d88b; /* зелёный акцент при наведении */
+  transform: translateY(-2px);
+}
+
+/* планшет: flex → row */
+@media only screen and (min-width: 768px) {
+  .footerNav {
+    flex-direction: row;
+    justify-content: center;
+    gap: 32px;
+  }
+}
+
+/* десктоп: flex row з більшим gap */
+@media only screen and (min-width: 1440px) {
+  .footerNav {
+    gap: 48px;
+  }
+}
+
+
+@media only screen and (min-width: 768px) {
+  .footerNav {
+    flex-direction: row;
+    flex-wrap: wrap;      /* ✅ дозволяємо перенос */
+    justify-content: center;
+    gap: 32px 64px;       /* відстань між пунктами */
+  }
+}
+
+
+@media only screen and (min-width: 1440px) {
+  .footerNav {
+    display: grid; /* ✅ переключаємось на grid */
+    grid-template-columns: repeat(4, auto); /* 4 колонки */
+    gap: 24px 96px; /* відстань між рядками і колонками */
+    justify-content: center;
+  }
+}

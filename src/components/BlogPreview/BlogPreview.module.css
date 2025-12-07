@@ -1,0 +1,139 @@
+.section {
+  padding: 32px 0;
+  background: var(--color-white);
+}
+
+.inner {
+  max-width: 361px;
+  margin: 0 auto;
+  padding: 0 16px;
+  box-sizing: border-box;
+}
+
+.headerRow {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.icon {
+  stroke: var(--color-darker);
+  width: 24px;
+  height: 24px;
+  stroke-width: 1px;
+}
+
+.blogTitle{
+  font-size: 32px;
+  font-weight: 700;
+  margin: 0;
+  color: #28a745;
+}
+
+.allLink {
+  font-weight: 700;
+  font-size: 16px;
+  color: var(--color-darker);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.articlesList {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 0;
+  list-style: none;
+  margin: 0;
+}
+
+/* Tablet ≥768px → 4 карточки */
+@media (min-width: 768px) {
+  .inner {
+    max-width: 704px;
+  }
+
+  .articlesList {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 24px;
+    justify-content: center;
+  }
+
+  .articlesList > li {
+    flex: 0 1 calc((100% - 72px) / 4); /* 4 карточки */
+    max-width: calc((100% - 72px) / 4);
+  }
+
+  .headerRow {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+.blogText { 
+    font-size: 18px;
+    line-height: 1.5;
+    color: #6c757d;
+}
+/* Desktop ≥1440px → 3 карточки */
+@media (min-width: 1440px) {
+  .inner {
+    max-width: 1225px;
+  }
+
+  .articlesList {
+    justify-content: center;
+  }
+
+  .articlesList > li {
+    flex: 0 1 calc((100% - 48px) / 3); /* 3 карточки */
+    max-width: calc((100% - 48px) / 3);
+  }
+
+  /* Скрываем 4-ю карточку на десктопе */
+  .articlesList > li:nth-child(4) {
+    display: none !important;
+  }
+}
+.goToBlogWrapper {
+  display: flex;
+  justify-content: flex-end; /* прижимає вправо */
+  margin-top: 16px;
+}
+
+.goToBlog {
+  display: inline-flex;
+  align-items: center;
+  font-weight: 600;
+  font-size: 16px;
+  color: #28a745;             
+  text-decoration: none;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.goToBlog:hover,
+.goToBlog:focus-visible {
+  color: #0ac5a9;             /* темніший фіолет при ховері */
+  text-decoration: underline;
+}
+
+.goToBlogIcon {
+  width: 18px;
+  height: 18px;
+  margin-left: 6px;
+  flex-shrink: 0;
+  transition: transform 0.3s ease;
+}
+
+.goToBlog:hover .goToBlogIcon {
+  transform: translateX(3px); /* анімація стрілки вправо */
+}
+
+
+

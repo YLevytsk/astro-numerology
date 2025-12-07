@@ -1,0 +1,441 @@
+/* =========================
+   NAVBAR
+   ========================= */
+@media (min-width: 1200px) {
+  .navbar .container {
+    max-width: 1160px;
+  }
+}
+
+@media (min-width: 1400px) {
+  .navbar .container {
+    max-width: 1280px;
+  }
+}
+/* Меняем цвет ссылок в меню при hover */
+.navbar-light .navbar-nav .nav-link:hover,
+.navbar-light .navbar-nav .nav-link:focus {
+  color: #0ac5a9 ; /* любой цвет, который тебе нужен */
+}
+.navbar-nav .dropdown-menu {
+  position: absolute;
+}
+/* =========================
+   ABOUT SECTION
+   ========================= */
+
+/* фон About */
+.about-bg {
+  position: relative;
+  background: 
+    linear-gradient(rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.4)),
+    url("/images/6221097.webp") center/cover no-repeat;
+}
+
+
+
+/* заголовок */
+.title-wrapper {
+  position: relative;
+  display: inline-block;
+}
+.text-custom {
+  font-weight: 400;
+  font-size: 24px;
+  color: #28a745;
+}
+.title-custom {
+  font-weight: 700;
+  font-size: 32px;
+  line-height: 1.2;
+  color: #28a745; /* зелений */
+}
+/* параграфы с иконкой-звездой */
+.magic-paragraph {
+  position: relative;
+  margin: 5rem auto;
+  cursor: pointer;
+  min-height: 60px;
+}
+
+.magic-paragraph .star {
+  width: 60px;
+  height: 60px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  transition: transform 0.6s ease, opacity 0.6s ease;
+}
+
+.magic-paragraph p {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.9);
+  margin: 0;
+  width: 100%;
+  text-align: center;
+  opacity: 0;
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+/* hover-анимация */
+.magic-paragraph:hover .star {
+  transform: translate(-50%, -50%) scale(0.5);
+  opacity: 0;
+}
+
+.magic-paragraph:hover p {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+/* =========================
+   BACKGROUND STARS
+   ========================= */
+.background-stars {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  z-index: 1; /* ниже контента */
+}
+
+.bg-star {
+  position: absolute;
+  background: linear-gradient(180deg, #ffe68a 0%, #ffc72e 60%, #e0a300 100%);
+  clip-path: polygon(
+    50% 0%,
+    61% 35%,
+    98% 35%,
+    68% 57%,
+    79% 91%,
+    50% 70%,
+    21% 91%,
+    32% 57%,
+    2% 35%,
+    39% 35%
+  );
+  opacity: 0;
+  animation: bgTwinkle 3s infinite ease-in-out;
+  filter: drop-shadow(0 0 6px rgba(255, 215, 0, 0.9));
+}
+
+@keyframes bgTwinkle {
+  0%   { transform: scale(0.2); opacity: 0; }
+  25%  { transform: scale(1.2); opacity: 1; }
+  50%  { transform: scale(0.8); opacity: 0.7; }
+  75%  { transform: scale(1.4); opacity: 1; }
+  100% { transform: scale(0.2); opacity: 0; }
+}
+
+/* контент поверх звёзд */
+.section-hero .container {
+  position: relative;
+  z-index: 2;
+}
+
+/* =========================
+   CTA BUTTON
+   ========================= */
+.btn-oracle {
+   background-color: #28a745 !important;
+  border-color: #28a745 !important;
+  color: #fff !important;
+}
+
+.btn-oracle:hover {
+  background-color: #0ac5a9  !important;
+  border-color: #0ac5a9  !important;
+  color: #fff !important;
+}
+
+/* =========================
+   REVIEWS (Swiper)
+   ========================= */
+.section-reviews {
+  background: linear-gradient(180deg, #f8f0ff 0%, #ede0f9 100%);
+}
+
+.reviews-swiper-wrapper {
+  position: relative;
+  padding: 0 50px;
+}
+
+.reviews-swiper-wrapper .swiper {
+  overflow: hidden;
+  padding-bottom: 50px;
+}
+
+.reviews-swiper-wrapper .swiper-slide {
+  display: flex;
+  height: auto;
+}
+
+/* карточки */
+.review-card {
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  flex: 1;
+}
+
+.review-card .card-body {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 200px;
+}
+
+/* стрелки */
+.reviews-nav {
+  position: absolute;
+  top: 40%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  font-size: 40px;
+  color: #28a745;
+  cursor: pointer;
+  z-index: 30;
+  padding: 0;
+  line-height: 1;
+}
+.reviews-nav:focus {
+  outline: none;
+}
+.title-reviews {
+  font-size: 32px;
+  font-weight: 700;
+  color: #28a745;
+}
+.reviews-nav {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+.reviews-nav.swiper-button-disabled {
+  color: #bbb;
+  cursor: default;
+}
+
+.reviews-prev { left: 0; }
+.reviews-next { right: 0; }
+
+.reviews-nav:hover {
+  color: #0ac5a9;
+}
+
+/* точки */
+.reviews-swiper-wrapper .swiper-pagination {
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+  width: auto !important;
+  text-align: center;
+
+}
+.reviews-pagination {
+  display: flex !important;
+  justify-content: center !important;
+  margin-top: 16px;
+ 
+}
+.reviews-swiper-wrapper .swiper-pagination-bullet {
+  background-color: #28a745 !important; /* обычные точки */
+}
+
+.reviews-swiper-wrapper .swiper-pagination-bullet-active {
+  background-color: #218838 !important; /* активная точка */
+}
+
+
+
+/* скрыть стрелки на мобильных */
+@media (max-width: 767px) {
+  .reviews-nav { display: none; }
+}
+
+/* =========================
+   BLOG SECTION
+   ========================= */
+.section-blog {
+  background: linear-gradient(rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.4)), url("/images/6221097.webp")
+              center/cover no-repeat;
+  position: relative;
+  min-height: 600px;
+  color: #28a745;
+
+  z-index: 10; 
+}
+
+.section-blog::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  
+}
+
+.section-blog .container {
+  position: relative;
+  z-index: 2;
+}
+
+.section-blog h2 {
+  color: #28a745 !important;
+}
+
+.section-blog .btn {
+  background-color: #007bff;
+  border-color: #007bff;
+  color: #fff;
+}
+
+.section-blog .btn:hover {
+  background-color: #ff00e6  !important;
+  border-color: #ff00e6 !important;
+  color: #fff !important;
+}
+
+
+/* =========================
+   PYTHAGORAS MATRIX GRID
+   ========================= */
+
+/* сетка 3×3 */
+.matrix-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(120px, 1fr));
+  gap: 18px;
+  margin-top: 1rem;
+}
+
+.matrix-row {
+  display: contents; /* строки управляет grid */
+}
+
+.matrix-cell {
+  min-height: 110px;
+  padding: 20px;
+  border-radius: 16px;
+  font-weight: 600;
+  font-size: 1.15rem;
+  letter-spacing: 0.5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  box-shadow:
+    0 10px 20px rgba(17, 205, 239, 0.15),
+    0 2px 6px rgba(0, 0, 0, 0.06);
+
+  transition: transform 120ms ease, box-shadow 120ms ease;
+  user-select: none;
+}
+
+/* hover-эффект */
+.matrix-cell:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    0 14px 26px rgba(17, 205, 239, 0.18),
+    0 4px 10px rgba(0, 0, 0, 0.08);
+}
+
+/* заполненная ячейка */
+.matrix-cell.has-value {
+  background: #11cdef;
+  color: #ffffff;
+  outline: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+/* пустая ячейка */
+.matrix-cell.empty {
+  background: rgba(17, 205, 239, 0.12);
+  color: #0b2530;
+  outline: 1px dashed rgba(17, 205, 239, 0.35);
+}
+
+/* адаптив для мобилок */
+@media (max-width: 576px) {
+  .matrix-grid {
+    grid-template-columns: repeat(3, minmax(88px, 1fr));
+    gap: 12px;
+  }
+  .matrix-cell {
+    min-height: 90px;
+    padding: 14px;
+    font-size: 1rem;
+    border-radius: 14px;
+  }
+}
+/* =========================
+   STRENGTH OF QUALITIES
+   ========================= */
+
+.quality-power-section {
+  margin-top: 32px; /* отступ сверху */
+}
+
+.quality-power-block {
+  background: rgba(17, 205, 239, 0.05); /* светлый голубой фон */
+  background: #ffffff;             /* голубая рамка */
+  border-radius: 12px;
+  padding: 20px;
+}
+
+.quality-bars {
+  display: flex;
+  gap: 4px;
+}
+
+.quality-bars .bar {
+  width: 16px;
+  height: 20px;
+  border-radius: 4px;
+  background: rgba(17, 205, 239, 0.25);
+  transition: background 0.2s ease;
+}
+
+.quality-bars .bar.active {
+  background: #11cdef;
+}
+
+.quality-line {
+  font-size: 0.95rem;
+  margin-bottom: 8px;
+}
+
+.quality-line strong {
+  margin-right: 4px;
+}
+.btn-login {
+  background-color: transparent;
+  color: #28a745;
+  border: 1px solid #28a745;
+  padding: 0.375rem 0.75rem;
+  border-radius: 0.25rem;
+  text-decoration: none;
+}
+
+.btn-login:hover {
+  background-color: #257238;
+  color: #fff;
+}
+
+.btn-register {
+  background-color: #28a745;
+  border: 1px solid #28a745;
+  color: #fff;
+  padding: 0.375rem 0.75rem;
+  border-radius: 0.25rem;
+  text-decoration: none;
+}
+
+.btn-register:hover {
+  background-color: #257238;
+  border-color: #257238;
+}
+.btn-register .btn-text {
+  color: #fff !important;
+}

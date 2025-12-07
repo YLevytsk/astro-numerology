@@ -1,0 +1,116 @@
+/* =========================
+   REVIEWS (Swiper)
+   ========================= */
+
+.section-reviews {
+  background: linear-gradient(180deg, #f8f0ff 0%, #ede0f9 100%);
+}
+
+.reviews-swiper-wrapper {
+  position: relative;
+  padding: 0 50px;
+}
+
+.reviews-swiper-wrapper .swiper {
+  overflow: hidden;
+  padding-bottom: 50px;
+}
+
+.reviews-swiper-wrapper .swiper-slide {
+  display: flex;
+  height: auto;
+}
+
+/* карточки */
+.review-card {
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  flex: 1;
+}
+
+.review-card .card-body {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 200px;
+}
+
+/* стрелки */
+.reviews-nav {
+  position: absolute;
+  top: 40%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  font-size: 40px;
+  color: #28a745;
+  cursor: pointer;
+  z-index: 30;
+  padding: 0;
+  line-height: 1;
+}
+
+.reviews-nav:focus {
+  outline: none;
+}
+
+.title-reviews {
+  font-size: 32px;
+  font-weight: 700;
+  color: #28a745;
+}
+
+.reviews-nav {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+.reviews-nav.swiper-button-disabled {
+  color: #bbb;
+  cursor: default;
+}
+
+.reviews-prev {
+  left: 0;
+}
+
+.reviews-next {
+  right: 0;
+}
+
+.reviews-nav:hover {
+  color: #0ac5a9;
+}
+
+/* точки */
+.reviews-swiper-wrapper .swiper-pagination {
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+  width: auto !important;
+  text-align: center;
+}
+
+.reviews-pagination {
+  display: flex !important;
+  justify-content: center !important;
+  margin-top: 16px;
+}
+
+.reviews-swiper-wrapper .swiper-pagination-bullet {
+  background-color: #28a745 !important;
+}
+
+.reviews-swiper-wrapper .swiper-pagination-bullet-active {
+  background-color: #218838 !important;
+}
+
+/* скрыть стрелки на мобильных */
+@media (max-width: 767px) {
+  .reviews-nav {
+    display: none;
+  }
+}
+

@@ -1,0 +1,189 @@
+.registerContainer{
+padding: 48px 32px ;
+background-color: #e9ecef;
+border-radius: 32px;
+width: 360px;
+box-sizing: border-box;
+margin: 85px auto;
+}
+.title{
+font-size: 32px;
+margin-bottom: 20px;
+text-align: center;
+width: 296px;
+color: #28a745;
+}
+.description{
+font-size: 16px;
+font-weight: 400;
+text-align: center;
+margin-bottom: 20px;
+width: 278px;
+height: 50px;
+}
+.fieldWrapper{
+margin-bottom: 16px;
+}
+.fieldWrapper:last-of-type{
+    margin-bottom: 27px;
+}
+.registerForm{
+display: flex;
+justify-content: center;
+align-items: center;
+flex-direction: column;
+width: 296px;
+
+}
+.labelForm{
+font-size: 12px;
+margin-bottom: 4px;
+display: flex;
+flex-direction: column;
+}
+.fieldForm{
+height: 41px;
+border-radius: 8px;
+border: 1px solid #ced4da;
+padding:0 0 0 5px;
+width: 296px;
+box-sizing: border-box;
+}
+.fieldForm:focus {
+    outline: none;
+    border-color: #28a745;
+}
+.passwordWrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+.eyeBtn {
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    fill: transparent;
+}
+.eyeBtn svg{
+   width: 24px; 
+   height: 24px;
+   fill: none;
+}
+.progressWrapper{
+    margin-top: 8px;
+}
+.progressBar {
+    height: 6px;
+    width: 180px;
+    background-color: #dc3545;
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.progressFill {
+    height: 100%;
+    background-color: #70e385;
+    transition: width 0.3s ease;
+}
+.descProgres{
+    font-size: 12px;
+}
+.error{
+color: #dc3545;
+font-size: 8px !important;
+}
+.errorInput {
+    border: 1px solid #35dc46
+    
+}
+.createBtn{
+  background-color: #28a745;
+  border-radius: 50px;
+  width: 296px;
+  height: 38px;
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 20px;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+  border: none;       
+  outline: none;
+}
+.createBtn:hover{
+    background-color: #257238;
+    transform: scale(1.05);
+}
+.descAcc{
+  font-size: 16px;  
+  font-weight: 400;
+
+}
+.loginLink{
+    display: inline-block;
+    font-weight: 700;
+    color: #28a745 !important;
+    border-bottom: 1px solid #93c19e;
+    line-height: 0.8;
+}
+
+@media only screen and (min-width: 768px) {
+.registerContainer {
+        width: 522px;
+        margin: 120px auto;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+    }
+        .title {
+            width: 456px;
+        }
+    
+        .registerForm {
+            width: 458px;
+    
+        }
+    
+        .fieldForm {
+            width: 458px;
+        }
+    
+    
+        .createBtn {
+            width: 458px;
+        }
+    
+}
+
+@media only screen and (min-width: 1440px) {
+    .registerContainer {
+            width: 392px;
+            margin: 50px auto;
+           
+    
+        }
+    
+        .title {
+            width: 328px;
+        }
+    
+        .registerForm {
+            width: 328px;
+    
+        }
+    
+        .fieldForm {
+            width: 328px;
+        }
+    
+    
+        .createBtn {
+            width: 328px;
+        }
+}

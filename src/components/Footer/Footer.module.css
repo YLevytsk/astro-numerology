@@ -1,0 +1,27 @@
+.footerSection {
+  background-color: #365746;
+}
+
+
+
+.logo { 
+  display: block;
+  margin: 0 auto;
+  width: 80px;
+  height: 60px;
+  padding: 5px 8px;
+  margin-bottom: 32px;
+}
+
+.footerSection {
+  background-color: #0d6b35; /* зелений */
+  color: #fff;
+  padding: 40px 20px;       /* відступи всередині футера */
+}
+
+@media only screen and (min-width: 768px) {
+  .logo {
+    margin: 0;
+  }
+}  
+

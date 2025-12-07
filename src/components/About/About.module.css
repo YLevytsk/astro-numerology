@@ -1,0 +1,131 @@
+/* =========================
+   ABOUT SECTION
+   ========================= */
+
+/* фон About */
+.about-bg {
+  position: relative;
+  background: 
+    linear-gradient(rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.4)),
+    url("/images/6221097.webp") center/cover no-repeat;
+}
+
+/* заголовок */
+.title-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.text-custom {
+  font-weight: 400;
+  font-size: 24px;
+  color: #28a745;
+}
+
+.title-custom {
+  font-weight: 700;
+  font-size: 32px;
+  line-height: 1.2;
+  color: #28a745;
+}
+
+/* параграфы с иконкой-звездой */
+.magic-paragraph {
+  position: relative;
+  margin: 5rem auto;
+  cursor: pointer;
+  min-height: 60px;
+}
+
+.magic-paragraph .star {
+  width: 60px;
+  height: 60px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  transition: transform 0.6s ease, opacity 0.6s ease;
+}
+
+.magic-paragraph p {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.9);
+  margin: 0;
+  width: 100%;
+  text-align: center;
+  opacity: 0;
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+/* hover-анимация */
+.magic-paragraph:hover .star {
+  transform: translate(-50%, -50%) scale(0.5);
+  opacity: 0;
+}
+
+.magic-paragraph:hover p {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+/* =========================
+   BACKGROUND STARS
+   ========================= */
+.background-stars {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.bg-star {
+  position: absolute;
+  background: linear-gradient(180deg, #ffe68a 0%, #ffc72e 60%, #e0a300 100%);
+  clip-path: polygon(
+    50% 0%,
+    61% 35%,
+    98% 35%,
+    68% 57%,
+    79% 91%,
+    50% 70%,
+    21% 91%,
+    32% 57%,
+    2% 35%,
+    39% 35%
+  );
+  opacity: 0;
+  animation: bgTwinkle 3s infinite ease-in-out;
+  filter: drop-shadow(0 0 6px rgba(255, 215, 0, 0.9));
+}
+
+@keyframes bgTwinkle {
+  0%   { transform: scale(0.2); opacity: 0; }
+  25%  { transform: scale(1.2); opacity: 1; }
+  50%  { transform: scale(0.8); opacity: 0.7; }
+  75%  { transform: scale(1.4); opacity: 1; }
+  100% { transform: scale(0.2); opacity: 0; }
+}
+
+/* контент поверх звёзд */
+.section-hero .container {
+  position: relative;
+  z-index: 2;
+}
+
+/* =========================
+   CTA BUTTON
+   ========================= */
+.btn-oracle {
+  background-color: #28a745 !important;
+  border-color: #28a745 !important;
+  color: #fff !important;
+}
+
+.btn-oracle:hover {
+  background-color: #0ac5a9 !important;
+  border-color: #0ac5a9 !important;
+  color: #fff !important;
+}
+

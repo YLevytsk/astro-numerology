@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <defs>
+    <linearGradient id="gold" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#FFE68A"/>
+      <stop offset="60%" stop-color="#FFC72E"/>
+      <stop offset="100%" stop-color="#E0A300"/>
+    </linearGradient>
+  </defs>
+  <!-- perfect 5-point star built from precise polar coordinates -->
+  <polygon
+    points="50,4 61.755,35.451 95.106,37.639 68.553,58.549 77.511,90.361 50,72 22.489,90.361 31.447,58.549 4.894,37.639 38.245,35.451"
+    fill="url(#gold)"
+    stroke="#B17F00"
+    stroke-width="2.2"
+    stroke-linejoin="round"
+  />
+</svg>

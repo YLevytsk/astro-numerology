@@ -1,0 +1,112 @@
+.articleItem {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  border-radius: 32px;
+  padding: 12px;
+  width: 100%;
+  max-width: 392px;
+  height: 492px;
+  border: 1px solid #e9ecef; /* ✅ рамка як у Argon */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* ✅ тінь як у Argon */
+}
+
+.articleOwner {
+  font-weight: 700;
+  font-size: 16px;
+}
+
+.articleTitle {  
+  color: #28a745;
+  font-weight: 700;
+  font-size: 24px;
+  width: 264px;
+}
+
+
+.articleDescription {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 155%;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;   /* отступы между блоками */
+  height: auto; /* не тянем на всю высоту */
+}
+
+
+.articleImage {
+  width: 100%;
+  height: 233px;
+  border-radius: 24px;
+  background-size: cover;
+  background-position: center;
+}
+
+.actions {
+  display: flex;
+  gap: 8px;
+  justify-content: space-between;
+}
+
+/* ❌ прибрано загальний .actions a:hover */
+
+/* 🎯 спеціально для кнопки Learn more */
+.actions .learn_more {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 40px;
+  padding: 6px 14px;
+  border-radius: 6px;
+  border: 1px solid #8a2be2;
+  color: #8a2be2;
+  background: transparent;
+  font-size: 14px;
+  line-height: 1.2;
+  font-weight: 700;
+  transition: border-width 0.2s ease;
+  text-decoration: none;
+}
+
+.actions .learn_more:hover,
+.actions .learn_more:focus-visible {
+  background: #8a2be2; /* фон стає фіолетовий */
+  color: #fff;         /* текст білий */
+  border: 1px solid #8a2be2;
+}
+
+.learn_more {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;          /* центрує саму кнопку */
+  min-width: 140px;        /* щоб виглядала як кнопка */
+}
+
+.imageWrapper {
+  width: 100%;
+  height: 246px; /* половина картки */
+  border-radius: 24px;
+  overflow: hidden;
+  background: #f0f0f0;
+}
+
+
+
+.placeholder {
+  width: 100%;
+  height: 100%;
+  background: #e0e0e0;
+}
+
+

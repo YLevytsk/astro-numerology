@@ -1,0 +1,114 @@
+.bookmarkButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid var(--color-darker);
+  border-radius: 64px;
+  padding: 8px;
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.3s ease;
+  background-color: transparent;
+  color: var(--color-darker);
+}
+
+.bookmarkButtonActive {
+  background-color: var(--color-general);
+  border: 1px solid var(--color-general);
+  color: var(--color-white);
+}
+
+.bookmarkButtonIcon {
+  stroke-width: 1px;
+  fill: none;
+  transition: all 0.3s ease;
+  width: 24px;
+  height: 24px;
+}
+
+/* можеш стилізувати лоадер */
+.bookmarkLoader {
+  width: 16px;
+  height: 16px;
+  border: 2px solid var(--color-white);
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Toast стилі */
+:global(.custom-toast) {
+  background: var(--color-darker);
+  color: var(--color-white);
+  font-size: 16px;
+  border-radius: 16px;
+  box-shadow: 0 2px 12px rgba(34, 34, 59, 0.2);
+  min-width: 220px;
+  padding: 14px 22px;
+  font-family: inherit;
+  letter-spacing: 0.02em;
+}
+
+:global(.custom-toast-success) {
+  background: var(--color-general);
+  color: var(--color-white);
+}
+
+:global(.custom-toast-error) {
+  background: #d90429;
+  color: var(--color-white);
+}
+.bookmarkButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 2px solid transparent;   /* початково прозора рамка */
+  border-radius: 50%;              /* коло */
+  padding: 8px;
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.3s ease;
+  background-color: transparent;
+  color: var(--color-darker);
+}
+
+/* активний стан (якщо юзер натиснув) */
+.bookmarkButtonActive {
+  background-color: var(--color-general);
+  border: 1px solid var(--color-general);
+  color: var(--color-white);
+}
+
+/* ефект при hover/focus */
+.bookmarkButton:hover,
+.bookmarkButton:focus-visible {
+  border-color: #8a2be2;                          /* фіолетове кільце */
+  
+}
+
+.bookmarkButtonIcon {
+  stroke-width: 2px;
+  fill: none;
+  transition: transform 0.3s ease;
+  width: 24px;
+  height: 24px;
+}
+
+.bookmarkButton:hover .bookmarkButtonIcon {
+  transform: scale(1.1); /* легке збільшення іконки */
+}
+.bookmarkButton:hover,
+.bookmarkButton:focus-visible {
+  border-color: #8a2be2;   /* фіолетове кільце */
+  border-width: 2px;       /* робимо товстіше */
+}

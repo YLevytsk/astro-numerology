@@ -1,35 +1,79 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { Routes, Route } from "react-router-dom";
+import Navbar from "./components/Navbar.jsx";
+import Home from "./pages/Home.jsx";
+import Consultations from "./pages/Consultations.jsx";
+import PythagorasPage from "./pages/PythagorasPage/PythagorasPage.jsx";
+import AuthorProfilePage from "./components/AuthorProfilePage/AuthorProfilePage.jsx";
+import ArticlesList from "./components/ArticlesList/ArticlesList.jsx";
+import RestrictedRoute from "./components/RestrictedRoute.jsx";
+import RegisterPage from "./pages/RegisterPage/RegisterPage.jsx";
+import LoginPage from "./pages/LoginPage/LoginPage.jsx";
+import NotFoundPage from "./pages/NotFoundPage/NotFoundPage.jsx";
 
-function App() {
-  const [count, setCount] = useState(0)
+import Footer from "./components/Footer/Footer.jsx";
 
+function Page({ title }) {
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <div className="container py-5">
+      <h2 className="mb-4">{title}</h2>
+    </div>
+  );
 }
 
-export default App
+export default function App() {
+  return (
+    <>
+      <div id="top"></div>
+
+      <Navbar />
+
+      <Routes>
+        {/* Главная */}
+        <Route path="/" element={<Home />} />
+
+        {/* Register */}
+        <Route
+          path="/register"
+          element={
+            <RestrictedRoute redirectTo="/profile" component={<RegisterPage />} />
+          }
+        />
+
+        {/* Login */}
+        <Route
+          path="/login"
+          element={
+            <RestrictedRoute redirectTo="/profile" component={<LoginPage />} />
+          }
+        />
+
+        {/* Numerology */}
+        <Route path="/numerology/pifagor" element={<PythagorasPage />} />
+        <Route
+          path="/numerology/compatibility"
+          element={<Page title="Couple compatibility" />}
+        />
+
+        {/* Consultations */}
+        <Route path="/consultations" element={<Consultations />} />
+
+        {/* Blog */}
+        <Route path="/blog" element={<ArticlesList articles={[]} />} />
+
+        {/* Authors */}
+        <Route path="/authors/:authorId" element={<AuthorProfilePage />} />
+        <Route
+          path="/authors/:authorId/articles/:articleId"
+          element={<AuthorProfilePage />}
+        />
+        <Route path="*" element={<NotFoundPage />} />
+
+      </Routes>
+
+      <Footer />
+    </>
+  );
+}
+
+
+
