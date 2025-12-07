@@ -435,6 +435,7 @@
 .btn-register:hover {
   background-color: #257238;
   border-color: #257238;
+  color: #fff !important;
 }
 .btn-register .btn-text {
   color: #fff !important;
