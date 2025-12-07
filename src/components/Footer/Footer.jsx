@@ -59,7 +59,7 @@ const Footer = () => {
 
         {/* Копирайт — ВАРИАНТ 3 */}
         <div className={css.copy}>
-          © {new Date().getFullYear()} Astronumerology. Designed &amp; developed by <span className={css.author}>YourName</span>.
+          © {new Date().getFullYear()} Astronumerology. Designed &amp; developed by <span className={css.author}>YLevytska</span>.
         </div>
 
       </div>
