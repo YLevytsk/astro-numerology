@@ -212,7 +212,7 @@ export default function Navbar() {
             </li>
             <li className="nav-item d-none d-lg-block">
               <Link className="btn-register" to="/register">
-                <i className="fa fa-user-plus" /> <span>Register</span>
+                <span>Register</span>
               </Link>
             </li>
           </ul>
