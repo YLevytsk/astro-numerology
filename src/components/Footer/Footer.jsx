@@ -1,6 +1,6 @@
 import { NavLink } from "react-router-dom";
 import FooterNavigation from "./FooterNavigation.jsx";
-import logo from "../../assets/Legacies.png";
+import logo from "../../assets/oracle_logo.svg";
 import css from "./Footer.module.css";
 
 const Footer = () => {

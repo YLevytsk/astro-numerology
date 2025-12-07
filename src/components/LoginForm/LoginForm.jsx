@@ -32,7 +32,7 @@ const LoginForm = () => {
     dispatch(loginThunk(values))
       .unwrap()
       .then(() => {
-        navigate("/");
+        navigate("/profile");
         toast.success("Login successful!");
       })
       .catch((error) => {

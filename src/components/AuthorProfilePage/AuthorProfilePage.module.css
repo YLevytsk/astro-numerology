@@ -3,6 +3,12 @@
   padding-bottom: 46px;
 }
 
+/* добавим базовый стиль, чтобы contentBlock хоть как-то влиял всегда */
+.contentBlock {
+  margin: 0 auto;
+}
+
+/* HEADER */
 .profileHeader {
   display: flex;
   align-items: center;
@@ -35,6 +41,7 @@
   color: #000;
 }
 
+/* LIST */
 .articlesList {
   display: flex;
   flex-direction: column;
@@ -44,6 +51,7 @@
   margin: 0;
 }
 
+/* BUTTON */
 .loadMoreButton {
   display: flex;
   align-items: center;
@@ -83,6 +91,7 @@
   cursor: not-allowed;
 }
 
+/* MEDIA */
 @media screen and (min-width: 768px) {
   .profileHeader {
     height: 137px;

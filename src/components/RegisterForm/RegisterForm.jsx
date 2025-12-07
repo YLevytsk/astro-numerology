@@ -70,7 +70,7 @@ const RegisterForm = () => {
       });
 
       resetForm();
-      navigate("/photo");
+      navigate("/profile");
     } catch (error) {
       const message = error?.message || "Error saving data. Please try again.";
       toast.error(message, { id: "register-save-error" });

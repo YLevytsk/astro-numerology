@@ -7,21 +7,63 @@
 .logo { 
   display: block;
   margin: 0 auto;
-  width: 80px;
-  height: 60px;
+  width: 160px;
+  height: 120px;
   padding: 5px 8px;
-  margin-bottom: 32px;
+  margin: 0 auto;
+  
 }
 
 .footerSection {
   background-color: #0d6b35; /* зелений */
   color: #fff;
-  padding: 40px 20px;       /* відступи всередині футера */
+   padding: 0px 20px 20px;     /* відступи всередині футера */
 }
 
 @media only screen and (min-width: 768px) {
   .logo {
     margin: 0;
+    margin-left: 160px;
   }
 }  
+/* --- СОЦСЕТИ --- */
+.socials {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.socials a {
+  color: #ffffff;
+  font-size: 26px;
+  transition: color 0.2s ease;
+}
+
+.socials a:hover {
+  color: #71d88b;
+}
+
+/* --- КОПИРАЙТ --- */
+.copy {
+  width: 100%;
+  text-align: center;
+  margin-top: 20px;
+  color: #ffffff;
+  opacity: 0.85;
+  font-size: 14px;
+  
+}
+
+.author {
+  font-weight: 600;
+  color: #ffffff;
+}
+
+/* На десктопе — вправо */
+@media only screen and (min-width: 1024px) {
+  .copy {
+    text-align: right;
+  }
+}
 

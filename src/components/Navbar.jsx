@@ -1,6 +1,6 @@
 import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
-import logo from "../assets/Legacies.png";
+import logo from "../assets/oracle_logo_purple_text.svg";
 
 export default function Navbar() {
   const location = useLocation();
@@ -40,7 +40,7 @@ export default function Navbar() {
       <div className="container">
         {/* Лого */}
         <Link className="navbar-brand me-lg-5" to="/">
-          <img src={logo} alt="ASTRONUMEROLOGY" style={{ height: 80 }} />
+          <img src={logo} alt="ASTRONUMEROLOGY" style={{ height: 40 }} />
         </Link>
 
         {/* Кнопка мобильного меню */}

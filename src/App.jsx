@@ -60,14 +60,18 @@ export default function App() {
         {/* Blog */}
         <Route path="/blog" element={<ArticlesList articles={[]} />} />
 
-        {/* Authors */}
+        {/* Личный кабинет текущего пользователя */}
+        <Route path="/profile" element={<AuthorProfilePage />} />
+
+        {/* Профили авторов */}
         <Route path="/authors/:authorId" element={<AuthorProfilePage />} />
         <Route
           path="/authors/:authorId/articles/:articleId"
           element={<AuthorProfilePage />}
         />
-        <Route path="*" element={<NotFoundPage />} />
 
+        {/* 404 */}
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
 
       <Footer />
