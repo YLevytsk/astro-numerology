@@ -3,7 +3,7 @@ import react from "@vitejs/plugin-react";
 import svgr from "vite-plugin-svgr";
 
 export default defineConfig({
-  base: "/astro-numerology/",   // <<< ВАЖНО!!!
+  base: "/oracle-app/",   // <<< ВАЖНО!!!
   plugins: [react(), svgr()],
 });
 
