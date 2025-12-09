@@ -6,6 +6,7 @@ import {
   registerThunk,
 } from "./operations";
 
+// 🔹 Берём токен из localStorage (сохраняется после login/register)
 const savedToken = localStorage.getItem("accessToken");
 
 const initialState = {
@@ -25,7 +26,9 @@ const slice = createSlice({
   initialState,
   extraReducers: (builder) => {
     builder
+      // -------------------------
       // REGISTER
+      // -------------------------
       .addCase(registerThunk.fulfilled, (state, action) => {
         state.user = {
           id: action.payload.data._id,
@@ -35,9 +38,13 @@ const slice = createSlice({
         };
         state.token = action.payload.data.accessToken;
         state.isLoggedIn = true;
+
+        localStorage.setItem("accessToken", state.token);
       })
 
+      // -------------------------
       // LOGIN
+      // -------------------------
       .addCase(loginThunk.fulfilled, (state, action) => {
         state.user = {
           id: action.payload.data._id,
@@ -47,9 +54,14 @@ const slice = createSlice({
         };
         state.token = action.payload.data.accessToken;
         state.isLoggedIn = true;
+
+        localStorage.setItem("accessToken", state.token);
       })
 
-      // REFRESH — сервер НЕ возвращает user, только новый accessToken
+      // -------------------------
+      // REFRESH
+      // сервер НЕ возвращает user → НЕ трогаем state.user
+      // -------------------------
       .addCase(refreshThunk.pending, (state) => {
         state.isRefreshing = true;
       })
@@ -57,21 +69,36 @@ const slice = createSlice({
         state.token = action.payload.data.accessToken;
         state.isLoggedIn = true;
         state.isRefreshing = false;
+
+        localStorage.setItem("accessToken", state.token);
+        // ❗ state.user остаётся прежним — НЕ ЗАТИРАЕМ
       })
       .addCase(refreshThunk.rejected, (state) => {
         state.isRefreshing = false;
         state.isLoggedIn = false;
-        state.token = null;
+        // ❗ token НЕ удаляем здесь — только при logout
       })
 
+      // -------------------------
       // LOGOUT
-      .addCase(logoutThunk.fulfilled, () => ({
-        user: { id: null, email: null, name: null, avatarUrl: null },
-        token: null,
-        isRefreshing: false,
-        isLoggedIn: false,
-      }));
+      // -------------------------
+      .addCase(logoutThunk.fulfilled, () => {
+        localStorage.removeItem("accessToken");
+
+        return {
+          user: {
+            id: null,
+            email: null,
+            name: null,
+            avatarUrl: null,
+          },
+          token: null,
+          isRefreshing: false,
+          isLoggedIn: false,
+        };
+      });
   },
 });
 
 export const authReducer = slice.reducer;
+

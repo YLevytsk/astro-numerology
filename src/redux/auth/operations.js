@@ -1,18 +1,21 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
+// Создаём API-клиент
 export const axiosAPI = axios.create({
   baseURL: "http://95.217.129.211:3000",
 });
 
+// Функции для токена
 const setAuthHeader = (token) => {
   axiosAPI.defaults.headers.common.Authorization = `Bearer ${token}`;
 };
 
 const removeAuthHeader = () => {
-  axiosAPI.defaults.headers.common.Authorization = ``;
+  axiosAPI.defaults.headers.common.Authorization = "";
 };
 
+// ===================== REGISTER =====================
 export const registerThunk = createAsyncThunk(
   "auth/register",
   async (body, thunkAPI) => {
@@ -26,14 +29,15 @@ export const registerThunk = createAsyncThunk(
       }
 
       return response.data;
-    } catch (error) {
+    } catch (_error) {
       return thunkAPI.rejectWithValue(
-        error.response?.data?.message || error.message
+        _error.response?.data?.message || _error.message
       );
     }
   }
 );
 
+// ===================== LOGIN =====================
 export const loginThunk = createAsyncThunk(
   "auth/login",
   async (body, thunkAPI) => {
@@ -47,14 +51,15 @@ export const loginThunk = createAsyncThunk(
       }
 
       return response.data;
-    } catch (error) {
+    } catch (_error) {
       return thunkAPI.rejectWithValue(
-        error.response?.data?.message || error.message
+        _error.response?.data?.message || _error.message
       );
     }
   }
 );
 
+// ===================== LOGOUT =====================
 export const logoutThunk = createAsyncThunk(
   "auth/logout",
   async (_, thunkAPI) => {
@@ -74,14 +79,17 @@ export const logoutThunk = createAsyncThunk(
 
       removeAuthHeader();
       localStorage.removeItem("accessToken");
-    } catch (error) {
+
+      return true;
+    } catch (_error) {
       return thunkAPI.rejectWithValue(
-        error.response?.data?.message || error.message
+        _error.response?.data?.message || _error.message
       );
     }
   }
 );
 
+// ===================== REFRESH =====================
 export const refreshThunk = createAsyncThunk(
   "auth/refresh",
   async (_, thunkAPI) => {
@@ -95,15 +103,16 @@ export const refreshThunk = createAsyncThunk(
       }
 
       return response.data;
-    } catch (error) {
-      if (error.response?.status === 401) {
+    } catch (_error) {
+      if (_error.response?.status === 401) {
         return thunkAPI.rejectWithValue("Unauthorized");
       }
 
       return thunkAPI.rejectWithValue(
-        error.response?.data?.message || error.message
+        _error.response?.data?.message || _error.message
       );
     }
   }
 );
+
 
