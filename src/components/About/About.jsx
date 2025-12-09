@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import FallingCircles from "../FallingCircles/FallingCircles.jsx";
 import "./About.module.css";
+import star from "/images/star.svg"; // ИМПОРТ
 
 export default function About() {
   useEffect(() => {
@@ -53,41 +54,32 @@ export default function About() {
           <div className="row">
             <div className="col-lg-6">
               <div className="magic-paragraph">
-                <img src="/images/star.svg" alt="star" className="star" />
+                <img src={star} alt="star" className="star" />
                 <p className="lead text-custom">
-                  The world of astrology is deep, mysterious, and gloriously
-                  inexhaustible. Here at <strong>Oracle</strong>, we don’t claim
-                  omniscience—we simply listen when the stars whisper and
-                  translate when numbers start joking.
+                  The world of astrology is deep, mysterious, and gloriously inexhaustible…
                 </p>
               </div>
 
               <div className="magic-paragraph">
-                <img src="/images/star.svg" alt="star" className="star" />
+                <img src={star} alt="star" className="star" />
                 <p className="lead text-custom">
-                  Expect insights that feel oddly personal, forecasts that flirt
-                  with destiny, and readings that treat fate with a pinch of
-                  cosmic irony. If the universe has a sense of humor, we’re on
-                  speaking terms.
+                  Expect insights that feel oddly personal…
                 </p>
               </div>
             </div>
 
             <div className="col-lg-6">
               <div className="magic-paragraph">
-                <img src="/images/star.svg" alt="star" className="star" />
+                <img src={star} alt="star" className="star" />
                 <p className="lead text-custom">
-                  Explore Pythagorean patterns, discover compatibility by birth
-                  date, and tap into consultations crafted to illuminate love,
-                  relocation, and your life’s purpose among the constellations.
+                  Explore Pythagorean patterns…
                 </p>
               </div>
 
               <div className="magic-paragraph">
-                <img src="/images/star.svg" alt="star" className="star" />
+                <img src={star} alt="star" className="star" />
                 <p className="lead text-custom">
-                  Step in. Take what resonates. Leave what doesn’t. And if the
-                  cosmos winks at you—wink back. It’s polite.
+                  Step in. Take what resonates…
                 </p>
               </div>
             </div>
@@ -110,4 +102,5 @@ export default function About() {
     </div>
   );
 }
+
 
