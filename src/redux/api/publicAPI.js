@@ -1,5 +1,7 @@
 import axios from "axios";
 
 export const publicAPI = axios.create({
-  baseURL: "https://harmoniq-server-big-team.onrender.com",
+  baseURL: "http://95.217.129.211:3000",
+  withCredentials: true,
 });
+
