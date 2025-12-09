@@ -2,8 +2,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
 export const axiosAPI = axios.create({
-  baseURL: "https://harmoniq-server-big-team.onrender.com",
-  withCredentials: true,
+  baseURL: "http://95.217.129.211:3000",
 });
 
 const setAuthHeader = (token) => {
@@ -20,10 +19,12 @@ export const registerThunk = createAsyncThunk(
     try {
       const response = await axiosAPI.post("/api/auth/register", body);
       const token = response.data?.data?.accessToken;
+
       if (token) {
         setAuthHeader(token);
-        localStorage.setItem("hasSession", "true");
+        localStorage.setItem("accessToken", token);
       }
+
       return response.data;
     } catch (error) {
       return thunkAPI.rejectWithValue(
@@ -39,10 +40,12 @@ export const loginThunk = createAsyncThunk(
     try {
       const response = await axiosAPI.post("/api/auth/login", body);
       const token = response.data?.data?.accessToken;
+
       if (token) {
         setAuthHeader(token);
-        localStorage.setItem("hasSession", "true");
+        localStorage.setItem("accessToken", token);
       }
+
       return response.data;
     } catch (error) {
       return thunkAPI.rejectWithValue(
@@ -58,6 +61,7 @@ export const logoutThunk = createAsyncThunk(
     try {
       const state = thunkAPI.getState();
       const accessToken = state.auth.token;
+
       if (!accessToken) {
         return thunkAPI.rejectWithValue("No access token in state");
       }
@@ -67,8 +71,9 @@ export const logoutThunk = createAsyncThunk(
           Authorization: `Bearer ${accessToken}`,
         },
       });
+
       removeAuthHeader();
-      localStorage.removeItem("hasSession");
+      localStorage.removeItem("accessToken");
     } catch (error) {
       return thunkAPI.rejectWithValue(
         error.response?.data?.message || error.message
@@ -83,15 +88,22 @@ export const refreshThunk = createAsyncThunk(
     try {
       const response = await axiosAPI.post("/api/auth/refresh");
       const { accessToken } = response.data?.data || {};
-      if (accessToken) setAuthHeader(accessToken);
+
+      if (accessToken) {
+        setAuthHeader(accessToken);
+        localStorage.setItem("accessToken", accessToken);
+      }
+
       return response.data;
     } catch (error) {
       if (error.response?.status === 401) {
         return thunkAPI.rejectWithValue("Unauthorized");
       }
+
       return thunkAPI.rejectWithValue(
         error.response?.data?.message || error.message
       );
     }
   }
 );
+

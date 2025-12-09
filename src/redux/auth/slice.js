@@ -6,16 +6,18 @@ import {
   registerThunk,
 } from "./operations";
 
+const savedToken = localStorage.getItem("accessToken");
+
 const initialState = {
   user: {
-    id: null,        // Добавлено поле _id
+    id: null,
     email: null,
     name: null,
     avatarUrl: null,
   },
-  token: null,
+  token: savedToken || null,
   isRefreshing: false,
-  isLoggedIn: false,
+  isLoggedIn: !!savedToken,
 };
 
 const slice = createSlice({
@@ -23,9 +25,10 @@ const slice = createSlice({
   initialState,
   extraReducers: (builder) => {
     builder
+      // REGISTER
       .addCase(registerThunk.fulfilled, (state, action) => {
         state.user = {
-          id: action.payload.data._id,      // Добавлено
+          id: action.payload.data._id,
           name: action.payload.data.name,
           email: action.payload.data.email,
           avatarUrl: action.payload.data.avatarUrl,
@@ -33,9 +36,11 @@ const slice = createSlice({
         state.token = action.payload.data.accessToken;
         state.isLoggedIn = true;
       })
+
+      // LOGIN
       .addCase(loginThunk.fulfilled, (state, action) => {
         state.user = {
-          id: action.payload.data._id,      // Добавлено
+          id: action.payload.data._id,
           name: action.payload.data.name,
           email: action.payload.data.email,
           avatarUrl: action.payload.data.avatarUrl,
@@ -43,24 +48,29 @@ const slice = createSlice({
         state.token = action.payload.data.accessToken;
         state.isLoggedIn = true;
       })
+
+      // REFRESH — сервер НЕ возвращает user, только новый accessToken
       .addCase(refreshThunk.pending, (state) => {
         state.isRefreshing = true;
       })
       .addCase(refreshThunk.fulfilled, (state, action) => {
-        state.user = {
-          id: action.payload.data._id,      // Добавлено
-          name: action.payload.data.name,
-          email: action.payload.data.email,
-          avatarUrl: action.payload.data.avatarUrl,
-        };
         state.token = action.payload.data.accessToken;
         state.isLoggedIn = true;
         state.isRefreshing = false;
       })
       .addCase(refreshThunk.rejected, (state) => {
         state.isRefreshing = false;
+        state.isLoggedIn = false;
+        state.token = null;
       })
-      .addCase(logoutThunk.fulfilled, () => initialState);
+
+      // LOGOUT
+      .addCase(logoutThunk.fulfilled, () => ({
+        user: { id: null, email: null, name: null, avatarUrl: null },
+        token: null,
+        isRefreshing: false,
+        isLoggedIn: false,
+      }));
   },
 });
 
