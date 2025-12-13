@@ -22,11 +22,12 @@ export default function About() {
   return (
     <div className="wrapper">
       <div className="section section-hero about-bg starfield" id="about">
-        {/* фоновые мерцающие звёзды */}
+
+        {/* фоновые звезды */}
         <div className="background-stars">
           {Array.from({ length: 60 }).map((_, i) => {
             const delay = (Math.random() * 5).toFixed(2);
-            const size = Math.random() * 5 + 5; // размер 2–5px
+            const size = Math.random() * 5 + 5;
             const style = {
               top: `${Math.random() * 100}%`,
               left: `${Math.random() * 100}%`,
@@ -45,12 +46,11 @@ export default function About() {
           >
             <div className="col-lg-8 text-center">
               <div className="title-wrapper">
-  <h1 className="title-custom mb-0">Welcome to Oracle</h1>
-</div>
+                <h1 className="title-custom mb-0">Welcome to Oracle</h1>
+              </div>
             </div>
           </div>
 
-          {/* колонки */}
           <div className="row">
             <div className="col-lg-6">
               <div className="magic-paragraph">
@@ -94,7 +94,6 @@ export default function About() {
             </div>
           </div>
 
-          {/* Call to Action */}
           <div className="row justify-content-center mt-0">
             <div className="col-lg-6 text-center">
               <a
@@ -107,12 +106,9 @@ export default function About() {
           </div>
         </div>
 
-        {/* кружочки падают из About */}
         <FallingCircles />
       </div>
     </div>
   );
 }
-
-
 
