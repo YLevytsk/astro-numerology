@@ -10,6 +10,15 @@ import { BrowserRouter } from "react-router-dom";
 import App from "./App";
 import { store, persistor } from "./redux/store";
 
+// 🟣 Подключаем axiosAPI
+import { axiosAPI } from "./redux/auth/operations";
+
+// 🟣 Восстанавливаем токен в axios при запуске приложения
+const token = localStorage.getItem("accessToken");
+if (token) {
+  axiosAPI.defaults.headers.common.Authorization = `Bearer ${token}`;
+}
+
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <Provider store={store}>

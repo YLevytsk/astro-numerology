@@ -1,18 +1,18 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
-// Создаём API-клиент
 export const axiosAPI = axios.create({
   baseURL: "http://95.217.129.211:3000",
+  withCredentials: true,
 });
 
-// Функции для токена
+// Устанавливаем токен
 const setAuthHeader = (token) => {
   axiosAPI.defaults.headers.common.Authorization = `Bearer ${token}`;
 };
 
 const removeAuthHeader = () => {
-  axiosAPI.defaults.headers.common.Authorization = "";
+  delete axiosAPI.defaults.headers.common.Authorization;
 };
 
 // ===================== REGISTER =====================
@@ -20,19 +20,24 @@ export const registerThunk = createAsyncThunk(
   "auth/register",
   async (body, thunkAPI) => {
     try {
-      const response = await axiosAPI.post("/api/auth/register", body);
-      const token = response.data?.data?.accessToken;
+      const res = await axiosAPI.post("/api/auth/register", body);
 
-      if (token) {
-        setAuthHeader(token);
-        localStorage.setItem("accessToken", token);
-      }
+      const data = res.data.data;
 
-      return response.data;
-    } catch (_error) {
-      return thunkAPI.rejectWithValue(
-        _error.response?.data?.message || _error.message
-      );
+      setAuthHeader(data.accessToken);
+      localStorage.setItem("accessToken", data.accessToken);
+
+      return {
+        user: {
+          id: data._id,
+          name: data.name,
+          email: data.email,
+          avatarUrl: data.avatarUrl,
+        },
+        token: data.accessToken,
+      };
+    } catch (err) {
+      return thunkAPI.rejectWithValue(err.response?.data?.message || err.message);
     }
   }
 );
@@ -42,19 +47,49 @@ export const loginThunk = createAsyncThunk(
   "auth/login",
   async (body, thunkAPI) => {
     try {
-      const response = await axiosAPI.post("/api/auth/login", body);
-      const token = response.data?.data?.accessToken;
+      const res = await axiosAPI.post("/api/auth/login", body);
+      const data = res.data.data;
 
-      if (token) {
-        setAuthHeader(token);
-        localStorage.setItem("accessToken", token);
-      }
+      setAuthHeader(data.accessToken);
+      localStorage.setItem("accessToken", data.accessToken);
 
-      return response.data;
-    } catch (_error) {
-      return thunkAPI.rejectWithValue(
-        _error.response?.data?.message || _error.message
-      );
+      return {
+        user: {
+          id: data._id,
+          name: data.name,
+          email: data.email || null,
+          avatarUrl: data.avatarUrl,
+        },
+        token: data.accessToken,
+      };
+    } catch (err) {
+      return thunkAPI.rejectWithValue(err.response?.data?.message || err.message);
+    }
+  }
+);
+
+// ===================== REFRESH =====================
+export const refreshThunk = createAsyncThunk(
+  "auth/refresh",
+  async (_, thunkAPI) => {
+    try {
+      const res = await axiosAPI.post("/api/auth/refresh");
+      const data = res.data.data;
+
+      setAuthHeader(data.accessToken);
+      localStorage.setItem("accessToken", data.accessToken);
+
+      return {
+        user: {
+          id: data._id,
+          name: data.name,
+          email: data.email,
+          avatarUrl: data.avatarUrl,
+        },
+        token: data.accessToken,
+      };
+    } catch  {
+      return thunkAPI.rejectWithValue("Unauthorized");
     }
   }
 );
@@ -65,52 +100,22 @@ export const logoutThunk = createAsyncThunk(
   async (_, thunkAPI) => {
     try {
       const state = thunkAPI.getState();
-      const accessToken = state.auth.token;
+      const token = state.auth.token;
 
-      if (!accessToken) {
-        return thunkAPI.rejectWithValue("No access token in state");
-      }
-
-      await axiosAPI.post("/api/auth/logout", null, {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      });
+      await axiosAPI.post(
+        "/api/auth/logout",
+        {},
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
 
       removeAuthHeader();
       localStorage.removeItem("accessToken");
 
       return true;
-    } catch (_error) {
-      return thunkAPI.rejectWithValue(
-        _error.response?.data?.message || _error.message
-      );
-    }
-  }
-);
-
-// ===================== REFRESH =====================
-export const refreshThunk = createAsyncThunk(
-  "auth/refresh",
-  async (_, thunkAPI) => {
-    try {
-      const response = await axiosAPI.post("/api/auth/refresh");
-      const { accessToken } = response.data?.data || {};
-
-      if (accessToken) {
-        setAuthHeader(accessToken);
-        localStorage.setItem("accessToken", accessToken);
-      }
-
-      return response.data;
-    } catch (_error) {
-      if (_error.response?.status === 401) {
-        return thunkAPI.rejectWithValue("Unauthorized");
-      }
-
-      return thunkAPI.rejectWithValue(
-        _error.response?.data?.message || _error.message
-      );
+    } catch (err) {
+      return thunkAPI.rejectWithValue(err.response?.data?.message || err.message);
     }
   }
 );
