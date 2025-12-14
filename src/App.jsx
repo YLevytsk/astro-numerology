@@ -1,4 +1,7 @@
 import { Routes, Route } from "react-router-dom";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+
 import Navbar from "./components/Navbar.jsx";
 import Home from "./pages/Home.jsx";
 import Consultations from "./pages/Consultations.jsx";
@@ -9,8 +12,9 @@ import RestrictedRoute from "./components/RestrictedRoute.jsx";
 import RegisterPage from "./pages/RegisterPage/RegisterPage.jsx";
 import LoginPage from "./pages/LoginPage/LoginPage.jsx";
 import NotFoundPage from "./pages/NotFoundPage/NotFoundPage.jsx";
-
 import Footer from "./components/Footer/Footer.jsx";
+
+import { refreshThunk } from "./redux/auth/operations";
 
 function Page({ title }) {
   return (
@@ -21,6 +25,13 @@ function Page({ title }) {
 }
 
 export default function App() {
+  const dispatch = useDispatch();
+
+  // 🟣 ВОССТАНАВЛИВАЕМ СЕССИЮ ПРИ ЗАГРУЗКЕ ПРИЛОЖЕНИЯ
+  useEffect(() => {
+    dispatch(refreshThunk());
+  }, [dispatch]);
+
   return (
     <>
       <div id="top"></div>
@@ -60,7 +71,7 @@ export default function App() {
         {/* Blog */}
         <Route path="/blog" element={<ArticlesList articles={[]} />} />
 
-        {/* Личный кабинет текущего пользователя */}
+        {/* Личный кабинет */}
         <Route path="/profile" element={<AuthorProfilePage />} />
 
         {/* Профили авторов */}

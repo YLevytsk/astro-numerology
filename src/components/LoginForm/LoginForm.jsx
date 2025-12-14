@@ -28,15 +28,20 @@ const LoginForm = () => {
   const emailId = useId();
   const passwordId = useId();
 
-  const handleSubmit = async (values) => {
+  const handleSubmit = async (values, { setSubmitting }) => {
+    setSubmitting(true);
+
     dispatch(loginThunk(values))
       .unwrap()
       .then(() => {
-        navigate("/profile");
         toast.success("Login successful!");
+        navigate("/profile");
       })
       .catch((error) => {
-        toast.error(error);
+        toast.error(error || "Login failed");
+      })
+      .finally(() => {
+        setSubmitting(false);
       });
   };
 
@@ -50,57 +55,65 @@ const LoginForm = () => {
           validationSchema={validationSchema}
           onSubmit={handleSubmit}
         >
-          <Form>
-            <div className={css.inputGroup}>
-              <label htmlFor={emailId} className={css.label}>
-                Email
-              </label>
-              <Field
-                name="email"
-                type="email"
-                id={emailId}
-                className={css.input}
-              />
-              <ErrorMessage
-                name="email"
-                component="div"
-                className={css.error}
-              />
-            </div>
-
-            <div className={css.inputGroup}>
-              <label htmlFor={passwordId} className={css.label}>
-                Password
-              </label>
-              <div className={css.passwordEye}>
+          {({ isSubmitting }) => (
+            <Form>
+              <div className={css.inputGroup}>
+                <label htmlFor={emailId} className={css.label}>
+                  Email
+                </label>
                 <Field
-                  name="password"
-                  type={showPassword ? "text" : "password"}
-                  id={passwordId}
+                  name="email"
+                  type="email"
+                  id={emailId}
                   className={css.input}
+                  placeholder="your@email.com"
                 />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword((prev) => !prev)}
-                  className={css.eyeButton}
-                >
-                  <img
-                    src={showPassword ? eyeOpen : eyeClosed}
-                    alt={showPassword ? "Show password" : "Hide password"}
-                  />
-                </button>
+                <ErrorMessage
+                  name="email"
+                  component="div"
+                  className={css.error}
+                />
               </div>
-              <ErrorMessage
-                name="password"
-                component="div"
-                className={css.error}
-              />
-            </div>
 
-            <button type="submit" className={css.btn}>
-              Login
-            </button>
-          </Form>
+              <div className={css.inputGroup}>
+                <label htmlFor={passwordId} className={css.label}>
+                  Password
+                </label>
+                <div className={css.passwordEye}>
+                  <Field
+                    name="password"
+                    type={showPassword ? "text" : "password"}
+                    id={passwordId}
+                    className={css.input}
+                    placeholder="********"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword((prev) => !prev)}
+                    className={css.eyeButton}
+                  >
+                    <img
+                      src={showPassword ? eyeOpen : eyeClosed}
+                      alt={showPassword ? "Show password" : "Hide password"}
+                    />
+                  </button>
+                </div>
+                <ErrorMessage
+                  name="password"
+                  component="div"
+                  className={css.error}
+                />
+              </div>
+
+              <button
+                type="submit"
+                className={css.btn}
+                disabled={isSubmitting}
+              >
+                {isSubmitting ? "Loading..." : "Login"}
+              </button>
+            </Form>
+          )}
         </Formik>
 
         <p className={css.text}>

@@ -8,6 +8,9 @@ import IconEye from "../../assets/img/eye.svg";
 import IconEyeClosed from "../../assets/img/eye-closed.svg";
 import { toast } from "react-hot-toast";
 
+import { useDispatch } from "react-redux";
+import { registerThunk } from "../../redux/auth/operations";
+
 const validationSchema = Yup.object({
   name: Yup.string()
     .min(2, "Name must be at least 2 characters")
@@ -30,6 +33,9 @@ const validationSchema = Yup.object({
 });
 
 const RegisterForm = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const initialValues = {
     name: "",
     email: "",
@@ -39,67 +45,49 @@ const RegisterForm = () => {
 
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [passwordStrength, setPasswordStrength] = useState(0);
-  const [isPasswordFocused, setIsPasswordFocused] = useState(false);
-
-  const calculateStrength = (value) => {
-    let strength = 0;
-    if (value.length > 5) strength += 1;
-    if (value.length > 8) strength += 1;
-    if (/[A-Z]/.test(value)) strength += 1;
-    if (/[0-9]/.test(value)) strength += 1;
-    if (/[^A-Za-z0-9]/.test(value)) strength += 1;
-    return strength;
-  };
-
-  const navigate = useNavigate();
 
   const handleSubmit = async (values, { setSubmitting, resetForm }) => {
     setSubmitting(true);
-    try {
-      const payload = {
-        name: values.name.trim(),
-        email: values.email.trim(),
-        password: values.password,
-      };
 
-      sessionStorage.setItem("registerData", JSON.stringify(payload));
+    const payload = {
+      name: values.name.trim(),
+      email: values.email.trim(),
+      password: values.password,
+    };
 
-      toast.success("Continue uploading your photo", {
-        id: "register-saved",
+    dispatch(registerThunk(payload))
+      .unwrap()
+      .then(() => {
+        toast.success("Registration successful!");
+        resetForm();
+        navigate("/profile"); // 👉 после регистрации открыть личный кабинет
+      })
+      .catch((error) => {
+        toast.error(error || "Registration failed");
+      })
+      .finally(() => {
+        setSubmitting(false);
       });
-
-      resetForm();
-      navigate("/profile");
-    } catch (error) {
-      const message = error?.message || "Error saving data. Please try again.";
-      toast.error(message, { id: "register-save-error" });
-      console.error(error);
-    } finally {
-      setSubmitting(false);
-    }
   };
 
   return (
     <div className={s.registerContainer}>
       <h2 className={s.title}>Register</h2>
-      
 
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}
         onSubmit={handleSubmit}
       >
-        {({ isSubmitting, setFieldValue, errors, touched }) => (
+        {({ isSubmitting }) => (
           <Form className={s.registerForm}>
+            {/* NAME */}
             <div className={s.fieldWrapper}>
               <label className={s.labelForm} htmlFor="name">
                 Enter your name
               </label>
               <Field
-                className={`${s.fieldForm} ${
-                  errors.name && touched.name ? s.errorInput : ""
-                }`}
+                className={s.fieldForm}
                 id="name"
                 name="name"
                 type="text"
@@ -108,14 +96,13 @@ const RegisterForm = () => {
               <ErrorMessage name="name" component="div" className={s.error} />
             </div>
 
+            {/* EMAIL */}
             <div className={s.fieldWrapper}>
               <label className={s.labelForm} htmlFor="email">
                 Enter your email address
               </label>
               <Field
-                className={`${s.fieldForm} ${
-                  errors.email && touched.email ? s.errorInput : ""
-                }`}
+                className={s.fieldForm}
                 id="email"
                 name="email"
                 type="email"
@@ -124,26 +111,18 @@ const RegisterForm = () => {
               <ErrorMessage name="email" component="div" className={s.error} />
             </div>
 
+            {/* PASSWORD */}
             <div className={s.fieldWrapper}>
               <label className={s.labelForm} htmlFor="password">
                 Create a strong password
               </label>
               <div className={s.passwordWrapper}>
                 <Field
-                  className={`${s.fieldForm} ${
-                    errors.password && touched.password ? s.errorInput : ""
-                  }`}
+                  className={s.fieldForm}
                   id="password"
                   name="password"
                   type={showPassword ? "text" : "password"}
-                  placeholder="*********"
-                  onChange={(e) => {
-                    const value = e.target.value;
-                    setFieldValue("password", value);
-                    setPasswordStrength(calculateStrength(value));
-                  }}
-                  onFocus={() => setIsPasswordFocused(true)}
-                  onBlur={() => setIsPasswordFocused(false)}
+                  placeholder="********"
                 />
                 <button
                   type="button"
@@ -159,36 +138,20 @@ const RegisterForm = () => {
                 </button>
               </div>
               <ErrorMessage name="password" component="div" className={s.error} />
-              {isPasswordFocused && (
-                <div className={s.progressWrapper}>
-                  <p className={s.descProgres}>Password strength</p>
-                  <div className={s.progressBar}>
-                    <div
-                      className={s.progressFill}
-                      style={{
-                        width: `${(passwordStrength / 5) * 100}%`,
-                      }}
-                    ></div>
-                  </div>
-                </div>
-              )}
             </div>
 
+            {/* CONFIRM PASSWORD */}
             <div className={s.fieldWrapper}>
               <label className={s.labelForm} htmlFor="confirmPassword">
                 Repeat your password
               </label>
               <div className={s.passwordWrapper}>
                 <Field
-                  className={`${s.fieldForm} ${
-                    errors.confirmPassword && touched.confirmPassword
-                      ? s.errorInput
-                      : ""
-                  }`}
+                  className={s.fieldForm}
                   id="confirmPassword"
                   name="confirmPassword"
                   type={showConfirmPassword ? "text" : "password"}
-                  placeholder="*********"
+                  placeholder="********"
                 />
                 <button
                   type="button"
@@ -210,12 +173,13 @@ const RegisterForm = () => {
               />
             </div>
 
+            {/* SUBMIT BUTTON */}
             <button
               className={s.createBtn}
               type="submit"
               disabled={isSubmitting}
             >
-              Create account
+              {isSubmitting ? "Loading..." : "Create account"}
             </button>
 
             <p className={s.descAcc}>
@@ -232,4 +196,8 @@ const RegisterForm = () => {
 };
 
 export default RegisterForm;
+
+
+
+
 
