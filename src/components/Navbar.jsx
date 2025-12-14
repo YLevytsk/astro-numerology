@@ -135,7 +135,7 @@ export default function Navbar() {
             {isLoggedIn && (
               <>
                 <li className="nav-item me-2">
-                  <Link className="btn btn-primary" to="/cabinet">
+                  <Link className="btn btn-primary" to="/profile">
                     {user?.name ? `My Cabinet (${user.name})` : "My Cabinet"}
                   </Link>
                 </li>
