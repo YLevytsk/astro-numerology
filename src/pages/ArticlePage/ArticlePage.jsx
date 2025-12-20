@@ -1,11 +1,10 @@
 import { useParams, Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import Container from "../../components/Container/Container";
-import SectionTitle from "../../components/SectionTitle/SectionTitle";
+
 import { publicAPI } from "../../redux/api/publicAPI.js";
-import ArrowIcon from "../../assets/images/icons/arrow.svg?react";
-import BookmarkIcon from "../../assets/images/icons/bookmark.svg?react";
+
+import BookmarkIcon from "../../assets/img/icons/bookmark.svg?react";
 import s from "./ArticlePage.module.css";
 import Loader from "../../components/Loader/Loader.jsx";
 import { selectIsLoggedIn, selectUserId } from "../../redux/auth/selectors.js";
@@ -27,6 +26,7 @@ const ArticlePage = () => {
   const dispatch = useDispatch();
   const userId = useSelector(selectUserId);
   const { isOpen, close, open } = useToggle();
+
   const [article, setArticle] = useState(null);
   const [relatedArticles, setRelatedArticles] = useState([]);
   const [users, setUsers] = useState([]);
@@ -59,20 +59,23 @@ const ArticlePage = () => {
       setLoading({ article: true, related: true, users: true });
       try {
         const [articleRes, usersRes, allArticlesRes] = await Promise.all([
-          publicAPI.get(`/api/articles/${articlesId}`),
-          publicAPI.get("/api/creators/all"),
-          publicAPI.get("/api/articles"),
+          publicAPI.get(`/articles/${articlesId}`),
+          publicAPI.get("/creators/all"),
+          publicAPI.get("/articles"),
         ]);
+
         setArticle(articleRes.data.data);
+
         const rawUsers = usersRes.data.data ?? usersRes.data;
-        const usersArray = Array.isArray(rawUsers) ? rawUsers : [];
-        setUsers(usersArray);
+        setUsers(Array.isArray(rawUsers) ? rawUsers : []);
 
         const rawArticles =
           allArticlesRes.data.data?.data ?? allArticlesRes.data;
         const articlesArray = Array.isArray(rawArticles) ? rawArticles : [];
-        const randomRelated = getRandomArticles(articlesArray, articlesId, 3);
-        setRelatedArticles(randomRelated);
+
+        setRelatedArticles(
+          getRandomArticles(articlesArray, articlesId, 3)
+        );
       } catch (error) {
         console.error("Error fetching:", error);
       } finally {
@@ -113,6 +116,7 @@ const ArticlePage = () => {
   if (!article) {
     return <p className={s.empty}>Стаття не знайдена</p>;
   }
+
   const formattedText = article.article.replace(/\/n/g, "<br><br>");
 
   const articleOwnerId = article.ownerId?.$oid ?? article.ownerId;
@@ -120,7 +124,7 @@ const ArticlePage = () => {
   const authorName = user?.name ?? "Невідомо";
 
   return (
-    <Container>
+    <div className="container">
       <div className={s.articleWrapper}>
         <SectionTitle title={article.title} />
         {article.img && (
@@ -181,8 +185,10 @@ const ArticlePage = () => {
           </div>
         </div>
       </div>
-    </Container>
+    </div>
   );
 };
 
 export default ArticlePage;
+
+

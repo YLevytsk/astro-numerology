@@ -8,7 +8,6 @@
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-
     "predeploy": "npm run build",
     "deploy": "gh-pages -d dist"
   },
@@ -20,6 +19,7 @@
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
     "react-hot-toast": "^2.6.0",
+    "react-icons": "^5.5.0",
     "react-redux": "^9.2.0",
     "react-router-dom": "^7.9.1",
     "react-router-hash-link": "^2.4.3",
@@ -43,4 +43,3 @@
     "vite-plugin-svgr": "^4.5.0"
   }
 }
-

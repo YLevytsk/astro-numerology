@@ -6,7 +6,6 @@ import { fetchAuthors } from "../../redux/author/operations.js";
 import { fetchBookmarks } from "../../redux/bookmarks/operations.js";
 import { selectCreators } from "../../redux/author/selectors.js";
 import { selectIsLoggedIn, selectUserId } from "../../redux/auth/selectors.js";
-import { Link } from "react-router-dom";
 import Pagination from "../Pagination/Pagination.jsx";
 
 const ArticlesList = ({ articles }) => {
@@ -15,9 +14,9 @@ const ArticlesList = ({ articles }) => {
   const isLoggedIn = useSelector(selectIsLoggedIn);
   const userId = useSelector(selectUserId);
 
-  // 🔹 локальный стейт для пагинации
+  // 🔹 pagination
   const [currentPage, setCurrentPage] = useState(1);
-  const articlesPerPage = 6; // сколько карточек показывать на странице
+  const articlesPerPage = 6;
 
   useEffect(() => {
     dispatch(fetchAuthors());
@@ -32,6 +31,7 @@ const ArticlesList = ({ articles }) => {
     return author?.name || "Unknown";
   };
 
+  // 🔹 EMPTY STATE — удалена кнопка "Create an article"
   if (articles.length === 0) {
     return (
       <div className={s.alertContainer}>
@@ -39,14 +39,11 @@ const ArticlesList = ({ articles }) => {
           <h3 className={s.alertTitle}>Nothing found.</h3>
           <p className={s.alertText}>Be the first, who create an article</p>
         </div>
-        <Link className={s.alertButtonLink} to={`/create`}>
-          Create an article
-        </Link>
       </div>
     );
   }
 
-  // 🔹 пагинация — вычисляем какие статьи показать
+  // 🔹 pagination logic
   const indexOfLastArticle = currentPage * articlesPerPage;
   const indexOfFirstArticle = indexOfLastArticle - articlesPerPage;
   const currentArticles = articles.slice(indexOfFirstArticle, indexOfLastArticle);
@@ -66,7 +63,7 @@ const ArticlesList = ({ articles }) => {
         ))}
       </ul>
 
-      {/* 🔹 пагинация */}
+      {/* Pagination */}
       <Pagination
         currentPage={currentPage}
         totalPages={totalPages}

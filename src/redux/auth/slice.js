@@ -1,25 +1,25 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { loginThunk, logoutThunk, refreshThunk, registerThunk } from "./operations";
-
-const savedToken = localStorage.getItem("accessToken");
+import {
+  loginThunk,
+  logoutThunk,
+  refreshThunk,
+  registerThunk,
+} from "./operations";
 
 const initialState = {
-  user: {
-    id: null,
-    email: null,
-    name: null,
-    avatarUrl: null,
-  },
-  token: savedToken || null,
+  user: null,
+  token: null,
+  isLoggedIn: false,
   isRefreshing: false,
-  isLoggedIn: !!savedToken,
 };
 
-const slice = createSlice({
+const authSlice = createSlice({
   name: "auth",
   initialState,
+  reducers: {},
   extraReducers: (builder) => {
     builder
+
       // REGISTER
       .addCase(registerThunk.fulfilled, (state, action) => {
         state.user = action.payload.user;
@@ -46,23 +46,20 @@ const slice = createSlice({
       })
       .addCase(refreshThunk.rejected, (state) => {
         state.isRefreshing = false;
-        state.isLoggedIn = false;
-        state.token = null; // ← добавлено
       })
 
       // LOGOUT
       .addCase(logoutThunk.fulfilled, (state) => {
-        state.user = {
-          id: null,
-          email: null,
-          name: null,
-          avatarUrl: null,
-        };
+        state.user = null;
         state.token = null;
-        state.isRefreshing = false;
         state.isLoggedIn = false;
+        state.isRefreshing = false;
       });
   },
 });
 
-export const authReducer = slice.reducer;
+export const authReducer = authSlice.reducer;
+
+
+
+

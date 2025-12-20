@@ -1,6 +1,6 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useLocation, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import Navbar from "./components/Navbar.jsx";
 import Home from "./pages/Home.jsx";
@@ -13,8 +13,16 @@ import RegisterPage from "./pages/RegisterPage/RegisterPage.jsx";
 import LoginPage from "./pages/LoginPage/LoginPage.jsx";
 import NotFoundPage from "./pages/NotFoundPage/NotFoundPage.jsx";
 import Footer from "./components/Footer/Footer.jsx";
+import PrivateRoute from "./components/PrivateRoute/PrivateRoute";
+
+import ArticlePage from "./pages/ArticlePage/ArticlePage.jsx";
+import CreateArticlePage from "./pages/CreateArticlePage/CreateArticlePage.jsx";
 
 import { refreshThunk } from "./redux/auth/operations";
+import {
+  selectIsLoggedIn,
+  selectIsRefreshing,
+} from "./redux/auth/selectors";
 
 function Page({ title }) {
   return (
@@ -26,16 +34,37 @@ function Page({ title }) {
 
 export default function App() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const location = useLocation();
 
-  // 🟣 ВОССТАНАВЛИВАЕМ СЕССИЮ ПРИ ЗАГРУЗКЕ ПРИЛОЖЕНИЯ
+  const isLoggedIn = useSelector(selectIsLoggedIn);
+  const isRefreshing = useSelector(selectIsRefreshing);
+
+  // refresh auth on app start
   useEffect(() => {
     dispatch(refreshThunk());
   }, [dispatch]);
 
+  // 🔥 редирект гостя ТОЛЬКО с защищённых страниц
+  useEffect(() => {
+    const publicPaths = ["/", "/login", "/register", "/blog"];
+
+    const isArticlePage = location.pathname.startsWith("/articles/");
+    const isAuthorPage = location.pathname.startsWith("/authors/");
+
+    if (
+      !isRefreshing &&
+      !isLoggedIn &&
+      !publicPaths.includes(location.pathname) &&
+      !isArticlePage &&
+      !isAuthorPage
+    ) {
+      navigate("/", { replace: true });
+    }
+  }, [isRefreshing, isLoggedIn, location.pathname, navigate]);
+
   return (
     <>
-      <div id="top"></div>
-
       <Navbar />
 
       <Routes>
@@ -46,7 +75,10 @@ export default function App() {
         <Route
           path="/register"
           element={
-            <RestrictedRoute redirectTo="/profile" component={<RegisterPage />} />
+            <RestrictedRoute
+              redirectTo="/profile"
+              component={<RegisterPage />}
+            />
           }
         />
 
@@ -54,7 +86,10 @@ export default function App() {
         <Route
           path="/login"
           element={
-            <RestrictedRoute redirectTo="/profile" component={<LoginPage />} />
+            <RestrictedRoute
+              redirectTo="/profile"
+              component={<LoginPage />}
+            />
           }
         />
 
@@ -72,14 +107,30 @@ export default function App() {
         <Route path="/blog" element={<ArticlesList articles={[]} />} />
 
         {/* Личный кабинет */}
-        <Route path="/profile" element={<AuthorProfilePage />} />
-
-        {/* Профили авторов */}
-        <Route path="/authors/:authorId" element={<AuthorProfilePage />} />
         <Route
-          path="/authors/:authorId/articles/:articleId"
-          element={<AuthorProfilePage />}
+          path="/profile"
+          element={
+            <PrivateRoute>
+              <AuthorProfilePage />
+            </PrivateRoute>
+          }
         />
+
+        {/* ➕ СОЗДАНИЕ СТАТЬИ (ВОТ ОН!) */}
+        <Route
+          path="/profile/articles/new"
+          element={
+            <PrivateRoute>
+              <CreateArticlePage />
+            </PrivateRoute>
+          }
+        />
+
+        {/* Статья */}
+        <Route path="/articles/:articleId" element={<ArticlePage />} />
+
+        {/* Профиль автора */}
+        <Route path="/authors/:authorId" element={<AuthorProfilePage />} />
 
         {/* 404 */}
         <Route path="*" element={<NotFoundPage />} />
@@ -89,6 +140,9 @@ export default function App() {
     </>
   );
 }
+
+
+
 
 
 

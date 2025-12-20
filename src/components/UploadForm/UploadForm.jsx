@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 import { Formik, Form } from "formik";
 import s from "./UploadForm.module.css";
-import MediaLogo from "../../assets/images/icons/media.svg?react";
+import MediaLogo from "../../assets/img/icons/media.svg?react";
 import { toast } from "react-hot-toast";
 
 const UploadForm = () => {

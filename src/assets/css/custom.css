@@ -20,6 +20,16 @@
 .navbar-nav .dropdown-menu {
   position: absolute;
 }
+.logout-icon {
+  color: #28a745;      /* ЛЮБОЙ ЦВЕТ */
+}
+
+.logout-icon:hover {
+  color: red;
+}
+
+
+
 /* =========================
    ABOUT SECTION
    ========================= */

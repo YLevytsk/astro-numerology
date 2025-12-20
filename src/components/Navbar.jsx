@@ -2,40 +2,58 @@ import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
-import logo from "../assets/oracle_logo_purple_text.svg";
-import { selectIsLoggedIn, selectUser } from "../redux/auth/selectors";
+import {
+  selectIsLoggedIn,
+  selectUser,
+  selectIsRefreshing,
+} from "../redux/auth/selectors";
 import { logoutThunk } from "../redux/auth/operations";
+
+import logo from "../assets/oracle_logo_purple_text.svg";
 
 export default function Navbar() {
   const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  // Redux
   const isLoggedIn = useSelector(selectIsLoggedIn);
+  const isRefreshing = useSelector(selectIsRefreshing);
   const user = useSelector(selectUser);
 
-  // Scroll to anchor after route change
+  // ================= SCROLL TO HASH =================
   useEffect(() => {
     if (location.hash) {
       const el = document.querySelector(location.hash);
-      if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+      if (el) {
+        el.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
     }
   }, [location]);
 
+  // ================= WAIT FOR REFRESH =================
+  if (isRefreshing) return null;
+
   const handleNavClick = (e, hash) => {
     e.preventDefault();
+
     if (location.pathname !== "/") {
       navigate("/" + hash);
     } else {
       const el = document.querySelector(hash);
-      if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+      if (el) {
+        el.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
     }
   };
 
-  const handleLogout = () => {
-    dispatch(logoutThunk());
-    navigate("/");
+  // ================= LOGOUT (FIXED) =================
+  const handleLogout = async () => {
+    try {
+      await dispatch(logoutThunk()).unwrap();
+      navigate("/");
+    } catch (err) {
+      console.error("Logout failed:", err);
+    }
   };
 
   return (
@@ -44,13 +62,11 @@ export default function Navbar() {
       style={{ zIndex: 1030 }}
     >
       <div className="container">
-
         {/* LOGO */}
         <Link className="navbar-brand me-lg-5" to="/">
           <img src={logo} alt="ASTRONUMEROLOGY" style={{ height: 40 }} />
         </Link>
 
-        {/* MOBILE MENU TOGGLER */}
         <button
           className="navbar-toggler"
           type="button"
@@ -60,16 +76,12 @@ export default function Navbar() {
           <span className="navbar-toggler-icon"></span>
         </button>
 
-        {/* MENU */}
         <div className="collapse navbar-collapse" id="navbar_global">
           <ul className="navbar-nav align-items-lg-center">
-
-            {/* Home */}
             <li className="nav-item">
               <NavLink className="nav-link" to="/">Home</NavLink>
             </li>
 
-            {/* About */}
             <li className="nav-item">
               <a
                 href="#about"
@@ -80,7 +92,6 @@ export default function Navbar() {
               </a>
             </li>
 
-            {/* Reviews */}
             <li className="nav-item">
               <a
                 href="#reviews"
@@ -91,36 +102,97 @@ export default function Navbar() {
               </a>
             </li>
 
-            {/* Blog */}
             <li className="nav-item">
               <NavLink className="nav-link" to="/blog">Blog</NavLink>
             </li>
+
+            {/* NUMEROLOGY */}
+            <li className="nav-item dropdown">
+              <a
+                className="nav-link dropdown-toggle"
+                role="button"
+                data-bs-toggle="dropdown"
+              >
+                Numerology
+              </a>
+              <ul className="dropdown-menu">
+                <li>
+                  <Link className="dropdown-item" to="/numerology/pifagor">
+                    Pythagoras Square
+                  </Link>
+                </li>
+                <li>
+                  <Link className="dropdown-item" to="/numerology/compatibility">
+                    Compatibility
+                  </Link>
+                </li>
+              </ul>
+            </li>
+
+            {/* CONSULTATIONS */}
+            <li className="nav-item dropdown">
+              <a
+                className="nav-link dropdown-toggle"
+                role="button"
+                data-bs-toggle="dropdown"
+              >
+                Personal Consultations
+              </a>
+              <ul className="dropdown-menu">
+                <li>
+                  <Link className="dropdown-item" to="/consultations/natal-chart">
+                    Natal Chart
+                  </Link>
+                </li>
+                <li>
+                  <Link className="dropdown-item" to="/consultations/love-forecast">
+                    Love Forecast
+                  </Link>
+                </li>
+                <li>
+                  <Link className="dropdown-item" to="/consultations/relocation">
+                    Relocation
+                  </Link>
+                </li>
+                <li>
+                  <Link className="dropdown-item" to="/consultations/life-purpose">
+                    Life Purpose
+                  </Link>
+                </li>
+              </ul>
+            </li>
           </ul>
 
-          {/* RIGHT MENU */}
+          {/* RIGHT BLOCK */}
           <ul className="navbar-nav ms-auto align-items-lg-center">
-
-            {/* Social Icons */}
+            {/* SOCIAL */}
             <li className="nav-item">
-              <a className="nav-link nav-link-icon" href="https://www.facebook.com/" target="_blank">
+              <a
+                className="nav-link nav-link-icon"
+                href="https://www.facebook.com/"
+                target="_blank"
+                rel="noreferrer"
+              >
                 <i className="fa fa-facebook-square"></i>
               </a>
             </li>
+
             <li className="nav-item">
-              <a className="nav-link nav-link-icon" href="https://www.instagram.com/" target="_blank">
+              <a
+                className="nav-link nav-link-icon"
+                href="https://www.instagram.com/"
+                target="_blank"
+                rel="noreferrer"
+              >
                 <i className="fa fa-instagram"></i>
               </a>
             </li>
 
-            {/* ========== AUTH BLOCK ========== */}
-
-            {/* If NOT logged in → show Login + Register */}
+            {/* AUTH */}
             {!isLoggedIn && (
               <>
                 <li className="nav-item me-2">
-                  <Link className="btn-login" to="/login">
-                    Login
-                  </Link>
+                  <Link className="btn-login" to="/login">Login</Link>
                 </li>
 
                 <li className="nav-item d-none d-lg-block">
@@ -131,11 +203,14 @@ export default function Navbar() {
               </>
             )}
 
-            {/* If logged in → show My Cabinet + Logout */}
             {isLoggedIn && (
               <>
-                <li className="nav-item me-2">
-                  <Link className="btn btn-primary" to="/profile">
+                <li className="nav-item me-3">
+                  <Link
+                    to="/profile"
+                    className="nav-link"
+                    style={{ color: "#28a745", fontWeight: 600 }}
+                  >
                     {user?.name ? `My Cabinet (${user.name})` : "My Cabinet"}
                   </Link>
                 </li>
@@ -143,16 +218,45 @@ export default function Navbar() {
                 <li className="nav-item">
                   <button
                     onClick={handleLogout}
-                    className="btn btn-outline-danger"
+                    className="btn p-0 border-0 bg-transparent"
+                    title="Logout"
                   >
-                    Logout
+                    <svg
+                      width="26"
+                      height="26"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                    >
+                      <path
+                        d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                      <polyline
+                        points="16 17 21 12 16 7"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                      <line
+                        x1="21"
+                        y1="12"
+                        x2="9"
+                        y2="12"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        strokeLinecap="round"
+                      />
+                    </svg>
                   </button>
                 </li>
               </>
             )}
           </ul>
         </div>
-
       </div>
     </nav>
   );

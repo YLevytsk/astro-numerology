@@ -1,6 +1,7 @@
 import s from "./ModalErrorSave.module.css";
 //import IoClose from "../../assets/images/icons/close.svg?react";
 import { NavLink } from "react-router-dom";
+import { IoClose } from "react-icons/io5";
 
 const AuthModal = ({ onClose }) => {
   return (
