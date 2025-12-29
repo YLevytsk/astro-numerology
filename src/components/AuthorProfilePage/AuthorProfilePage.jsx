@@ -17,25 +17,28 @@ const AuthorProfilePage = () => {
   const dispatch = useDispatch();
   const { authorId } = useParams();
 
-  // Текущий пользователь
+  // текущий залогиненный пользователь
   const currentUser = useSelector(selectUser);
 
-  // Автор (если чужой профиль)
+  // автор чужого профиля
   const author = useSelector(selectCreator);
 
-  // Личный профиль или чужой
-  const isMyProfile = !authorId;
+  // ❗ МОЙ ПРОФИЛЬ — ТОЛЬКО ЕСЛИ currentUser УЖЕ ЕСТЬ
+  const isMyProfile =
+    !!currentUser && (!authorId || authorId === currentUser.id);
 
-  // Пользователь профиля
+  // пользователь, чей профиль показываем
   const profileUser = isMyProfile ? currentUser : author;
 
   // ID для загрузки статей
-  const profileId = isMyProfile ? currentUser?._id : authorId;
+  const profileId = isMyProfile
+    ? currentUser?.id
+    : authorId;
 
   const articles =
     useSelector((state) => selectArticlesByOwner(state, profileId)) || [];
 
-  // Загрузка данных
+  // загрузка данных
   useEffect(() => {
     if (!profileId) return;
 
@@ -46,7 +49,7 @@ const AuthorProfilePage = () => {
     dispatch(fetchArticlesByOwner(profileId));
   }, [dispatch, authorId, profileId, isMyProfile]);
 
-  // Если данные ещё не загружены
+  // ❗ ПОКА НЕТ НИ currentUser, НИ author — ЛОАДЕР
   if (!profileUser) {
     return (
       <section className={css.authorProfile}>
@@ -71,26 +74,25 @@ const AuthorProfilePage = () => {
 
             {isMyProfile && (
               <>
-             <label
-  htmlFor="avatarUpload"
-  className={css.editAvatarButton}
-  title="Change avatar"
->
-  <svg
-    className={css.editAvatarIcon}
-    width="20"
-    height="20"
-    viewBox="0 0 24 24"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-  >
-    <path
-      d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04a1.003 1.003 0 000-1.42l-2.34-2.34a1.003 1.003 0 00-1.42 0l-1.83 1.83 3.75 3.75 1.84-1.82z"
-      fill="currentColor"
-    />
-  </svg>
-</label>
-
+                <label
+                  htmlFor="avatarUpload"
+                  className={css.editAvatarButton}
+                  title="Change avatar"
+                >
+                  <svg
+                    className={css.editAvatarIcon}
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04a1.003 1.003 0 000-1.42l-2.34-2.34a1.003 1.003 0 00-1.42 0l-1.83 1.83 3.75 3.75 1.84-1.82z"
+                      fill="currentColor"
+                    />
+                  </svg>
+                </label>
 
                 <input
                   id="avatarUpload"
@@ -120,7 +122,7 @@ const AuthorProfilePage = () => {
           </div>
         </div>
 
-        {/* Кнопка создания статьи */}
+        {/* CREATE ARTICLE — ТОЛЬКО У СВОЕГО ПРОФИЛЯ */}
         {isMyProfile && (
           <Link className={css.createButton} to="/profile/articles/new">
             + Create Article

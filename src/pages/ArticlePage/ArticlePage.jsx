@@ -42,13 +42,14 @@ const ArticlePage = () => {
     return user?.name ?? "Невідомо";
   };
 
-  const getRandomArticles = (allArticles, currentId, count = 3) => {
-    const filtered = allArticles.filter(
-      (item) => item._id !== currentId && item._id?.$oid !== currentId
-    );
-    const shuffled = [...filtered].sort(() => 0.5 - Math.random());
-    return shuffled.slice(0, count);
-  };
+ const getRandomArticles = (allArticles, currentId, count = 3) => {
+  const filtered = allArticles.filter(
+    (item) => item._id !== currentId
+  );
+  const shuffled = [...filtered].sort(() => 0.5 - Math.random());
+  return shuffled.slice(0, count);
+};
+
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -152,7 +153,8 @@ const ArticlePage = () => {
               <p className={s.bottomText}>You can also interested</p>
               <ul className={s.links}>
                 {relatedArticles.map((suggested) => {
-                  const id = suggested._id?.$oid ?? suggested._id;
+                  const id = suggested._id;
+
                   return (
                     <li key={id} className={s.similarArticles}>
                       <div className={s.linkBlock}>

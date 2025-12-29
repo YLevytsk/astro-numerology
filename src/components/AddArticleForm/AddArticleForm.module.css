@@ -82,12 +82,31 @@
 
 .imagePreview {
   width: 100%;
-  min-height: 219px;
+  max-width: 100%;
+  aspect-ratio: 16 / 9;
   background-color: #aaa;
   border-radius: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
+  overflow: hidden;
+
+  /* Поддержка адекватного масштабирования картинки */
+}
+
+.imagePreview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* критично для масштабирования */
+}
+
+/* Для больших экранов */
+@media (min-width: 1440px) {
+  .imagePreview {
+    width: 100%;
+    max-width: 600px; /* можно ограничить максимально */
+    height: auto;      /* высота подстраивается под aspect-ratio */
+  }
 }
 
 .previewImage {

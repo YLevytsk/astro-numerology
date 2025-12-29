@@ -1,28 +1,25 @@
-import { Routes, Route, useLocation, useNavigate } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
 
 import Navbar from "./components/Navbar.jsx";
+import Footer from "./components/Footer/Footer.jsx";
+
 import Home from "./pages/Home.jsx";
 import Consultations from "./pages/Consultations.jsx";
 import PythagorasPage from "./pages/PythagorasPage/PythagorasPage.jsx";
-import AuthorProfilePage from "./components/AuthorProfilePage/AuthorProfilePage.jsx";
-import ArticlesList from "./components/ArticlesList/ArticlesList.jsx";
-import RestrictedRoute from "./components/RestrictedRoute.jsx";
 import RegisterPage from "./pages/RegisterPage/RegisterPage.jsx";
 import LoginPage from "./pages/LoginPage/LoginPage.jsx";
 import NotFoundPage from "./pages/NotFoundPage/NotFoundPage.jsx";
-import Footer from "./components/Footer/Footer.jsx";
-import PrivateRoute from "./components/PrivateRoute/PrivateRoute";
 
+import ArticlesList from "./components/ArticlesList/ArticlesList.jsx";
 import ArticlePage from "./pages/ArticlePage/ArticlePage.jsx";
+import AuthorProfilePage from "./components/AuthorProfilePage/AuthorProfilePage.jsx";
 import CreateArticlePage from "./pages/CreateArticlePage/CreateArticlePage.jsx";
 
-import { refreshThunk } from "./redux/auth/operations";
-import {
-  selectIsLoggedIn,
-  selectIsRefreshing,
-} from "./redux/auth/selectors";
+import PrivateRoute from "./components/PrivateRoute/PrivateRoute";
+import RestrictedRoute from "./components/RestrictedRoute.jsx";
+
+import { axiosAPI } from "./redux/auth/operations";
 
 function Page({ title }) {
   return (
@@ -33,80 +30,46 @@ function Page({ title }) {
 }
 
 export default function App() {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
-  const location = useLocation();
-
-  const isLoggedIn = useSelector(selectIsLoggedIn);
-  const isRefreshing = useSelector(selectIsRefreshing);
-
-  // refresh auth on app start
+  // ✅ Просто восстановить заголовок из localStorage
+  // ❌ НИКАКОГО currentThunk (он у тебя всегда 401, потому что accessToken не JWT)
   useEffect(() => {
-    dispatch(refreshThunk());
-  }, [dispatch]);
-
-  // 🔥 редирект гостя ТОЛЬКО с защищённых страниц
-  useEffect(() => {
-    const publicPaths = ["/", "/login", "/register", "/blog"];
-
-    const isArticlePage = location.pathname.startsWith("/articles/");
-    const isAuthorPage = location.pathname.startsWith("/authors/");
-
-    if (
-      !isRefreshing &&
-      !isLoggedIn &&
-      !publicPaths.includes(location.pathname) &&
-      !isArticlePage &&
-      !isAuthorPage
-    ) {
-      navigate("/", { replace: true });
+    const token = localStorage.getItem("accessToken");
+    if (token) {
+      axiosAPI.defaults.headers.common.Authorization = `Bearer ${token}`;
     }
-  }, [isRefreshing, isLoggedIn, location.pathname, navigate]);
+  }, []);
 
   return (
     <>
       <Navbar />
 
       <Routes>
-        {/* Главная */}
         <Route path="/" element={<Home />} />
 
-        {/* Register */}
         <Route
           path="/register"
           element={
-            <RestrictedRoute
-              redirectTo="/profile"
-              component={<RegisterPage />}
-            />
+            <RestrictedRoute redirectTo="/profile" component={<RegisterPage />} />
           }
         />
 
-        {/* Login */}
         <Route
           path="/login"
           element={
-            <RestrictedRoute
-              redirectTo="/profile"
-              component={<LoginPage />}
-            />
+            <RestrictedRoute redirectTo="/profile" component={<LoginPage />} />
           }
         />
 
-        {/* Numerology */}
         <Route path="/numerology/pifagor" element={<PythagorasPage />} />
         <Route
           path="/numerology/compatibility"
           element={<Page title="Couple compatibility" />}
         />
 
-        {/* Consultations */}
         <Route path="/consultations" element={<Consultations />} />
-
-        {/* Blog */}
         <Route path="/blog" element={<ArticlesList articles={[]} />} />
 
-        {/* Личный кабинет */}
+        {/* МОЙ ПРОФИЛЬ */}
         <Route
           path="/profile"
           element={
@@ -116,7 +79,7 @@ export default function App() {
           }
         />
 
-        {/* ➕ СОЗДАНИЕ СТАТЬИ (ВОТ ОН!) */}
+        {/* СОЗДАНИЕ СТАТЬИ */}
         <Route
           path="/profile/articles/new"
           element={
@@ -126,13 +89,11 @@ export default function App() {
           }
         />
 
-        {/* Статья */}
-        <Route path="/articles/:articleId" element={<ArticlePage />} />
-
-        {/* Профиль автора */}
+        {/* ЧУЖОЙ ПРОФИЛЬ */}
         <Route path="/authors/:authorId" element={<AuthorProfilePage />} />
 
-        {/* 404 */}
+        <Route path="/articles/:articleId" element={<ArticlePage />} />
+
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
 
@@ -140,6 +101,9 @@ export default function App() {
     </>
   );
 }
+
+
+
 
 
 

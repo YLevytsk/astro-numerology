@@ -18,9 +18,66 @@ const SUPPORTED_FORMATS = [
   "image/webp",
 ];
 
-const MAX_FILE_SIZE = 2 * 1024 * 1024; // 2 MB
+const MAX_FILE_SIZE = 2 * 1024 * 1024; // 2MB
 const MAX_WIDTH = 1920;
 const MAX_HEIGHT = 1080;
+
+/* ================== IMAGE RESIZE ================== */
+
+const resizeImage = (file, maxWidth, maxHeight) => {
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    const reader = new FileReader();
+
+    reader.onload = e => {
+      img.src = e.target.result;
+    };
+
+    reader.onerror = reject;
+    img.onerror = reject;
+
+    img.onload = () => {
+      let { width, height } = img;
+
+      const scale = Math.min(
+        maxWidth / width,
+        maxHeight / height,
+        1
+      );
+
+      width = Math.round(width * scale);
+      height = Math.round(height * scale);
+
+      const canvas = document.createElement("canvas");
+      canvas.width = width;
+      canvas.height = height;
+
+      const ctx = canvas.getContext("2d");
+      ctx.drawImage(img, 0, 0, width, height);
+
+      canvas.toBlob(
+        blob => {
+          if (!blob) {
+            reject("Canvas error");
+            return;
+          }
+
+          const webpFile = new File(
+            [blob],
+            file.name.replace(/\.\w+$/, ".webp"),
+            { type: "image/webp" }
+          );
+
+          resolve(webpFile);
+        },
+        "image/webp",
+        0.8
+      );
+    };
+
+    reader.readAsDataURL(file);
+  });
+};
 
 /* ================== VALIDATION ================== */
 
@@ -68,13 +125,11 @@ export const CreateArticleForm = () => {
 
   const handleSubmit = async (values, { resetForm }) => {
     const formData = new FormData();
-
     formData.append("title", values.title);
-    formData.append("article", values.text);
+    formData.append("content", values.text);
     formData.append("img", values.image);
-    formData.append("desc", values.text.slice(0, 200) + "...");
-    formData.append("date", new Date().toISOString().split("T")[0]);
-    formData.append("rate", 0);
+    formData.append("desc", values.text.slice(0, 200));
+    formData.append("date", new Date().toISOString()); // добавлено обязательное поле
 
     try {
       const response = await dispatch(addArticle(formData)).unwrap();
@@ -98,37 +153,33 @@ export const CreateArticleForm = () => {
           onSubmit={handleSubmit}
         >
           {({ setFieldValue, values }) => {
-            const handleImageChange = (event) => {
+            const handleImageChange = async (event) => {
               const file = event.currentTarget.files[0];
               if (!file) return;
 
               setIsImageLoading(true);
 
-              const img = new Image();
-              const objectUrl = URL.createObjectURL(file);
-              img.src = objectUrl;
+              try {
+                const resizedFile = await resizeImage(
+                  file,
+                  MAX_WIDTH,
+                  MAX_HEIGHT
+                );
 
-              img.onload = () => {
-                if (img.width > MAX_WIDTH || img.height > MAX_HEIGHT) {
-                  toast.error(
-                    `Image must be max ${MAX_WIDTH}×${MAX_HEIGHT}px`
-                  );
-                  setFieldValue("image", null);
-                  setPreviewUrl(null);
+                if (resizedFile.size > MAX_FILE_SIZE) {
+                  toast.error("Image is too large even after resize");
                   setIsImageLoading(false);
-                  URL.revokeObjectURL(objectUrl);
                   return;
                 }
 
-                setFieldValue("image", file);
-                setPreviewUrl(objectUrl);
+                const preview = URL.createObjectURL(resizedFile);
+                setFieldValue("image", resizedFile);
+                setPreviewUrl(preview);
+              } catch {
+                toast.error("Failed to process image");
+              } finally {
                 setIsImageLoading(false);
-              };
-
-              img.onerror = () => {
-                toast.error("Failed to load image");
-                setIsImageLoading(false);
-              };
+              }
             };
 
             const handleInput = (event) => {
@@ -148,7 +199,7 @@ export const CreateArticleForm = () => {
                       <input
                         type="file"
                         name="image"
-                        accept="image/*"
+                        accept="image/jpeg,image/png,image/webp"
                         onChange={handleImageChange}
                         className={css.imageInput}
                       />
@@ -169,7 +220,7 @@ export const CreateArticleForm = () => {
                     </label>
 
                     <p className={css.hint}>
-                      JPG / PNG / WEBP · max 2MB · 1920×1080
+                      JPG / PNG / WEBP · auto resize · max 2MB
                     </p>
 
                     <ErrorMessage

@@ -1,64 +1,51 @@
 import { createSlice } from "@reduxjs/toolkit";
-import {
-  loginThunk,
-  logoutThunk,
-  refreshThunk,
-  registerThunk,
-} from "./operations";
+import { loginThunk, logoutThunk, registerThunk } from "./operations";
 
-const initialState = {
-  user: null,
-  token: null,
-  isLoggedIn: false,
-  isRefreshing: false,
+const emptyUser = {
+  id: null,
+  email: null,
+  name: null,
+  avatarUrl: null,
 };
 
-const authSlice = createSlice({
+const initialState = {
+  user: emptyUser,
+  token: null,
+  isLoggedIn: false, // 🔥 ТОЛЬКО через login
+};
+
+const slice = createSlice({
   name: "auth",
   initialState,
-  reducers: {},
   extraReducers: (builder) => {
     builder
 
-      // REGISTER
+      // ===== REGISTER =====
       .addCase(registerThunk.fulfilled, (state, action) => {
         state.user = action.payload.user;
         state.token = action.payload.token;
         state.isLoggedIn = true;
       })
 
-      // LOGIN
+      // ===== LOGIN (КЛЮЧЕВО) =====
       .addCase(loginThunk.fulfilled, (state, action) => {
         state.user = action.payload.user;
         state.token = action.payload.token;
         state.isLoggedIn = true;
       })
 
-      // REFRESH
-      .addCase(refreshThunk.pending, (state) => {
-        state.isRefreshing = true;
-      })
-      .addCase(refreshThunk.fulfilled, (state, action) => {
-        state.user = action.payload.user;
-        state.token = action.payload.token;
-        state.isLoggedIn = true;
-        state.isRefreshing = false;
-      })
-      .addCase(refreshThunk.rejected, (state) => {
-        state.isRefreshing = false;
-      })
-
-      // LOGOUT
+      // ===== LOGOUT =====
       .addCase(logoutThunk.fulfilled, (state) => {
-        state.user = null;
+        state.user = emptyUser;
         state.token = null;
         state.isLoggedIn = false;
-        state.isRefreshing = false;
       });
   },
 });
 
-export const authReducer = authSlice.reducer;
+export const authReducer = slice.reducer;
+
+
 
 
 
