@@ -130,7 +130,7 @@ export const uploadAvatarThunk = createAsyncThunk(
       const formData = new FormData();
       formData.append("avatar", file);
 
-      const res = await axiosAPI.patch(`/users/${id}/avatar`, formData);
+      const res = await axiosAPI.post(`/users/${id}/avatar`, formData);
       const data = res.data?.data;
       const avatarUrl = data?.avatarUrl || data;
 
