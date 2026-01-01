@@ -1,4 +1,4 @@
-import { createAsyncThunk } from "@reduxjs/toolkit";
+﻿import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
 // ===================== AXIOS INSTANCE =====================
@@ -6,7 +6,7 @@ export const axiosAPI = axios.create({
   baseURL: "http://95.217.129.211:3000/api",
 });
 
-// 🔥 ВАЖНО: восстановление токена при перезагрузке
+// IMPORTANT: restore token on reload
 const storedToken = localStorage.getItem("accessToken");
 if (storedToken) {
   axiosAPI.defaults.headers.common.Authorization = `Bearer ${storedToken}`;
@@ -32,6 +32,15 @@ export const registerThunk = createAsyncThunk(
       setAuthHeader(data.accessToken);
       localStorage.setItem("accessToken", data.accessToken);
       localStorage.setItem("refreshToken", data.refreshToken);
+      localStorage.setItem(
+        "user",
+        JSON.stringify({
+          id: data._id,
+          name: data.name,
+          email: data.email,
+          avatarUrl: data.avatarUrl,
+        })
+      );
 
       return {
         user: {
@@ -58,10 +67,19 @@ export const loginThunk = createAsyncThunk(
       const res = await axiosAPI.post("/auth/login", body);
       const data = res.data.data;
 
-      // 🔥 КРИТИЧНО
+      // critical: set header immediately
       setAuthHeader(data.accessToken);
       localStorage.setItem("accessToken", data.accessToken);
       localStorage.setItem("refreshToken", data.refreshToken);
+      localStorage.setItem(
+        "user",
+        JSON.stringify({
+          id: data._id,
+          name: data.name,
+          email: data.email,
+          avatarUrl: data.avatarUrl,
+        })
+      );
 
       return {
         user: {
@@ -87,16 +105,14 @@ export const logoutThunk = createAsyncThunk(
     try {
       await axiosAPI.post("/auth/logout");
     } catch {
-      // 401 допустим
+      // 401 acceptable
     }
 
     removeAuthHeader();
     localStorage.removeItem("accessToken");
     localStorage.removeItem("refreshToken");
+    localStorage.removeItem("user");
 
     return true;
   }
 );
-
-
-

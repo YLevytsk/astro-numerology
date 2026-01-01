@@ -126,16 +126,25 @@ export const CreateArticleForm = () => {
   const handleSubmit = async (values, { resetForm }) => {
     const formData = new FormData();
     formData.append("title", values.title);
-    formData.append("content", values.text);
+    formData.append("article", values.text);
     formData.append("img", values.image);
-    formData.append("desc", values.text.slice(0, 200));
-    formData.append("date", new Date().toISOString()); // добавлено обязательное поле
+    formData.append("desc", values.text.slice(0, 4000));
+    formData.append("date", new Date().toISOString().slice(0, 10)); // YYYY-MM-DD
 
     try {
-      const response = await dispatch(addArticle(formData)).unwrap();
+      const newArticle = await dispatch(addArticle(formData)).unwrap();
+      const articleId =
+        newArticle?._id?.$oid ??
+        newArticle?._id ??
+        newArticle?.id;
+
+      if (!articleId) {
+        throw new Error("Article id is missing in server response");
+      }
+
       resetForm();
       setPreviewUrl(null);
-      navigate(`/articles/${response.data._id}`);
+      navigate(`/articles/${articleId}`);
       toast.success("Article successfully created!");
     } catch (error) {
       toast.error(error?.message || "Failed to create article");

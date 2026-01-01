@@ -103,6 +103,8 @@ const slice = createSlice({
       .addCase(fetchArticlesByOwner.pending, handlePending)
       .addCase(fetchArticlesByOwner.fulfilled, (state, action) => {
         const { ownerId, articles } = action.payload;
+        state.isLoading = false;
+        state.error = null;
         state.byOwner[ownerId] = {
           items: articles,
           status: "succeeded",

@@ -20,8 +20,8 @@ import { selectBookmarks } from "../../redux/bookmarks/selectors.js";
 const ArticlePage = () => {
   const isLoggedIn = useSelector(selectIsLoggedIn);
   const bookmarks = useSelector(selectBookmarks).map(String);
-  const { articlesId } = useParams();
-  const normalizedArticleId = String(articlesId);
+  const { articleId } = useParams();
+  const normalizedArticleId = String(articleId);
   const isBookmarked = bookmarks.includes(normalizedArticleId);
   const dispatch = useDispatch();
   const userId = useSelector(selectUserId);
@@ -53,14 +53,14 @@ const ArticlePage = () => {
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
-  }, [articlesId]);
+  }, [articleId]);
 
   useEffect(() => {
     const fetchData = async () => {
       setLoading({ article: true, related: true, users: true });
       try {
         const [articleRes, usersRes, allArticlesRes] = await Promise.all([
-          publicAPI.get(`/articles/${articlesId}`),
+          publicAPI.get(`/articles/${articleId}`),
           publicAPI.get("/creators/all"),
           publicAPI.get("/articles"),
         ]);
@@ -75,7 +75,7 @@ const ArticlePage = () => {
         const articlesArray = Array.isArray(rawArticles) ? rawArticles : [];
 
         setRelatedArticles(
-          getRandomArticles(articlesArray, articlesId, 3)
+          getRandomArticles(articlesArray, articleId, 3)
         );
       } catch (error) {
         console.error("Error fetching:", error);
@@ -85,7 +85,7 @@ const ArticlePage = () => {
     };
 
     fetchData();
-  }, [articlesId]);
+  }, [articleId]);
 
   const handleToggleBookmark = async () => {
     if (!isLoggedIn) {
@@ -127,7 +127,7 @@ const ArticlePage = () => {
   return (
     <div className="container">
       <div className={s.articleWrapper}>
-        <SectionTitle title={article.title} />
+        <h1 className={s.title}>{article.title}</h1>
         {article.img && (
           <img
             className={s.articleImage}
@@ -167,7 +167,7 @@ const ArticlePage = () => {
                           </Link>
 
                           <Link className={s.linkButton} to={`/articles/${id}`}>
-                            <ArrowIcon className={s.linkIcon} size={24} />
+                            →
                           </Link>
                         </div>
                         <p className={s.similarArticlesAuthor}>

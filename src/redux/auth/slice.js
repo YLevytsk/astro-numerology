@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+﻿import { createSlice } from "@reduxjs/toolkit";
 import { loginThunk, logoutThunk, registerThunk } from "./operations";
 
 const emptyUser = {
@@ -8,10 +8,27 @@ const emptyUser = {
   avatarUrl: null,
 };
 
+const loadUser = () => {
+  try {
+    const stored = localStorage.getItem("user");
+    return stored ? JSON.parse(stored) : emptyUser;
+  } catch {
+    return emptyUser;
+  }
+};
+
+const loadToken = () => {
+  try {
+    return localStorage.getItem("accessToken");
+  } catch {
+    return null;
+  }
+};
+
 const initialState = {
-  user: emptyUser,
-  token: null,
-  isLoggedIn: false, // 🔥 ТОЛЬКО через login
+  user: loadUser(),
+  token: loadToken(),
+  isLoggedIn: !!loadToken(), // восстановление логина после перезагрузки
 };
 
 const slice = createSlice({
@@ -27,7 +44,7 @@ const slice = createSlice({
         state.isLoggedIn = true;
       })
 
-      // ===== LOGIN (КЛЮЧЕВО) =====
+      // ===== LOGIN =====
       .addCase(loginThunk.fulfilled, (state, action) => {
         state.user = action.payload.user;
         state.token = action.payload.token;
@@ -44,9 +61,3 @@ const slice = createSlice({
 });
 
 export const authReducer = slice.reducer;
-
-
-
-
-
-

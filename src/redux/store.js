@@ -1,8 +1,9 @@
-import { configureStore } from "@reduxjs/toolkit";
+﻿import { configureStore } from "@reduxjs/toolkit";
 import { authReducer } from "./auth/slice";
 import { articlesReducer } from "./articles/slice";
 import { authorReducer } from "./author/slice";
 import { bookmarksReducer } from "./bookmarks/slice";
+
 import {
   persistStore,
   persistReducer,
@@ -17,9 +18,9 @@ import storage from "redux-persist/lib/storage";
 
 const authPersistConfig = {
   key: "root-auth",
-  version: 1,
+  version: 3,
   storage,
-  whitelist: ["token"],
+  whitelist: ["user", "token", "isLoggedIn"],
 };
 
 const bookmarksPersistConfig = {
@@ -41,7 +42,14 @@ export const store = configureStore({
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: {
-        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+        ignoredActions: [
+          FLUSH,
+          REHYDRATE,
+          PAUSE,
+          PERSIST,
+          PURGE,
+          REGISTER,
+        ],
       },
     }),
 });

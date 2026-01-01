@@ -34,7 +34,7 @@ export const fetchArticle = createAsyncThunk(
   async (id, thunkAPI) => {
     try {
       const response = await publicAPI.get(`/articles/${id}`);
-      return response.data;
+      return response.data?.data;
     } catch (e) {
       return thunkAPI.rejectWithValue(e.message);
     }

@@ -1,4 +1,4 @@
-import "bootstrap/dist/css/bootstrap.min.css";
+﻿import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 
 import ReactDOM from "react-dom/client";
@@ -8,11 +8,9 @@ import { BrowserRouter } from "react-router-dom";
 
 import App from "./App";
 import { store, persistor } from "./redux/store";
-
-// ✅ правильный импорт
 import { setAuthHeader } from "./redux/api/privateAPI";
 
-// 🟣 восстановление accessToken при старте
+// восстановление accessToken при старте
 const token = localStorage.getItem("accessToken");
 if (token) {
   setAuthHeader(token);
@@ -27,5 +25,3 @@ ReactDOM.createRoot(document.getElementById("root")).render(
     </PersistGate>
   </Provider>
 );
-
-

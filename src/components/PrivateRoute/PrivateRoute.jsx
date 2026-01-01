@@ -12,23 +12,25 @@ const PrivateRoute = ({ children }) => {
   const isLoggedIn = useSelector(selectIsLoggedIn);
   const isRefreshing = useSelector(selectIsRefreshing);
 
+  const token = localStorage.getItem("accessToken");
+
   const [showModal, setShowModal] = useState(false);
   const navigate = useNavigate();
 
-  // ⚠️ показываем модалку ТОЛЬКО после завершения refresh
   useEffect(() => {
-    if (!isRefreshing && !isLoggedIn) {
+    // 🔥 КЛЮЧ: если есть token — НЕ показываем модалку
+    if (!isRefreshing && !isLoggedIn && !token) {
       setShowModal(true);
     }
-  }, [isRefreshing, isLoggedIn]);
+  }, [isRefreshing, isLoggedIn, token]);
 
-  // ⏳ ждём refresh — НИЧЕГО не рендерим
+  // ⏳ если был бы refresh — ждали бы
   if (isRefreshing) {
-    return null; // или loader
+    return null;
   }
 
-  // ❌ не авторизован → модалка
-  if (!isLoggedIn && showModal) {
+  // ❌ реально не авторизован
+  if (!isLoggedIn && !token && showModal) {
     return (
       <AuthModal
         onClose={() => {
@@ -39,9 +41,10 @@ const PrivateRoute = ({ children }) => {
     );
   }
 
-  // ✅ авторизован
+  // ✅ либо Redux, либо token
   return children;
 };
 
 export default PrivateRoute;
+
 
