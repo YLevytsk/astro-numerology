@@ -67,6 +67,15 @@ export const loginThunk = createAsyncThunk(
       const res = await axiosAPI.post("/auth/login", body);
       const data = res.data.data;
 
+      const existingUser = (() => {
+        try {
+          return JSON.parse(localStorage.getItem("user")) || {};
+        } catch {
+          return {};
+        }
+      })();
+      const avatarUrl = data.avatarUrl || existingUser.avatarUrl || "";
+
       // critical: set header immediately
       setAuthHeader(data.accessToken);
       localStorage.setItem("accessToken", data.accessToken);
@@ -77,7 +86,7 @@ export const loginThunk = createAsyncThunk(
           id: data._id,
           name: data.name,
           email: data.email,
-          avatarUrl: data.avatarUrl,
+          avatarUrl,
         })
       );
 
@@ -86,7 +95,7 @@ export const loginThunk = createAsyncThunk(
           id: data._id,
           name: data.name,
           email: data.email,
-          avatarUrl: data.avatarUrl,
+          avatarUrl,
         },
         token: data.accessToken,
       };
@@ -143,6 +152,37 @@ export const uploadAvatarThunk = createAsyncThunk(
       }
 
       return avatarUrl;
+    } catch (err) {
+      return thunkAPI.rejectWithValue(
+        err.response?.data?.message || err.message
+      );
+    }
+  }
+);
+
+// ===================== UPDATE BIO =====================
+export const updateBioThunk = createAsyncThunk(
+  "auth/updateBio",
+  async ({ bio, userId }, thunkAPI) => {
+    try {
+      const id = userId || thunkAPI.getState().auth.user?.id;
+      if (!id) {
+        return thunkAPI.rejectWithValue("User id is missing");
+      }
+
+      const res = await axiosAPI.patch(`/users/${id}`, { bio });
+      const data = res.data?.data;
+      const newBio = data?.bio ?? bio ?? "";
+
+      // persist updated user in localStorage
+      const storedUser = localStorage.getItem("user");
+      if (storedUser) {
+        const parsed = JSON.parse(storedUser);
+        parsed.bio = newBio;
+        localStorage.setItem("user", JSON.stringify(parsed));
+      }
+
+      return newBio;
     } catch (err) {
       return thunkAPI.rejectWithValue(
         err.response?.data?.message || err.message

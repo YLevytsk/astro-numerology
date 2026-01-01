@@ -52,7 +52,7 @@ const ArticlesList = ({ articles, canDelete = false, onDelete }) => {
 
   return (
     <>
-      <ul className={s.articlesList}>
+      <ul className={s.articlesList} style={{ listStyle: "none", padding: 0, margin: 0 }}>
         {currentArticles.map((article) => (
           <li key={article._id}>
             <ArticlesItem

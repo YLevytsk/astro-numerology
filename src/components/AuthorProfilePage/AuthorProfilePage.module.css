@@ -1,4 +1,4 @@
-.authorProfile {
+﻿.authorProfile {
   padding-top: 46px;
   padding-bottom: 46px;
 }
@@ -27,7 +27,7 @@
   font-family: "Manrope", sans-serif;
   font-weight: 700;
   font-size: 32px;
-  color: #000;
+  color: #28a745;;
   margin: 0 0 4px 0;
 }
 
@@ -38,7 +38,90 @@
   color: #000;
 }
 
-/* CREATE BUTTON — У ТЕБЯ ЕГО НЕ БЫЛО */
+.countBlock {
+  margin: 0;
+  flex-shrink: 0;
+}
+
+.bioEditor {
+  display: flex;
+  justify-content: flex-end;
+  flex-direction: row;
+  gap: 16px;
+  margin-top: 8px;
+  align-items: flex-start;
+  width: 100%;
+  max-width: 920px;
+  margin-left: auto;
+}
+
+.bioLabel {
+  font-weight: 600;
+  font-size: 14px;
+  color: #000;
+}
+
+.bioTextarea {
+  width: 100%;
+  min-height: 120px;
+  max-width: 800px;
+
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1px solid #d6d6d6;
+
+  font-family: "Manrope", sans-serif;
+  font-size: 14px;
+  line-height: 1.4;
+
+  resize: vertical;
+  outline: none; /* убираем стандартную */
+}
+.bioTextarea:focus {
+  border-color: #a42dd7;
+}
+
+.saveBioButton {
+  align-self: stretch;
+  padding: 10px 16px;
+  border-radius: 12px;
+  border: 1px solid #a42dd7;
+  background: #a42dd7;
+  color: #fff;
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.saveBioButton:hover {
+  background: #360450;
+  border-color: #360450;
+}
+
+.metaRow {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  align-items: flex-start;
+}
+
+@media screen and (min-width: 768px) {
+  .metaRow {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    align-items: flex-start;
+    gap: 20px;
+  }
+
+  .profileImage {
+    width: 137px;
+    height: 137px;
+  }
+}
+
+/* CREATE BUTTON */
 .createButton {
   display: inline-flex;
   align-items: center;
@@ -46,38 +129,25 @@
   margin-bottom: 24px;
   padding: 12px 24px;
   border-radius: 24px;
-  background: #4e46b4;
+  background: #a42dd7;
+  border: 1px solid #a42dd7;
   color: #fff;
   text-decoration: none;
   font-family: "Manrope", sans-serif;
   font-weight: 700;
   font-size: 16px;
-  transition: background 0.3s ease;
+  transition: background 0.3s ease, border-color 0.3s ease;
 }
 
 .createButton:hover {
-  background: #3d36a0;
+  background: #360450;
+  border-color: #360450;
+  color: #fff;
 }
 
 /* ARTICLES LIST */
 .articlesList {
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-}
-
-/* TABLET */
-@media screen and (min-width: 768px) {
-  .profileImage {
-    width: 137px;
-    height: 137px;
-  }
-
-  .articlesList {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 24px;
-  }
+  width: 100%;
 }
 
 /* DESKTOP */
@@ -85,11 +155,8 @@
   .contentBlock {
     width: 1225px;
   }
-
-  .articlesList {
-    grid-template-columns: repeat(3, 1fr);
-  }
 }
+
 .avatarWrapper {
   position: relative;
   width: 124px;
@@ -110,40 +177,106 @@
   width: 36px;
   height: 36px;
   border-radius: 50%;
-  background: #4e46b4;
+  background: #a42dd7;
   color: #fff;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
+  border: 1px solid #a42dd7;
+  transition: background 0.3s ease, border-color 0.3s ease, color 0.3s ease;
 }
 
 .hiddenInput {
   display: none;
 }
-.editAvatarButton {
-  position: absolute;
-  right: 0;
-  bottom: 0;
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  background: #4e46b4; /* фон кнопки */
-  color: #ffffff;     /* ЦВЕТ ИКОНКИ */
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: background 0.3s ease, color 0.3s ease;
-}
 
 .editAvatarButton:hover {
   background: #ffffff;
-  color: #4e46b4; /* цвет иконки при hover */
+  border-color: #a42dd7;
+  color: #a42dd7;
 }
 
 .editAvatarIcon {
   width: 20px;
   height: 20px;
 }
+/* ===== NEW HEADER LAYOUT (SAFE ADD) ===== */
 
+.profileInfo {
+  display: flex;
+  justify-content: space-between;
+  gap: 32px;
+  width: 100%;
+}
+
+.leftInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.articleCount {
+  
+  font-weight: 600;
+  margin-top: 12px;
+  text-align: center;
+  font-size: 14px;
+  color: #7c7979;
+}
+
+
+.bioEditor {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+}
+
+
+.bioTextarea {
+  min-height: 140px;
+  width: 100%;
+  border-radius: 16px;
+  margin-left: auto;
+}
+
+/* make Save bio same as Create Article */
+.saveBioButton {
+  display: inline-flex;
+  align-items: center;        /* ✅ вертикальное центрирование */
+  justify-content: center;
+
+  align-self: flex-end;       /* ✅ МАХ ВПРАВО */
+
+  height: 48px;
+  padding: 0 24px;
+  border-radius: 24px;
+
+  background: #fff;
+  border: 1px solid #a42dd7;
+  color: #a42dd7;
+
+  font-family: "Manrope", sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 1;
+
+  cursor: pointer;
+  transition: background 0.3s ease, border-color 0.3s ease;
+  white-space: nowrap;
+}
+
+
+.saveBioButton:hover {
+  background: #360450;
+  border-color: #360450;
+  color: #fff;
+}
+/* mobile */
+@media (max-width: 768px) {
+  .profileInfo,
+  .bioEditor {
+    flex-direction: column;
+  }
+}

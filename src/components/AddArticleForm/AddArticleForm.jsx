@@ -115,6 +115,7 @@ export const CreateArticleForm = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const textRef = useRef();
+  const fileInputRef = useRef();
   const isLoading = useSelector(selectLoading);
 
   const initialValues = {
@@ -123,7 +124,7 @@ export const CreateArticleForm = () => {
     image: null,
   };
 
-  const handleSubmit = async (values, { resetForm }) => {
+  const handleSubmit = async (values, { resetForm, setFieldValue }) => {
     const formData = new FormData();
     formData.append("title", values.title);
     formData.append("article", values.text);
@@ -132,19 +133,14 @@ export const CreateArticleForm = () => {
     formData.append("date", new Date().toISOString().slice(0, 10)); // YYYY-MM-DD
 
     try {
-      const newArticle = await dispatch(addArticle(formData)).unwrap();
-      const articleId =
-        newArticle?._id?.$oid ??
-        newArticle?._id ??
-        newArticle?.id;
-
-      if (!articleId) {
-        throw new Error("Article id is missing in server response");
-      }
-
+      await dispatch(addArticle(formData)).unwrap();
       resetForm();
       setPreviewUrl(null);
-      navigate(`/articles/${articleId}`);
+      setFieldValue("image", null);
+      if (fileInputRef.current) {
+        fileInputRef.current.value = "";
+      }
+      navigate("/profile");
       toast.success("Article successfully created!");
     } catch (error) {
       toast.error(error?.message || "Failed to create article");
@@ -206,6 +202,7 @@ export const CreateArticleForm = () => {
                   <div className={css.imageWrapper}>
                     <label className={css.imageLabel}>
                       <input
+                        ref={fileInputRef}
                         type="file"
                         name="image"
                         accept="image/jpeg,image/png,image/webp"

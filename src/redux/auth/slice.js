@@ -4,6 +4,7 @@ import {
   logoutThunk,
   registerThunk,
   uploadAvatarThunk,
+  updateBioThunk,
 } from "./operations";
 
 const emptyUser = {
@@ -66,6 +67,11 @@ const slice = createSlice({
       // ===== UPLOAD AVATAR =====
       .addCase(uploadAvatarThunk.fulfilled, (state, action) => {
         state.user.avatarUrl = action.payload;
+      })
+
+      // ===== UPDATE BIO =====
+      .addCase(updateBioThunk.fulfilled, (state, action) => {
+        state.user.bio = action.payload;
       });
   },
 });
