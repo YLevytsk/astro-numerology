@@ -120,12 +120,17 @@ export const logoutThunk = createAsyncThunk(
 // ===================== UPLOAD AVATAR =====================
 export const uploadAvatarThunk = createAsyncThunk(
   "auth/uploadAvatar",
-  async (file, thunkAPI) => {
+  async ({ file, userId }, thunkAPI) => {
     try {
+      const id = userId || thunkAPI.getState().auth.user?.id;
+      if (!id) {
+        return thunkAPI.rejectWithValue("User id is missing");
+      }
+
       const formData = new FormData();
       formData.append("avatar", file);
 
-      const res = await axiosAPI.patch("/users/avatar", formData);
+      const res = await axiosAPI.patch(`/users/${id}/avatar`, formData);
       const data = res.data?.data;
       const avatarUrl = data?.avatarUrl || data;
 

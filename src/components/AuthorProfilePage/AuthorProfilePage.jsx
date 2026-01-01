@@ -114,7 +114,13 @@ const AuthorProfilePage = () => {
                   onChange={(e) => {
                     const file = e.target.files[0];
                     if (file) {
-                      dispatch(uploadAvatarThunk(file));
+                      if (!currentUser?.id) return;
+                      dispatch(
+                        uploadAvatarThunk({
+                          file,
+                          userId: currentUser.id,
+                        })
+                      );
                     }
                   }}
                 />
