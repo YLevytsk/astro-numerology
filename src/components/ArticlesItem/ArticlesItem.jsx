@@ -2,21 +2,25 @@ import { Link } from "react-router-dom";
 import s from "./ArticlesItem.module.css";
 import ButtonAddToBookmarks from "../ButtonAddToBookmarks/ButtonAddToBookmarks.jsx";
 
-const API_URL = import.meta.env.VITE_API_URL;
+const API_URL =
+  import.meta.env.VITE_API_URL || "http://95.217.129.211:3000";
 
 const ArticlesItem = ({ article, authorName }) => {
   const { _id, title, desc, img } = article;
+
+  const imageSrc =
+    img && (img.startsWith("http") ? img : `${API_URL}${img}`);
 
   const articleId =
     typeof _id === "object" && _id.$oid ? String(_id.$oid) : String(_id);
 
   return (
     <div className={s.articleItem}>
-      {img && (
+      {imageSrc && (
         <div className={s.imageWrapper}>
           <img
             className={s.articleImage}
-            src={`${API_URL}${img}`}
+            src={imageSrc}
             alt={title}
           />
         </div>

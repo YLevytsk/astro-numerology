@@ -1,4 +1,4 @@
-import { useParams, Link } from "react-router-dom";
+﻿import { useParams, Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
@@ -39,7 +39,7 @@ const ArticlePage = () => {
   const getUserName = (usersArray, ownerId) => {
     const id = ownerId?.$oid ?? ownerId;
     const user = usersArray.find(({ _id }) => _id === id);
-    return user?.name ?? "Невідомо";
+    return user?.name ?? "ﾐ斷ｵﾐｲﾑ孟ｴﾐｾﾐｼﾐｾ";
   };
 
  const getRandomArticles = (allArticles, currentId, count = 3) => {
@@ -108,21 +108,21 @@ const ArticlePage = () => {
 
       await dispatch(fetchBookmarks(userId));
     } catch (error) {
-      console.error("Помилка при оновленні закладки:", error);
+      console.error("ﾐ渙ｾﾐｼﾐｸﾐｻﾐｺﾐｰ ﾐｿﾑﾐｸ ﾐｾﾐｽﾐｾﾐｲﾐｻﾐｵﾐｽﾐｽﾑ・ﾐｷﾐｰﾐｺﾐｻﾐｰﾐｴﾐｺﾐｸ:", error);
     }
   };
 
   if (loading.article || loading.users) return <Loader />;
 
   if (!article) {
-    return <p className={s.empty}>Стаття не знайдена</p>;
+    return <p className={s.empty}>ﾐ｡ﾑひｰﾑびび・ﾐｽﾐｵ ﾐｷﾐｽﾐｰﾐｹﾐｴﾐｵﾐｽﾐｰ</p>;
   }
 
   const formattedText = article.article.replace(/\/n/g, "<br><br>");
 
   const articleOwnerId = article.ownerId?.$oid ?? article.ownerId;
   const user = users.find(({ _id }) => _id === articleOwnerId);
-  const authorName = user?.name ?? "Невідомо";
+  const authorName = user?.name ?? "ﾐ斷ｵﾐｲﾑ孟ｴﾐｾﾐｼﾐｾ";
 
   return (
     <div className="container">
@@ -132,7 +132,7 @@ const ArticlePage = () => {
           <img
             className={s.articleImage}
             src={article.img}
-            alt={`Зображення: ${article.title}`}
+            alt={`ﾐ厘ｾﾐｱﾑﾐｰﾐｶﾐｵﾐｽﾐｽﾑ・ ${article.title}`}
           />
         )}
         <div className={s.contentBlock}>
@@ -167,8 +167,7 @@ const ArticlePage = () => {
                           </Link>
 
                           <Link className={s.linkButton} to={`/articles/${id}`}>
-                            →
-                          </Link>
+                            竊・                          </Link>
                         </div>
                         <p className={s.similarArticlesAuthor}>
                           {getUserName(users, suggested.ownerId)}
@@ -192,5 +191,6 @@ const ArticlePage = () => {
 };
 
 export default ArticlePage;
+
 
 
