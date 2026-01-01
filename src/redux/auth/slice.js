@@ -1,5 +1,10 @@
 ﻿import { createSlice } from "@reduxjs/toolkit";
-import { loginThunk, logoutThunk, registerThunk } from "./operations";
+import {
+  loginThunk,
+  logoutThunk,
+  registerThunk,
+  uploadAvatarThunk,
+} from "./operations";
 
 const emptyUser = {
   id: null,
@@ -56,6 +61,11 @@ const slice = createSlice({
         state.user = emptyUser;
         state.token = null;
         state.isLoggedIn = false;
+      })
+
+      // ===== UPLOAD AVATAR =====
+      .addCase(uploadAvatarThunk.fulfilled, (state, action) => {
+        state.user.avatarUrl = action.payload;
       });
   },
 });

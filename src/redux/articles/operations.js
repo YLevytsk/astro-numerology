@@ -1,4 +1,4 @@
-import { createAsyncThunk } from "@reduxjs/toolkit";
+﻿import { createAsyncThunk } from "@reduxjs/toolkit";
 import { publicAPI } from "../api/publicAPI.js";
 import { axiosAPI } from "../auth/operations";
 
@@ -46,7 +46,7 @@ export const addArticle = createAsyncThunk(
   "articles/addArticle",
   async (formData, thunkAPI) => {
     try {
-      // 🔥 ВАЖНО: используем axiosAPI (авторизованный)
+      // 櫨 ﾐ漬籍孟斷・ ﾐｸﾑ・ｿﾐｾﾐｻﾑ糊ｷﾑσｵﾐｼ axiosAPI (ﾐｰﾐｲﾑひｾﾑﾐｸﾐｷﾐｾﾐｲﾐｰﾐｽﾐｽﾑ巾ｹ)
       const response = await axiosAPI.post("/articles", formData, {
         onUploadProgress: (e) => {
           if (e.total) {
@@ -59,6 +59,21 @@ export const addArticle = createAsyncThunk(
       });
 
       return response.data;
+    } catch (e) {
+      return thunkAPI.rejectWithValue(
+        e.response?.data?.message || e.message
+      );
+    }
+  }
+);
+
+/* ===================== DELETE ARTICLE ===================== */
+export const deleteArticle = createAsyncThunk(
+  "articles/deleteArticle",
+  async (articleId, thunkAPI) => {
+    try {
+      await axiosAPI.delete(`/articles/${articleId}`);
+      return articleId;
     } catch (e) {
       return thunkAPI.rejectWithValue(
         e.response?.data?.message || e.message
@@ -106,6 +121,7 @@ export const fetchArticlesByOwner = createAsyncThunk(
     }
   }
 );
+
 
 
 

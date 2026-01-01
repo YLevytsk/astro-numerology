@@ -58,6 +58,27 @@
   justify-content: space-between;
 }
 
+.deleteButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 40px;
+  padding: 6px 12px;
+  border-radius: 6px;
+  border: 1px solid #dc3545;
+  background: #dc3545;
+  color: #fff;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.deleteButton:hover,
+.deleteButton:focus-visible {
+  background: #b02a37;
+  border-color: #b02a37;
+}
+
 /* ❌ прибрано загальний .actions a:hover */
 
 /* 🎯 спеціально для кнопки Learn more */

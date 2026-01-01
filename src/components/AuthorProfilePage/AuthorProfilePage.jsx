@@ -6,8 +6,10 @@ import { fetchAuthor } from "../../redux/author/operations";
 import { selectCreator } from "../../redux/author/selectors";
 
 import { selectUser } from "../../redux/auth/selectors";
+import { uploadAvatarThunk } from "../../redux/auth/operations";
 
 import { fetchArticlesByOwner } from "../../redux/articles/operations";
+import { deleteArticle } from "../../redux/articles/operations";
 import { selectArticlesByOwner } from "../../redux/articles/selectors";
 
 import ArticlesList from "../ArticlesList/ArticlesList.jsx";
@@ -48,6 +50,16 @@ const AuthorProfilePage = () => {
 
     dispatch(fetchArticlesByOwner(profileId));
   }, [dispatch, authorId, profileId, isMyProfile]);
+
+  const handleDelete = async (articleId) => {
+    if (!articleId) return;
+    try {
+      await dispatch(deleteArticle(articleId)).unwrap();
+      dispatch(fetchArticlesByOwner(profileId));
+    } catch (e) {
+      console.error("Failed to delete article:", e);
+    }
+  };
 
   // ❗ ПОКА НЕТ НИ currentUser, НИ author — ЛОАДЕР
   if (!profileUser) {
@@ -102,8 +114,7 @@ const AuthorProfilePage = () => {
                   onChange={(e) => {
                     const file = e.target.files[0];
                     if (file) {
-                      console.log("UPLOAD AVATAR:", file);
-                      // TODO: dispatch(uploadAvatar(file))
+                      dispatch(uploadAvatarThunk(file));
                     }
                   }}
                 />
@@ -131,7 +142,11 @@ const AuthorProfilePage = () => {
 
         {/* ARTICLES */}
         <div className={css.articlesList}>
-          <ArticlesList articles={articles} />
+          <ArticlesList
+            articles={articles}
+            canDelete={isMyProfile}
+            onDelete={handleDelete}
+          />
         </div>
       </div>
     </section>

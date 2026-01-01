@@ -5,7 +5,12 @@ import ButtonAddToBookmarks from "../ButtonAddToBookmarks/ButtonAddToBookmarks.j
 const API_URL =
   import.meta.env.VITE_API_URL || "http://95.217.129.211:3000";
 
-const ArticlesItem = ({ article, authorName }) => {
+const ArticlesItem = ({
+  article,
+  authorName,
+  canDelete = false,
+  onDelete,
+}) => {
   const { _id, title, desc, img } = article;
 
   const imageSrc =
@@ -38,6 +43,15 @@ const ArticlesItem = ({ article, authorName }) => {
             Learn more
           </Link>
           <ButtonAddToBookmarks articleId={articleId} />
+          {canDelete && (
+            <button
+              type="button"
+              className={s.deleteButton}
+              onClick={() => onDelete?.(articleId)}
+            >
+              Delete
+            </button>
+          )}
         </div>
       </div>
     </div>

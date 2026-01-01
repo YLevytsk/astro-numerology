@@ -4,6 +4,7 @@ import {
   fetchArticle,
   fetchArticles,
   fetchArticlesByOwner,
+  deleteArticle,
 } from "./operations.js";
 
 // Загальний обробник pending
@@ -110,7 +111,27 @@ const slice = createSlice({
           status: "succeeded",
         };
       })
-      .addCase(fetchArticlesByOwner.rejected, handleRejected);
+      .addCase(fetchArticlesByOwner.rejected, handleRejected)
+
+      // ==== DELETE ARTICLE ====
+      .addCase(deleteArticle.pending, handlePending)
+      .addCase(deleteArticle.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.error = null;
+        const idToRemove = String(action.payload);
+        state.items = state.items.filter(
+          (item) => String(item._id ?? item.id ?? item) !== idToRemove
+        );
+        Object.keys(state.byOwner).forEach((ownerId) => {
+          const entry = state.byOwner[ownerId];
+          if (entry?.items) {
+            entry.items = entry.items.filter(
+              (item) => String(item._id ?? item.id ?? item) !== idToRemove
+            );
+          }
+        });
+      })
+      .addCase(deleteArticle.rejected, handleRejected);
   },
 });
 

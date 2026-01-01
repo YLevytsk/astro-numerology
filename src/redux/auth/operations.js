@@ -116,3 +116,32 @@ export const logoutThunk = createAsyncThunk(
     return true;
   }
 );
+
+// ===================== UPLOAD AVATAR =====================
+export const uploadAvatarThunk = createAsyncThunk(
+  "auth/uploadAvatar",
+  async (file, thunkAPI) => {
+    try {
+      const formData = new FormData();
+      formData.append("avatar", file);
+
+      const res = await axiosAPI.patch("/users/avatar", formData);
+      const data = res.data?.data;
+      const avatarUrl = data?.avatarUrl || data;
+
+      // persist updated user in localStorage
+      const storedUser = localStorage.getItem("user");
+      if (storedUser) {
+        const parsed = JSON.parse(storedUser);
+        parsed.avatarUrl = avatarUrl;
+        localStorage.setItem("user", JSON.stringify(parsed));
+      }
+
+      return avatarUrl;
+    } catch (err) {
+      return thunkAPI.rejectWithValue(
+        err.response?.data?.message || err.message
+      );
+    }
+  }
+);

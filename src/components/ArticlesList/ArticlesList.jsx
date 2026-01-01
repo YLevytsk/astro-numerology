@@ -8,7 +8,7 @@ import { selectCreators } from "../../redux/author/selectors.js";
 import { selectIsLoggedIn, selectUserId } from "../../redux/auth/selectors.js";
 import Pagination from "../Pagination/Pagination.jsx";
 
-const ArticlesList = ({ articles }) => {
+const ArticlesList = ({ articles, canDelete = false, onDelete }) => {
   const dispatch = useDispatch();
   const authors = useSelector(selectCreators);
   const isLoggedIn = useSelector(selectIsLoggedIn);
@@ -58,6 +58,8 @@ const ArticlesList = ({ articles }) => {
             <ArticlesItem
               article={article}
               authorName={getAuthorName(article.ownerId)}
+              canDelete={canDelete}
+              onDelete={onDelete}
             />
           </li>
         ))}

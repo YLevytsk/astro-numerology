@@ -131,7 +131,11 @@ const ArticlePage = () => {
         {article.img && (
           <img
             className={s.articleImage}
-            src={article.img}
+            src={
+              article.img?.startsWith("http")
+                ? article.img
+                : `http://95.217.129.211:3000${article.img}`
+            }
             alt={`ﾐ厘ｾﾐｱﾑﾐｰﾐｶﾐｵﾐｽﾐｽﾑ・ ${article.title}`}
           />
         )}
