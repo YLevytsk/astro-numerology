@@ -39,6 +39,7 @@ export const registerThunk = createAsyncThunk(
           name: data.name,
           email: data.email,
           avatarUrl: data.avatarUrl,
+          bio: data.bio,
         })
       );
 
@@ -48,6 +49,7 @@ export const registerThunk = createAsyncThunk(
           name: data.name,
           email: data.email,
           avatarUrl: data.avatarUrl,
+          bio: data.bio,
         },
         token: data.accessToken,
       };
@@ -75,6 +77,7 @@ export const loginThunk = createAsyncThunk(
         }
       })();
       const avatarUrl = data.avatarUrl || existingUser.avatarUrl || "";
+      const bio = data.bio ?? existingUser.bio ?? "";
 
       // critical: set header immediately
       setAuthHeader(data.accessToken);
@@ -87,6 +90,7 @@ export const loginThunk = createAsyncThunk(
           name: data.name,
           email: data.email,
           avatarUrl,
+          bio,
         })
       );
 
@@ -96,6 +100,7 @@ export const loginThunk = createAsyncThunk(
           name: data.name,
           email: data.email,
           avatarUrl,
+          bio,
         },
         token: data.accessToken,
       };

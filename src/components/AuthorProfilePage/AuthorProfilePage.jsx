@@ -6,10 +6,7 @@ import { fetchAuthor } from "../../redux/author/operations";
 import { selectCreator } from "../../redux/author/selectors";
 
 import { selectUser } from "../../redux/auth/selectors";
-import {
-  uploadAvatarThunk,
-  updateBioThunk,
-} from "../../redux/auth/operations";
+import { uploadAvatarThunk, updateBioThunk } from "../../redux/auth/operations";
 
 import {
   fetchArticlesByOwner,
@@ -34,8 +31,9 @@ const AuthorProfilePage = () => {
   const currentUser = useSelector(selectUser);
   const author = useSelector(selectCreator);
 
-  const isMyProfile =
-    !!currentUser && (!authorId || authorId === currentUser.id);
+  const isMyProfile = Boolean(
+    currentUser?.id && (!authorId || authorId === currentUser.id)
+  );
 
   const profileUser = isMyProfile ? currentUser : author;
   const profileId = isMyProfile ? currentUser?.id : authorId;
@@ -52,9 +50,11 @@ const AuthorProfilePage = () => {
     "";
 
   const [bioValue, setBioValue] = useState(bio);
+  const [isEditingBio, setIsEditingBio] = useState(!bio);
 
   useEffect(() => {
     setBioValue(bio);
+    setIsEditingBio(!bio);
   }, [bio]);
 
   useEffect(() => {
@@ -104,8 +104,9 @@ const AuthorProfilePage = () => {
                 <label
                   htmlFor="avatarUpload"
                   className={css.editAvatarButton}
+                  title="Change avatar"
                 >
-                  ✎
+                  ✏
                 </label>
                 <input
                   id="avatarUpload"
@@ -126,19 +127,33 @@ const AuthorProfilePage = () => {
                 />
               </>
             )}
-            <p className={css.articleCount}>
-    {articles.length} Articles
-  </p>
+            <p className={css.articleCount}>{articles.length} Articles</p>
           </div>
 
           {/* INFO */}
           <div className={css.profileInfo}>
             <div className={css.leftInfo}>
               <h1 className={css.authorName}>{profileUser.name}</h1>
-              
             </div>
 
-            {isMyProfile && (
+            {/* BIO VIEW */}
+            {bio && !isEditingBio && (
+              <div className={css.bioView}>
+                <p className={css.bioText}>{bio}</p>
+                {isMyProfile && (
+                  <button
+                    type="button"
+                    className={css.editBioLink}
+                    onClick={() => setIsEditingBio(true)}
+                  >
+                    Edit bio
+                  </button>
+                )}
+              </div>
+            )}
+
+            {/* BIO EDITOR */}
+            {isMyProfile && isEditingBio && (
               <div className={css.bioEditor}>
                 <textarea
                   className={css.bioTextarea}
@@ -148,22 +163,44 @@ const AuthorProfilePage = () => {
                   placeholder="Tell readers about yourself"
                 />
 
-                {/* КНОПКА ПОД ПОЛЕМ */}
                 <button
                   type="button"
                   className={css.saveBioButton}
-                  onClick={() =>
+                  onClick={() => {
+                    const targetId =
+                      currentUser?.id || profileUser?.id || profileId || authorId;
+
+                    if (!targetId) {
+                      console.warn("No user id for bio update");
+                      return;
+                    }
+
                     dispatch(
                       updateBioThunk({
                         bio: bioValue,
-                        userId: currentUser.id,
+                        userId: targetId,
                       })
                     )
-                  }
+                      .unwrap()
+                      .then(() => setIsEditingBio(false))
+                      .catch((err) => {
+                        console.error("Failed to save bio", err);
+                      });
+                  }}
                 >
                   Save bio
                 </button>
               </div>
+            )}
+
+            {isMyProfile && !isEditingBio && !bio && (
+              <button
+                type="button"
+                className={css.editBioLink}
+                onClick={() => setIsEditingBio(true)}
+              >
+                Edit bio
+              </button>
             )}
           </div>
         </div>
@@ -187,10 +224,3 @@ const AuthorProfilePage = () => {
 };
 
 export default AuthorProfilePage;
-
-
-
-
-
-
-

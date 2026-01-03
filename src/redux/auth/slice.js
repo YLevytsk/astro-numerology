@@ -12,6 +12,7 @@ const emptyUser = {
   email: null,
   name: null,
   avatarUrl: null,
+  bio: null,
 };
 
 const loadUser = () => {

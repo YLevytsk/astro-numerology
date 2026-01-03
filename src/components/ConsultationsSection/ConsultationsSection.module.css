@@ -1,0 +1,166 @@
+.section {
+  padding: 32px 0;
+  background: var(--color-white);
+}
+.section {
+  background: #f8f9fa;
+}
+
+.inner {
+  max-width: 361px;
+  margin: 0 auto;
+  padding: 0 16px;
+  box-sizing: border-box;
+}
+
+/* HEADER */
+.headerRow {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.title {
+  font-size: 32px;
+  font-weight: 700;
+  margin: 0;
+  color: #28a745;
+}
+
+.subtitle {
+  font-size: 18px;
+  line-height: 1.5;
+  color: #6c757d;
+}
+
+/* LIST */
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 0;
+  list-style: none;
+  margin: 0;
+}
+
+/* ITEM */
+.item {
+  width: 100%;
+}
+
+/* CARD */
+.cardWrapper {
+  position: relative;
+  height: 100%;
+}
+
+.card {
+  background: #fff;
+  border-radius: 16px;
+  padding: 24px;
+  text-align: center;
+
+  height: 420px;              /* 🔥 фикс */
+  display: flex;
+  flex-direction: column;
+}
+
+.cardTitle {
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 16px;
+}
+
+.cardText {
+  font-size: 15px;
+  line-height: 1.5;
+  color: #6c757d;
+
+  flex-grow: 1;               /* 🔥 растягивает */
+}
+
+/* BUTTON */
+.button {
+  margin-top: auto;           /* 🔥 кнопка внизу */
+  background: #000;
+  color: #fff;
+  border: none;
+  border-radius: 30px;
+  padding: 10px 24px;
+  cursor: pointer;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.button:hover {
+  transform: translateY(-2px);
+  opacity: 0.9;
+}
+
+/* PRICE */
+.price {
+  position: absolute;
+  top: -14px;
+  right: -14px;
+  background: #000;
+  color: #fff;
+  padding: 8px 14px;
+  border-radius: 20px;
+  font-weight: 600;
+}
+
+/* TABLET ≥768px */
+@media (min-width: 768px) {
+  .inner {
+    max-width: 704px;
+  }
+
+  .list {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 24px;
+  }
+
+  .list > li {
+    flex: 0 1 calc((100% - 48px) / 3);
+    max-width: calc((100% - 48px) / 3);
+  }
+}
+
+/* DESKTOP ≥1440px */
+@media (min-width: 1440px) {
+  .inner {
+    max-width: 1225px;
+  }
+
+  .list {
+    justify-content: center;
+  }
+
+  .list > li {
+    flex: 0 1 calc((100% - 48px) / 3);
+    max-width: calc((100% - 48px) / 3);
+  }
+}
+
+.card {
+  background: #fff;
+  border-radius: 16px;
+  padding: 24px;
+  text-align: center;
+
+  height: 420px;
+  display: flex;
+  flex-direction: column;
+
+  /* ✅ как “дорогая” карточка */
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.cardWrapper:hover .card {
+  transform: translateY(-4px);
+  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.12);
+}

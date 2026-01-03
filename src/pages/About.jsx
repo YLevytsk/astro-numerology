@@ -1,7 +1,11 @@
 import { useEffect } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import FallingCircles from "../components/FallingCircles/FallingCircles";
 
 export default function About() {
+  const location = useLocation();
+  const navigate = useNavigate();
+
   useEffect(() => {
     const items = document.querySelectorAll("[data-reveal]");
     const io = new IntersectionObserver(
@@ -19,10 +23,23 @@ export default function About() {
     return () => io.disconnect();
   }, []);
 
+  // ===== scroll to consultations =====
+  const handleAskOracle = (e) => {
+    e.preventDefault();
+
+    if (location.pathname !== "/") {
+      navigate("/#consultations");
+    } else {
+      const el = document.querySelector("#consultations");
+      if (el) {
+        el.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    }
+  };
+
   return (
     <div className="wrapper">
       <div className="section section-hero about-bg starfield" id="about">
-
         {/* фоновые звезды */}
         <div className="background-stars">
           {Array.from({ length: 60 }).map((_, i) => {
@@ -94,10 +111,12 @@ export default function About() {
             </div>
           </div>
 
+          {/* BUTTON */}
           <div className="row justify-content-center mt-0">
             <div className="col-lg-6 text-center">
               <a
-                href="/consultations"
+                href="#consultations"
+                onClick={handleAskOracle}
                 className="btn btn-lg btn-oracle btn-round"
               >
                 Ask the Oracle
@@ -111,4 +130,5 @@ export default function About() {
     </div>
   );
 }
+
 

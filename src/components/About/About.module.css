@@ -4,11 +4,14 @@
 
 /* фон About */
 .about-bg {
+  background-image: url("http://95.217.129.211/uploads/ai-generated-8888074_1920.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  min-height: 100vh;
   position: relative;
-  background: 
-    linear-gradient(rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.4)),
-    url("/images/6221097.webp") center/cover no-repeat;
 }
+
 
 /* заголовок */
 .title-wrapper {

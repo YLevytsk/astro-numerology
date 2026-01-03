@@ -5,7 +5,6 @@ import Navbar from "./components/Navbar.jsx";
 import Footer from "./components/Footer/Footer.jsx";
 
 import Home from "./pages/Home.jsx";
-import Consultations from "./pages/Consultations.jsx";
 import PythagorasPage from "./pages/PythagorasPage/PythagorasPage.jsx";
 import RegisterPage from "./pages/RegisterPage/RegisterPage.jsx";
 import LoginPage from "./pages/LoginPage/LoginPage.jsx";
@@ -21,6 +20,7 @@ import RestrictedRoute from "./components/RestrictedRoute.jsx";
 
 import { axiosAPI } from "./redux/auth/operations";
 
+// Simple wrapper page (used for placeholders)
 function Page({ title }) {
   return (
     <div className="container py-5">
@@ -30,8 +30,7 @@ function Page({ title }) {
 }
 
 export default function App() {
-  // ✅ Просто восстановить заголовок из localStorage
-  // ❌ НИКАКОГО currentThunk (он у тебя всегда 401, потому что accessToken не JWT)
+  // Restore token from localStorage
   useEffect(() => {
     const token = localStorage.getItem("accessToken");
     if (token) {
@@ -44,32 +43,42 @@ export default function App() {
       <Navbar />
 
       <Routes>
+        {/* HOME */}
         <Route path="/" element={<Home />} />
 
+        {/* AUTH */}
         <Route
           path="/register"
           element={
-            <RestrictedRoute redirectTo="/profile" component={<RegisterPage />} />
+            <RestrictedRoute
+              redirectTo="/profile"
+              component={<RegisterPage />}
+            />
           }
         />
 
         <Route
           path="/login"
           element={
-            <RestrictedRoute redirectTo="/profile" component={<LoginPage />} />
+            <RestrictedRoute
+              redirectTo="/profile"
+              component={<LoginPage />}
+            />
           }
         />
 
+        {/* NUMEROLOGY */}
         <Route path="/numerology/pifagor" element={<PythagorasPage />} />
         <Route
           path="/numerology/compatibility"
-          element={<Page title="Couple compatibility" />}
+          element={<Page title="Couple Compatibility" />}
         />
 
-        <Route path="/consultations" element={<Consultations />} />
+        {/* BLOG */}
         <Route path="/blog" element={<ArticlesList articles={[]} />} />
+        <Route path="/articles/:articleId" element={<ArticlePage />} />
 
-        {/* МОЙ ПРОФИЛЬ */}
+        {/* PROFILE */}
         <Route
           path="/profile"
           element={
@@ -79,7 +88,6 @@ export default function App() {
           }
         />
 
-        {/* СОЗДАНИЕ СТАТЬИ */}
         <Route
           path="/profile/articles/new"
           element={
@@ -89,11 +97,10 @@ export default function App() {
           }
         />
 
-        {/* ЧУЖОЙ ПРОФИЛЬ */}
+        {/* AUTHORS */}
         <Route path="/authors/:authorId" element={<AuthorProfilePage />} />
 
-        <Route path="/articles/:articleId" element={<ArticlePage />} />
-
+        {/* 404 */}
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
 
