@@ -38,7 +38,9 @@ const ReviewsSection = () => {
   return (
     <section id="reviews" className="section-reviews py-5">
       <div className="container">
-        <h2 className="mb-4 text-center title-reviews">Reviews</h2>
+        <div className="mb-4 text-center">
+          <h2 className="title-reviews">Reviews</h2>
+        </div>
 
         <div className="reviews-swiper-wrapper">
           <button className="reviews-nav reviews-prev" aria-label="Previous">‹</button>

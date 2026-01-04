@@ -7,22 +7,23 @@
   width: 100%;
   max-width: 392px;
   height: 492px;
-  border: 1px solid #e9ecef; /* ✅ рамка як у Argon */
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* ✅ тінь як у Argon */
+  border: 1px solid #d6d9e0;
+  background: #E9ECF1;
+  box-shadow: 0 10px 30px rgba(91, 75, 138, 0.12);
 }
 
 .articleOwner {
   font-weight: 700;
   font-size: 16px;
+  color: #5b4b8a;
 }
 
 .articleTitle {  
-  color: #28a745;
+  color: #5b4b8a;
   font-weight: 700;
   font-size: 24px;
   width: 264px;
 }
-
 
 .articleDescription {
   font-weight: 400;
@@ -39,10 +40,9 @@
 .wrapper {
   display: flex;
   flex-direction: column;
-  gap: 16px;   /* отступы между блоками */
-  height: auto; /* не тянем на всю высоту */
+  gap: 16px;
+  height: auto;
 }
-
 
 .articleImage {
   width: 100%;
@@ -53,9 +53,11 @@
 }
 
 .actions {
-  display: flex;
-  gap: 8px;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
 }
 
 .deleteButton {
@@ -79,19 +81,19 @@
   border-color: #b02a37;
 }
 
-/* ❌ прибрано загальний .actions a:hover */
-
-/* 🎯 спеціально для кнопки Learn more */
+/* кнопка Learn more */
 .actions .learn_more {
   display: inline-flex;
   justify-content: center;
   align-items: center;
+  justify-self: center;
+  grid-column: 1;
   min-height: 40px;
   padding: 6px 14px;
   border-radius: 6px;
-  border: 1px solid #8a2be2;
-  color: #8a2be2;
-  background: transparent;
+  border: 1px solid #5b4b8a;
+  color: #5b4b8a;
+  background: rgba(91, 75, 138, 0.08);
   font-size: 14px;
   line-height: 1.2;
   font-weight: 700;
@@ -101,33 +103,45 @@
 
 .actions .learn_more:hover,
 .actions .learn_more:focus-visible {
-  background: #8a2be2; /* фон стає фіолетовий */
-  color: #fff;         /* текст білий */
-  border: 1px solid #8a2be2;
+  background: #5b4b8a;
+  color: #fff;
+  border: 1px solid #5b4b8a;
+  box-shadow: 0 8px 18px rgba(91, 75, 138, 0.25);
 }
 
 .learn_more {
   display: inline-flex;
   justify-content: center;
   align-items: center;
-  margin: 0 auto;          /* центрує саму кнопку */
-  min-width: 140px;        /* щоб виглядала як кнопка */
+  margin: 0;
+  min-width: 140px;
+}
+
+.bookmarkSlot {
+  display: none;
+}
+
+/* Fallback if bookmark button renders without wrapper */
+.actions :global(button[class*="bookmarkButton"]) {
+  grid-column: 2;
+  justify-self: end;
+  margin-left: 0;
+}
+
+.deleteButton {
+  grid-column: 1 / 3;
 }
 
 .imageWrapper {
   width: 100%;
-  height: 246px; /* половина картки */
+  height: 246px;
   border-radius: 24px;
   overflow: hidden;
   background: #f0f0f0;
 }
-
-
 
 .placeholder {
   width: 100%;
   height: 100%;
   background: #e0e0e0;
 }
-
-

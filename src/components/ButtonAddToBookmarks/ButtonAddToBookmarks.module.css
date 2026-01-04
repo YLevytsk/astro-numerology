@@ -15,20 +15,12 @@
 }
 
 .bookmarkButtonActive {
-  background-color: var(--color-general);
-  border: 1px solid var(--color-general);
-  color: var(--color-white);
+  background-color: transparent;
+  border: 1px solid #5b4b8a;
+  color: #5b4b8a;
+  box-shadow: 0 0 0 2px #5b4b8a; /* active ring */
 }
 
-.bookmarkButtonIcon {
-  stroke-width: 1px;
-  fill: none;
-  transition: all 0.3s ease;
-  width: 24px;
-  height: 24px;
-}
-
-/* можеш стилізувати лоадер */
 .bookmarkLoader {
   width: 16px;
   height: 16px;
@@ -44,7 +36,6 @@
   }
 }
 
-/* Toast стилі */
 :global(.custom-toast) {
   background: var(--color-darker);
   color: var(--color-white);
@@ -66,38 +57,19 @@
   background: #d90429;
   color: var(--color-white);
 }
-.bookmarkButton {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border: 2px solid transparent;   /* початково прозора рамка */
-  border-radius: 50%;              /* коло */
-  padding: 8px;
-  width: 40px;
-  height: 40px;
-  cursor: pointer;
-  font-size: 14px;
-  transition: all 0.3s ease;
-  background-color: transparent;
-  color: var(--color-darker);
-}
 
-/* активний стан (якщо юзер натиснув) */
-.bookmarkButtonActive {
-  background-color: var(--color-general);
-  border: 1px solid var(--color-general);
-  color: var(--color-white);
-}
-
-/* ефект при hover/focus */
 .bookmarkButton:hover,
 .bookmarkButton:focus-visible {
-  border-color: #8a2be2;                          /* фіолетове кільце */
-  
+  border-color: #5b4b8a;
+  border-width: 1px;
+  background-color: transparent;
+  color: #5b4b8a;
+  box-shadow: 0 0 0 2px #5b4b8a; /* ring */
 }
 
 .bookmarkButtonIcon {
   stroke-width: 2px;
+  stroke: currentColor;
   fill: none;
   transition: transform 0.3s ease;
   width: 24px;
@@ -105,10 +77,5 @@
 }
 
 .bookmarkButton:hover .bookmarkButtonIcon {
-  transform: scale(1.1); /* легке збільшення іконки */
-}
-.bookmarkButton:hover,
-.bookmarkButton:focus-visible {
-  border-color: #8a2be2;   /* фіолетове кільце */
-  border-width: 2px;       /* робимо товстіше */
+  transform: scale(1.1);
 }

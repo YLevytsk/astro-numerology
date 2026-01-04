@@ -1,6 +1,9 @@
 import { useEffect } from "react";
 import FallingCircles from "../FallingCircles/FallingCircles.jsx";
-import "./About.module.css";
+import styles from "./About.module.css";
+
+const BG_URL =
+  "http://95.217.129.211:3000/uploads/ai-generated-8888074_1920.webp";
 
 export default function About() {
   useEffect(() => {
@@ -22,9 +25,13 @@ export default function About() {
 
   return (
     <div className="wrapper">
-      <div className="section section-hero about-bg starfield" id="about">
+      <div
+        className={`section section-hero starfield ${styles.aboutBg}`}
+        id="about"
+        style={{ backgroundImage: `url(${BG_URL})` }}
+      >
         {/* BACKGROUND STARS */}
-        <div className="background-stars">
+        <div className={styles.backgroundStars}>
           {Array.from({ length: 60 }).map((_, i) => {
             const delay = (Math.random() * 5).toFixed(2);
             const size = Math.random() * 5 + 5;
@@ -35,7 +42,7 @@ export default function About() {
               width: `${size}px`,
               height: `${size}px`,
             };
-            return <span key={i} className="bg-star" style={style} />;
+            return <span key={i} className={styles.bgStar} style={style} />;
           })}
         </div>
 
@@ -43,16 +50,18 @@ export default function About() {
           {/* TITLE */}
           <div className="row justify-content-center">
             <div className="col-lg-8 text-center">
-              <h1 className="title-custom mb-4">Welcome to Oracle</h1>
+              <h1 className={`${styles.titleCustom} mb-4`}>
+                Welcome to Oracle
+              </h1>
             </div>
           </div>
 
-          {/* ✅ ONLY 4 CLEAR POINTS */}
+          {/* ONLY 4 CLEAR POINTS */}
           <div className="row">
             <div className="col-lg-6">
               <div className="magic-paragraph">
                 <img src="/images/star.svg" alt="star" className="star" />
-                <p className="lead text-custom">
+                <p className={`lead ${styles.textCustom}`}>
                   <strong>Pythagorean Square.</strong> Understand your character,
                   strengths, inner balance, and personal challenges through a
                   clear numerological matrix.
@@ -61,7 +70,7 @@ export default function About() {
 
               <div className="magic-paragraph">
                 <img src="/images/star.svg" alt="star" className="star" />
-                <p className="lead text-custom">
+                <p className={`lead ${styles.textCustom}`}>
                   <strong>Compatibility.</strong> See how two people interact on
                   emotional and practical levels — for love, partnership, or
                   long-term connection.
@@ -72,7 +81,7 @@ export default function About() {
             <div className="col-lg-6">
               <div className="magic-paragraph">
                 <img src="/images/star.svg" alt="star" className="star" />
-                <p className="lead text-custom">
+                <p className={`lead ${styles.textCustom}`}>
                   <strong>Blog.</strong> Simple explanations, insights, and real
                   examples that help you understand numerology and apply it in
                   everyday life.
@@ -81,7 +90,7 @@ export default function About() {
 
               <div className="magic-paragraph">
                 <img src="/images/star.svg" alt="star" className="star" />
-                <p className="lead text-custom">
+                <p className={`lead ${styles.textCustom}`}>
                   <strong>Personal Consultations.</strong> One-on-one guidance
                   where numerology is applied directly to your real questions
                   and situations.
@@ -89,8 +98,6 @@ export default function About() {
               </div>
             </div>
           </div>
-
-         
         </div>
 
         <FallingCircles />
@@ -98,4 +105,3 @@ export default function About() {
     </div>
   );
 }
-

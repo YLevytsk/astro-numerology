@@ -1,26 +1,12 @@
-import { NavLink } from "react-router-dom";
 import FooterNavigation from "./FooterNavigation.jsx";
-import logo from "../../assets/oracle_logo.svg";
 import css from "./Footer.module.css";
 
 const Footer = () => {
   return (
     <footer className={css.footerSection}>
       <div className={css.footerContainer}>
-        
-        {/* Лого */}
-        <NavLink to="/" className={css.logoLink}>
-          <img
-            src={logo}
-            alt="ASTRONUMEROLOGY"
-            className={css.logo}
-          />
-        </NavLink>
-
-        {/* Навигация */}
         <FooterNavigation />
 
-        {/* Соцсети */}
         <div className={css.socials}>
           <a
             href="https://www.instagram.com/"
@@ -57,17 +43,13 @@ const Footer = () => {
           </a>
         </div>
 
-        {/* Копирайт — ВАРИАНТ 3 */}
         <div className={css.copy}>
-          © {new Date().getFullYear()} Astronumerology. Designed &amp; developed by <span className={css.author}>YLevytska</span>.
+          © {new Date().getFullYear()} Astronumerology. Designed &amp; developed by{" "}
+          <span className={css.author}>YLevytska</span>.
         </div>
-
       </div>
     </footer>
   );
 };
 
 export default Footer;
-
-
-

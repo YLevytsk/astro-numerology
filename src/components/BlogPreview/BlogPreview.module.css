@@ -1,6 +1,6 @@
 .section {
   padding: 32px 0;
-  background: var(--color-white);
+
 }
 
 .inner {
@@ -10,26 +10,32 @@
   box-sizing: border-box;
 }
 
-.headerRow {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 16px;
-  margin-bottom: 24px;
-}
-
 .icon {
-  stroke: var(--color-darker);
+  stroke: #FFD166;
   width: 24px;
   height: 24px;
   stroke-width: 1px;
 }
 
-.blogTitle{
+.headerBox {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  max-width: 760px;
+  margin: 0 auto 32px;
+  padding: 16px 20px;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+  text-align: center;
+}
+
+.blogTitle {
   font-size: 32px;
   font-weight: 700;
   margin: 0;
-  color: #28a745;
+  color: #5b4b8a;
 }
 
 .allLink {
@@ -69,16 +75,12 @@
     max-width: calc((100% - 72px) / 4);
   }
 
-  .headerRow {
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-  }
 }
 .blogText { 
     font-size: 18px;
     line-height: 1.5;
     color: #6c757d;
+    margin: 0;
 }
 /* Desktop ≥1440px → 3 карточки */
 @media (min-width: 1440px) {
@@ -111,7 +113,7 @@
   align-items: center;
   font-weight: 600;
   font-size: 16px;
-  color: #28a745;             
+  color: #FFD166;             
   text-decoration: none;
   cursor: pointer;
   transition: color 0.3s ease;
@@ -119,7 +121,7 @@
 
 .goToBlog:hover,
 .goToBlog:focus-visible {
-  color: #0ac5a9;             /* темніший фіолет при ховері */
+  color: #FFD166;             /* темніший фіолет при ховері */
   text-decoration: underline;
 }
 
@@ -129,11 +131,15 @@
   margin-left: 6px;
   flex-shrink: 0;
   transition: transform 0.3s ease;
+  color: #FFD166;
+  stroke: currentColor;
 }
 
 .goToBlog:hover .goToBlogIcon {
   transform: translateX(3px); /* анімація стрілки вправо */
 }
 
-
+.goToBlogIcon {
+  color: #FFD166;
+}
 

@@ -106,8 +106,21 @@ const AuthorProfilePage = () => {
                   className={css.editAvatarButton}
                   title="Change avatar"
                 >
-                  ✏
+                  <svg
+                    className={css.editAvatarIcon}
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04a1.003 1.003 0 000-1.42l-2.34-2.34a1.003 1.003 0 00-1.42 0l-1.83 1.83 3.75 3.75 1.84-1.82z"
+                      fill="currentColor"
+                    />
+                  </svg>
                 </label>
+
                 <input
                   id="avatarUpload"
                   type="file"
@@ -127,6 +140,7 @@ const AuthorProfilePage = () => {
                 />
               </>
             )}
+
             <p className={css.articleCount}>{articles.length} Articles</p>
           </div>
 
@@ -140,15 +154,13 @@ const AuthorProfilePage = () => {
             {bio && !isEditingBio && (
               <div className={css.bioView}>
                 <p className={css.bioText}>{bio}</p>
-                {isMyProfile && (
-                  <button
-                    type="button"
-                    className={css.editBioLink}
-                    onClick={() => setIsEditingBio(true)}
-                  >
-                    Edit bio
-                  </button>
-                )}
+                <button
+                  type="button"
+                  className={css.editBioLink}
+                  onClick={() => setIsEditingBio(true)}
+                >
+                  Edit bio
+                </button>
               </div>
             )}
 
@@ -191,16 +203,6 @@ const AuthorProfilePage = () => {
                   Save bio
                 </button>
               </div>
-            )}
-
-            {isMyProfile && !isEditingBio && !bio && (
-              <button
-                type="button"
-                className={css.editBioLink}
-                onClick={() => setIsEditingBio(true)}
-              >
-                Edit bio
-              </button>
             )}
           </div>
         </div>

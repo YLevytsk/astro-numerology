@@ -3,7 +3,8 @@
    ========================= */
 
 .section-reviews {
-  background: linear-gradient(180deg, #f8f0ff 0%, #ede0f9 100%);
+  background: transparent;
+  padding: 72px 0;
 }
 
 .reviews-swiper-wrapper {
@@ -45,7 +46,7 @@
   background: none;
   border: none;
   font-size: 40px;
-  color: #28a745;
+  color: #5B4B8A;
   cursor: pointer;
   z-index: 30;
   padding: 0;
@@ -59,7 +60,13 @@
 .title-reviews {
   font-size: 32px;
   font-weight: 700;
-  color: #28a745;
+  color: #5B4B8A;
+  margin: 0 auto;
+  display: inline-block;
+  padding: 12px 24px;
+  background: rgba(255, 255, 255, 0.78);
+  border-radius: 14px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
 }
 
 .reviews-nav {
@@ -82,7 +89,7 @@
 }
 
 .reviews-nav:hover {
-  color: #0ac5a9;
+  color: #5B4B8A;
 }
 
 /* точки */
@@ -100,11 +107,11 @@
 }
 
 .reviews-swiper-wrapper .swiper-pagination-bullet {
-  background-color: #28a745 !important;
+  background-color: #5B4B8A !important;
 }
 
 .reviews-swiper-wrapper .swiper-pagination-bullet-active {
-  background-color: #218838 !important;
+  background-color: #5B4B8A !important;
 }
 
 /* скрыть стрелки на мобильных */

@@ -170,7 +170,7 @@
    REVIEWS (Swiper)
    ========================= */
 .section-reviews {
-  background: linear-gradient(180deg, #f8f0ff 0%, #ede0f9 100%);
+  background: transparent;
 }
 
 .reviews-swiper-wrapper {
@@ -212,7 +212,7 @@
   background: none;
   border: none;
   font-size: 40px;
-  color: #28a745;
+  color: #5B4B8A;
   cursor: pointer;
   z-index: 30;
   padding: 0;
@@ -224,7 +224,13 @@
 .title-reviews {
   font-size: 32px;
   font-weight: 700;
-  color: #28a745;
+  color: #5B4B8A;
+  margin: 0 auto;
+  display: inline-block;
+  padding: 12px 24px;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 14px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
 }
 .reviews-nav {
   border: none;
@@ -241,7 +247,7 @@
 .reviews-next { right: 0; }
 
 .reviews-nav:hover {
-  color: #5B4B8A;
+  color: #FFD166;
 }
 
 /* точки */
@@ -468,7 +474,7 @@
 
 /* REGISTER */
 .custom-navbar .btn-register {
-  background-color: #FFD166;
+  background-color: #fafafa;
   color: #5B4B8A;
 }
 .custom-navbar .btn-register:hover {
@@ -481,4 +487,18 @@
 }
 .custom-navbar button:hover svg {
   color: #FFD166;
+}
+
+/* =========================
+   HOME SECONDARY BG
+   ========================= */
+.home-secondary-bg {
+  background:
+    linear-gradient(
+      180deg,
+      rgba(30, 25, 45, 0.48) 0%,
+      rgba(30, 25, 45, 0.55) 100%
+    ),
+    url("http://95.217.129.211:3000/uploads/koncepcia-numerologiceskogo-kollaza.webp")
+      center/cover no-repeat;
 }

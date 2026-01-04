@@ -7,9 +7,11 @@ const Home = () => {
   return (
     <>
       <AboutSection />
-      <ConsultationsSection /> 
-      <ReviewsSection />
-      <BlogPreviewSection />
+      <div className="home-secondary-bg">
+        <ConsultationsSection />
+        <ReviewsSection />
+        <BlogPreviewSection />
+      </div>
     </>
   );
 };

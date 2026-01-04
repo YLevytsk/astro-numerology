@@ -1,4 +1,4 @@
-﻿import { createAsyncThunk } from "@reduxjs/toolkit";
+import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
 // ===================== AXIOS INSTANCE =====================
@@ -112,6 +112,37 @@ export const loginThunk = createAsyncThunk(
   }
 );
 
+// ===================== UPDATE BIO =====================
+export const updateBioThunk = createAsyncThunk(
+  "auth/updateBio",
+  async ({ bio, userId }, thunkAPI) => {
+    try {
+      const id = userId || thunkAPI.getState().auth.user?.id;
+      if (!id) {
+        return thunkAPI.rejectWithValue("User id is missing");
+      }
+
+      const res = await axiosAPI.patch(`/users/${id}`, { bio });
+      const data = res.data?.data;
+      const newBio = data?.bio ?? bio ?? "";
+
+      // persist updated user in localStorage
+      const storedUser = localStorage.getItem("user");
+      if (storedUser) {
+        const parsed = JSON.parse(storedUser);
+        parsed.bio = newBio;
+        localStorage.setItem("user", JSON.stringify(parsed));
+      }
+
+      return newBio;
+    } catch (err) {
+      return thunkAPI.rejectWithValue(
+        err.response?.data?.message || err.message
+      );
+    }
+  }
+);
+
 // ===================== LOGOUT =====================
 export const logoutThunk = createAsyncThunk(
   "auth/logout",
@@ -157,37 +188,6 @@ export const uploadAvatarThunk = createAsyncThunk(
       }
 
       return avatarUrl;
-    } catch (err) {
-      return thunkAPI.rejectWithValue(
-        err.response?.data?.message || err.message
-      );
-    }
-  }
-);
-
-// ===================== UPDATE BIO =====================
-export const updateBioThunk = createAsyncThunk(
-  "auth/updateBio",
-  async ({ bio, userId }, thunkAPI) => {
-    try {
-      const id = userId || thunkAPI.getState().auth.user?.id;
-      if (!id) {
-        return thunkAPI.rejectWithValue("User id is missing");
-      }
-
-      const res = await axiosAPI.patch(`/users/${id}`, { bio });
-      const data = res.data?.data;
-      const newBio = data?.bio ?? bio ?? "";
-
-      // persist updated user in localStorage
-      const storedUser = localStorage.getItem("user");
-      if (storedUser) {
-        const parsed = JSON.parse(storedUser);
-        parsed.bio = newBio;
-        localStorage.setItem("user", JSON.stringify(parsed));
-      }
-
-      return newBio;
     } catch (err) {
       return thunkAPI.rejectWithValue(
         err.response?.data?.message || err.message

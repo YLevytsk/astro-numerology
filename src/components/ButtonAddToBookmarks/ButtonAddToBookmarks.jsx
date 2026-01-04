@@ -14,6 +14,7 @@ import {
 
 import toast from "react-hot-toast";
 import { fetchAuthorSavedArticles } from "../../redux/author/operations.js";
+import BookmarkIcon from "../../assets/img/icons/bookmark.svg?react";
 // import AuthModal from "../ModalErrorSave/ModalErrorSave.jsx";
 
 const ButtonAddToBookmarks = ({ articleId }) => {
@@ -99,11 +100,7 @@ const ButtonAddToBookmarks = ({ articleId }) => {
         {isLoading ? (
           <span className={s.bookmarkLoader}></span>
         ) : (
-          <img
-            src="/images/bookmark.svg"
-            alt="bookmark"
-            className={s.bookmarkButtonIcon}
-          />
+          <BookmarkIcon className={s.bookmarkButtonIcon} aria-hidden="true" />
         )}
       </button>
       {!isLoggedIn && isOpen && <AuthModal onClose={close} />}

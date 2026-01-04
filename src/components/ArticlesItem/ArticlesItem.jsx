@@ -57,9 +57,7 @@ const ArticlesItem = ({
     </div>
   );
 };
-
 export default ArticlesItem;
-
 
 
 

@@ -3,10 +3,10 @@ import { Link } from "react-router-dom";
 import ArticlesItem from "../ArticlesItem/ArticlesItem.jsx";
 import { selectArticles } from "../../redux/articles/selectors.js";
 import s from "./BlogPreview.module.css";
-import rightArrow from "../../assets/img/right.svg";
+import RightArrowIcon from "../../assets/img/right.svg?react";
 
 export default function BlogPreview() {
-  const articles = useSelector(selectArticles);
+  const articles = useSelector(selectArticles) || [];
 
   // если нет данных из Redux → берём дефолтные
   const defaultArticles = [
@@ -36,12 +36,14 @@ export default function BlogPreview() {
   return (
     <section id="blog" className={`py-5 ${s.sectionBlog}`}>
       <div className="container">
-        <h2 className={`text-center mb-4 ${s.blogTitle}`}>
-          Latest from the Blog
-        </h2>
-        <p className={`lead text-center mb-5 ${s.blogText}`}>
-          Discover insights, tips, and stories that connect astrology and numerology with everyday life.
-        </p>
+        <div className={s.headerBox}>
+          <h2 className={s.blogTitle}>
+            Latest from the Blog
+          </h2>
+          <p className={s.blogText}>
+            Discover insights, tips, and stories that connect astrology and numerology with everyday life.
+          </p>
+        </div>
 
         <ul className={s.articlesList}>
           {previewArticles.map((article) => (
@@ -53,9 +55,9 @@ export default function BlogPreview() {
 
  <div className={s.goToBlogWrapper}>
   <Link to="/blog" className={s.goToBlog}>
-  Go to Blog
-  <img src={rightArrow} alt="" className={s.goToBlogIcon} />
-</Link>
+    Go to Blog
+    <RightArrowIcon className={s.goToBlogIcon} aria-hidden="true" />
+  </Link>
 </div>
 
       </div>
