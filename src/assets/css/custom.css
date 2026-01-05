@@ -51,6 +51,15 @@
 .custom-navbar .nav-link:focus {
   color: #FFD166; /* ﾐｸﾐｻﾐｸ #FFFFFF */
 }
+.custom-navbar .dropdown-menu .dropdown-item {
+  color: #5B4B8A;
+  font-weight: 600;
+}
+.custom-navbar .dropdown-menu .dropdown-item:hover,
+.custom-navbar .dropdown-menu .dropdown-item:focus {
+  color: #5B4B8A;
+  background-color: rgba(91, 75, 138, 0.12);
+}
 
 
 @media (min-width: 1200px) {
