@@ -1,24 +1,27 @@
-import axios from "axios";
+﻿import axios from "axios";
 import { getCookie } from "../../utils/cookies.js";
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE;
+
 /**
- * Axios instance для ВСЕХ авторизованных запросов
+ * Axios instance for all authenticated requests
  */
 export const privateAPI = axios.create({
-  baseURL: "http://95.217.129.211:3000/api",
+  baseURL: API_BASE_URL,
+  withCredentials: true,
 });
 
 /* ===================== AUTH HEADER ===================== */
 
 /**
- * Установить Authorization header
+ * Install Authorization header
  */
 export const setAuthHeader = (token) => {
   privateAPI.defaults.headers.common.Authorization = `Bearer ${token}`;
 };
 
 /**
- * Очистить Authorization header
+ * Clear Authorization header
  */
 export const clearAuthHeader = () => {
   delete privateAPI.defaults.headers.common.Authorization;
@@ -43,15 +46,12 @@ privateAPI.interceptors.request.use(
 
 /* ===================== RESPONSE INTERCEPTOR ===================== */
 /**
- * ❗ ВАЖНО:
- * - НЕ делаем refresh
- * - НЕ делаем logout
- * - refresh управляется ТОЛЬКО через Redux (refreshThunk)
+ * IMPORTANT
+ * - Do not auto-refresh here
+ * - Do not auto-logout here
+ * - Refresh is controlled only via Redux (refreshThunk)
  */
 privateAPI.interceptors.response.use(
   (response) => response,
   (error) => Promise.reject(error)
 );
-
-
-

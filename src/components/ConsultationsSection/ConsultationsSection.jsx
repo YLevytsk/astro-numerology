@@ -1,30 +1,34 @@
 import s from "./ConsultationsSection.module.css";
 
+const ASSET_BASE_URL =
+  (import.meta.env.VITE_API_BASE || "").replace(/\/api\/?$/, "");
+const withBase = (path) => `${ASSET_BASE_URL}${path}`;
+
 export default function ConsultationsSection() {
   const consultations = [
-  {
-    id: "1",
-    title: "Money Code",
-    desc: "Discover your personal money pattern, uncover hidden financial blocks, and learn how to attract stable income with confidence, clarity, and the right timing.",
-    price: "£25",
-    image: "http://95.217.129.211:3000/uploads/chatgpt-hero-02.webp",
-    icon: "/images/money-code.svg",
+    {
+      id: "1",
+      title: "Money Code",
+      desc: "Discover your personal money pattern, uncover hidden financial blocks, and learn how to attract stable income with confidence, clarity, and the right timing.",
+      price: "£25",
+      image: withBase("/uploads/chatgpt-hero-02.webp"),
+      icon: "/images/money-code.svg",
     },
     {
       id: "2",
       title: "Marriage Year",
       desc: "Find out when love is truly on your side. Identify the most favorable periods for marriage and deep relationships and avoid years that bring challenges.",
       price: "£25",
-      image: "http://95.217.129.211:3000/uploads/chatgpt-hero-01.webp",
+      image: withBase("/uploads/chatgpt-hero-01.webp"),
     },
-  {
-    id: "3",
-    title: "Life Purpose",
-    desc: "Understand why you are here, what your natural talents are, and which direction brings fulfillment, growth, and long-term success.",
-    price: "£25",
-    image: "http://95.217.129.211:3000/uploads/chatgpt-hero-03.webp",
-  },
-];
+    {
+      id: "3",
+      title: "Life Purpose",
+      desc: "Understand why you are here, what your natural talents are, and which direction brings fulfillment, growth, and long-term success.",
+      price: "£25",
+      image: withBase("/uploads/chatgpt-hero-03.webp"),
+    },
+  ];
 
   return (
     <section id="consultations" className={s.section}>

@@ -1,10 +1,10 @@
-/* =========================
+﻿/* =========================
    ABOUT SECTION
    ========================= */
 
-/* фон About */
+/* ﾑ・ｾﾐｽ About */
 .aboutBg {
-  background-image: url("http://95.217.129.211:3000/uploads/ai-generated-8888074_1920.webp?v=2");
+  background-image: url("https://harmoniq.disainnova.com/uploads/ai-generated-8888074_1920.webp?v=2");
   background-size: 100% auto;
   background-position: center center;
   background-repeat: no-repeat;
@@ -30,7 +30,7 @@
 }
 
 
-/* заголовок */
+/* ﾐｷﾐｰﾐｳﾐｾﾐｻﾐｾﾐｲﾐｾﾐｺ */
 .titleWrapper {
   position: relative;
   display: inline-block;
@@ -94,7 +94,7 @@
   100% { transform: scale(0.2); opacity: 0; }
 }
 
-/* контент поверх звёзд */
+/* ﾐｺﾐｾﾐｽﾑひｵﾐｽﾑ・ﾐｿﾐｾﾐｲﾐｵﾑﾑ・ﾐｷﾐｲﾑ岱ｷﾐｴ */
 .section-hero .container {
   position: relative;
   z-index: 3;
@@ -108,3 +108,4 @@
     background-position: center center;
   }
 }
+

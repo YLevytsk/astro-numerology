@@ -1,10 +1,13 @@
-import { createAsyncThunk } from "@reduxjs/toolkit";
+﻿import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import { setCookie, getCookie, deleteCookie } from "../../utils/cookies.js";
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE;
+
 /* ===================== AXIOS INSTANCE ===================== */
 export const axiosAPI = axios.create({
-  baseURL: "http://95.217.129.211:3000/api",
+  baseURL: API_BASE_URL,
+  withCredentials: true,
 });
 
 /* ===================== REQUEST INTERCEPTOR ===================== */
@@ -48,7 +51,7 @@ const clearPersistedAuth = () => {
   deleteCookie("refreshToken");
   localStorage.removeItem("accessToken");
   localStorage.removeItem("refreshToken");
-  localStorage.removeItem("token"); // ✅ важно: чистим и token тоже
+  localStorage.removeItem("token"); // Important: clear legacy token key as well
   // keep user/userCache so profile fields (bio) can survive re-login if backend omits them
 };
 
@@ -183,8 +186,7 @@ axiosAPI.interceptors.response.use(
 
     if (!originalRequest) return Promise.reject(error);
 
-    // не трогаем auth endpoints, и не ретраим дважды
-    const url = originalRequest.url || "";
+    // ﾐｽﾐｵ ﾑびﾐｾﾐｳﾐｰﾐｵﾐｼ auth endpoints, ﾐｸ ﾐｽﾐｵ ﾑﾐｵﾑびﾐｰﾐｸﾐｼ ﾐｴﾐｲﾐｰﾐｶﾐｴﾑ・    const url = originalRequest.url || "";
     if (
       status !== 401 ||
       originalRequest._retry ||
@@ -207,7 +209,7 @@ axiosAPI.interceptors.response.use(
 
     try {
       const res = await axios.post(
-        `${axiosAPI.defaults.baseURL}/auth/refresh`,
+        `${API_BASE_URL}/auth/refresh`,
         { refreshToken }
       );
 
@@ -316,7 +318,7 @@ export const refreshThunk = createAsyncThunk(
 
     try {
       const res = await axios.post(
-        `${axiosAPI.defaults.baseURL}/auth/refresh`,
+        `${API_BASE_URL}/auth/refresh`,
         { refreshToken }
       );
 
@@ -463,3 +465,4 @@ export const logoutThunk = createAsyncThunk("auth/logout", async () => {
   clearPersistedAuth();
   return true;
 });
+

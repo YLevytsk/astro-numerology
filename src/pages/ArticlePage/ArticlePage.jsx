@@ -17,6 +17,9 @@ import {
 } from "../../redux/bookmarks/operations.js";
 import { selectBookmarks } from "../../redux/bookmarks/selectors.js";
 
+const API_BASE_URL =
+  (import.meta.env.VITE_API_BASE || "").replace(/\/api\/?$/, "");
+
 const ArticlePage = () => {
   const isLoggedIn = useSelector(selectIsLoggedIn);
   const bookmarks = useSelector(selectBookmarks).map(String);
@@ -130,7 +133,7 @@ const ArticlePage = () => {
             src={
               article.img?.startsWith("http")
                 ? article.img
-                : `http://95.217.129.211:3000${article.img}`
+                : `${API_BASE_URL}${article.img}`
             }
             alt={`Article image ${article.title}`}
           />

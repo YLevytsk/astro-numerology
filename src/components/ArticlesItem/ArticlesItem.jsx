@@ -4,7 +4,7 @@ import ButtonAddToBookmarks from "../ButtonAddToBookmarks/ButtonAddToBookmarks.j
 import placeholderImg from "../../assets/Legacies.png";
 
 const API_URL =
-  import.meta.env.VITE_API_URL || "http://95.217.129.211:3000";
+  (import.meta.env.VITE_API_BASE || "").replace(/\/api\/?$/, "");
 
 const ArticlesItem = ({
   article,

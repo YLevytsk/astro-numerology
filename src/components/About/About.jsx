@@ -2,8 +2,9 @@ import { useEffect } from "react";
 import FallingCircles from "../FallingCircles/FallingCircles.jsx";
 import styles from "./About.module.css";
 
-const BG_URL =
-  "http://95.217.129.211:3000/uploads/ai-generated-8888074_1920.webp";
+const API_BASE_URL =
+  (import.meta.env.VITE_API_BASE || "").replace(/\/api\/?$/, "");
+const BG_URL = `${API_BASE_URL}/uploads/ai-generated-8888074_1920.webp`;
 
 export default function About() {
   useEffect(() => {

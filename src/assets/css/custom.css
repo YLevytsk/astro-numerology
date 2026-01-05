@@ -1,8 +1,8 @@
-/* =========================
+﻿/* =========================
    NAVBAR
    ========================= */
 .custom-navbar {
-  background-color: #5B4B8A; /* твой космический синий */
+  background-color: #5B4B8A; /* ﾑひｲﾐｾﾐｹ ﾐｺﾐｾﾑ・ｼﾐｸﾑ・ｵﾑ・ｺﾐｸﾐｹ ﾑ・ｸﾐｽﾐｸﾐｹ */
 }
 .custom-navbar .nav-link:hover {
   color: #F3EFF7;
@@ -28,7 +28,7 @@
 }
 .custom-navbar .nav-link.active,
 .custom-navbar .nav-link:focus {
-  color: #FFD166; /* или #FFFFFF */
+  color: #FFD166; /* ﾐｸﾐｻﾐｸ #FFFFFF */
 }
 
 
@@ -43,16 +43,16 @@
     max-width: 1280px;
   }
 }
-/* Меняем цвет ссылок в меню при hover */
+/* ﾐ慴ｵﾐｽﾑ紹ｵﾐｼ ﾑ・ｲﾐｵﾑ・ﾑ・・巾ｻﾐｾﾐｺ ﾐｲ ﾐｼﾐｵﾐｽﾑ・ﾐｿﾑﾐｸ hover */
 .navbar-light .navbar-nav .nav-link:hover,
 .navbar-light .navbar-nav .nav-link:focus {
-  color: #E9ECF1 ; /* любой цвет, который тебе нужен */
+  color: #E9ECF1 ; /* ﾐｻﾑ社ｱﾐｾﾐｹ ﾑ・ｲﾐｵﾑ・ ﾐｺﾐｾﾑひｾﾑﾑ巾ｹ ﾑひｵﾐｱﾐｵ ﾐｽﾑσｶﾐｵﾐｽ */
 }
 .navbar-nav .dropdown-menu {
   position: absolute;
 }
 .logout-icon {
-  color: #E9ECF1;      /* ЛЮБОЙ ЦВЕТ */
+  color: #E9ECF1;      /* ﾐ嶢ｮﾐ岱榧・ﾐｦﾐ漬片｢ */
 }
 
 .logout-icon:hover {
@@ -65,7 +65,7 @@
    ABOUT SECTION
    ========================= */
 
-/* фон About */
+/* ﾑ・ｾﾐｽ About */
 .about-bg {
   position: relative;
   background: 
@@ -75,7 +75,7 @@
 
 
 
-/* заголовок */
+/* ﾐｷﾐｰﾐｳﾐｾﾐｻﾐｾﾐｲﾐｾﾐｺ */
 .title-wrapper {
   position: relative;
   display: inline-block;
@@ -89,9 +89,9 @@
   font-weight: 700;
   font-size: 32px;
   line-height: 1.2;
-  color: #5B4B8A; /* зелений */
+  color: #5B4B8A; /* ﾐｷﾐｵﾐｻﾐｵﾐｽﾐｸﾐｹ */
 }
-/* параграфы с иконкой-звездой */
+/* ﾐｿﾐｰﾑﾐｰﾐｳﾑﾐｰﾑ・・ﾑ・ﾐｸﾐｺﾐｾﾐｽﾐｺﾐｾﾐｹ-ﾐｷﾐｲﾐｵﾐｷﾐｴﾐｾﾐｹ */
 .magic-paragraph {
   position: relative;
   margin: 5rem auto;
@@ -121,7 +121,7 @@
   transition: opacity 0.6s ease, transform 0.6s ease;
 }
 
-/* hover-анимация */
+/* hover-ﾐｰﾐｽﾐｸﾐｼﾐｰﾑ・ｸﾑ・*/
 .magic-paragraph:hover .star {
   transform: translate(-50%, -50%) scale(0.5);
   opacity: 0;
@@ -139,7 +139,7 @@
   position: absolute;
   inset: 0;
   overflow: hidden;
-  z-index: 1; /* ниже контента */
+  z-index: 1; /* ﾐｽﾐｸﾐｶﾐｵ ﾐｺﾐｾﾐｽﾑひｵﾐｽﾑひｰ */
 }
 
 .bg-star {
@@ -170,7 +170,7 @@
   100% { transform: scale(0.2); opacity: 0; }
 }
 
-/* контент поверх звёзд */
+/* ﾐｺﾐｾﾐｽﾑひｵﾐｽﾑ・ﾐｿﾐｾﾐｲﾐｵﾑﾑ・ﾐｷﾐｲﾑ岱ｷﾐｴ */
 .section-hero .container {
   position: relative;
   z-index: 2;
@@ -200,7 +200,7 @@
   height: auto;
 }
 
-/* карточки */
+/* ﾐｺﾐｰﾑﾑひｾﾑ・ｺﾐｸ */
 .review-card {
   border: 1px solid #dee2e6;
   border-radius: 8px;
@@ -216,7 +216,7 @@
   min-height: 200px;
 }
 
-/* стрелки */
+/* ﾑ・びﾐｵﾐｻﾐｺﾐｸ */
 .reviews-nav {
   position: absolute;
   top: 40%;
@@ -262,7 +262,7 @@
   color: #FFD166;
 }
 
-/* точки */
+/* ﾑひｾﾑ・ｺﾐｸ */
 .reviews-swiper-wrapper .swiper-pagination {
   left: 50% !important;
   transform: translateX(-50%) !important;
@@ -277,16 +277,16 @@
  
 }
 .reviews-swiper-wrapper .swiper-pagination-bullet {
-  background-color: #5B4B8A!important; /* обычные точки */
+  background-color: #5B4B8A!important; /* ﾐｾﾐｱﾑ錦・ｽﾑ巾ｵ ﾑひｾﾑ・ｺﾐｸ */
 }
 
 .reviews-swiper-wrapper .swiper-pagination-bullet-active {
-  background-color: #5B4B8A !important; /* активная точка */
+  background-color: #5B4B8A !important; /* ﾐｰﾐｺﾑひｸﾐｲﾐｽﾐｰﾑ・ﾑひｾﾑ・ｺﾐｰ */
 }
 
 
 
-/* скрыть стрелки на мобильных */
+/* ﾑ・ｺﾑﾑ錦び・ﾑ・びﾐｵﾐｻﾐｺﾐｸ ﾐｽﾐｰ ﾐｼﾐｾﾐｱﾐｸﾐｻﾑ糊ｽﾑ錦・*/
 @media (max-width: 767px) {
   .reviews-nav { display: none; }
 }
@@ -337,7 +337,7 @@
    PYTHAGORAS MATRIX GRID
    ========================= */
 
-/* сетка 3×3 */
+/* ﾑ・ｵﾑひｺﾐｰ 3ﾃ・ */
 .matrix-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(120px, 1fr));
@@ -346,7 +346,7 @@
 }
 
 .matrix-row {
-  display: contents; /* строки управляет grid */
+  display: contents; /* ﾑ・びﾐｾﾐｺﾐｸ ﾑσｿﾑﾐｰﾐｲﾐｻﾑ紹ｵﾑ・grid */
 }
 
 .matrix-cell {
@@ -368,7 +368,7 @@
   user-select: none;
 }
 
-/* hover-эффект */
+/* hover-ﾑ采・・ｵﾐｺﾑ・*/
 .matrix-cell:hover {
   transform: translateY(-2px);
   box-shadow:
@@ -376,21 +376,21 @@
     0 4px 10px rgba(0, 0, 0, 0.08);
 }
 
-/* заполненная ячейка */
+/* ﾐｷﾐｰﾐｿﾐｾﾐｻﾐｽﾐｵﾐｽﾐｽﾐｰﾑ・ﾑ肖・ｵﾐｹﾐｺﾐｰ */
 .matrix-cell.has-value {
   background: #11cdef;
   color: #ffffff;
   outline: 1px solid rgba(255, 255, 255, 0.12);
 }
 
-/* пустая ячейка */
+/* ﾐｿﾑτ・ひｰﾑ・ﾑ肖・ｵﾐｹﾐｺﾐｰ */
 .matrix-cell.empty {
   background: rgba(17, 205, 239, 0.12);
   color: #0b2530;
   outline: 1px dashed rgba(17, 205, 239, 0.35);
 }
 
-/* адаптив для мобилок */
+/* ﾐｰﾐｴﾐｰﾐｿﾑひｸﾐｲ ﾐｴﾐｻﾑ・ﾐｼﾐｾﾐｱﾐｸﾐｻﾐｾﾐｺ */
 @media (max-width: 576px) {
   .matrix-grid {
     grid-template-columns: repeat(3, minmax(88px, 1fr));
@@ -408,12 +408,12 @@
    ========================= */
 
 .quality-power-section {
-  margin-top: 32px; /* отступ сверху */
+  margin-top: 32px; /* ﾐｾﾑび・びσｿ ﾑ・ｲﾐｵﾑﾑ・・*/
 }
 
 .quality-power-block {
-  background: rgba(17, 205, 239, 0.05); /* светлый голубой фон */
-  background: #ffffff;             /* голубая рамка */
+  background: rgba(17, 205, 239, 0.05); /* ﾑ・ｲﾐｵﾑひｻﾑ巾ｹ ﾐｳﾐｾﾐｻﾑσｱﾐｾﾐｹ ﾑ・ｾﾐｽ */
+  background: #ffffff;             /* ﾐｳﾐｾﾐｻﾑσｱﾐｰﾑ・ﾑﾐｰﾐｼﾐｺﾐｰ */
   border-radius: 12px;
   padding: 20px;
 }
@@ -493,7 +493,7 @@
   background-color: #FFB703;
 }
 
-/* LOGOUT (иконка) */
+/* LOGOUT (ﾐｸﾐｺﾐｾﾐｽﾐｺﾐｰ) */
 .custom-navbar button svg {
   color: #E9ECF1;
 }
@@ -511,6 +511,7 @@
       rgba(30, 25, 45, 0.48) 0%,
       rgba(30, 25, 45, 0.55) 100%
     ),
-    url("http://95.217.129.211:3000/uploads/koncepcia-numerologiceskogo-kollaza.webp")
+    url("https://harmoniq.disainnova.com/uploads/koncepcia-numerologiceskogo-kollaza.webp")
       center/cover no-repeat;
 }
+
