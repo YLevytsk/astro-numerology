@@ -58,7 +58,7 @@ export default function Navbar() {
 
   return (
     <nav
-  className="navbar navbar-expand-lg sticky-top shadow-sm py-2 custom-navbar"
+  className="navbar navbar-expand-lg navbar-dark sticky-top shadow-sm py-2 custom-navbar"
 >
 
       <div className="container">
@@ -72,6 +72,9 @@ export default function Navbar() {
           type="button"
           data-bs-toggle="collapse"
           data-bs-target="#navbar_global"
+          aria-controls="navbar_global"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
         >
           <span className="navbar-toggler-icon"></span>
         </button>
