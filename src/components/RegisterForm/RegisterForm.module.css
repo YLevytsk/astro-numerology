@@ -1,40 +1,44 @@
 .registerContainer{
-  padding: 48px 32px;
+  padding: 40px 28px;
   background-color: #E9ECF1;
   border-radius: 32px;
-  width: 360px;
+  width: 306px;
   box-sizing: border-box;
-  margin: 85px auto;
+  max-width: calc(100% - 64px);
+  margin: 0 auto;
   box-shadow: 0 10px 30px rgba(91, 75, 138, 0.08);
 }
 .title{
   font-size: 32px;
-  margin-bottom: 20px;
+  margin-bottom: 16px;
   text-align: center;
-  width: 296px;
+  width: 100%;
+  max-width: 252px;
   color: #5b4b8a;
 }
 .description{
   font-size: 16px;
   font-weight: 400;
   text-align: center;
-  margin-bottom: 20px;
-  width: 278px;
-  height: 50px;
+  margin-bottom: 16px;
+  width: 100%;
+  max-width: 236px;
+  height: auto;
   color: #5b4b8a;
 }
 .fieldWrapper{
-  margin-bottom: 16px;
+  margin-bottom: 14px;
 }
 .fieldWrapper:last-of-type{
-  margin-bottom: 27px;
+  margin-bottom: 22px;
 }
 .registerForm{
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  width: 296px;
+  width: 100%;
+  max-width: 252px;
 }
 .labelForm{
   font-size: 12px;
@@ -49,7 +53,8 @@
   border-radius: 12px;
   border: 1px solid #c8cada;
   padding: 0 12px;
-  width: 296px;
+  width: 100%;
+  max-width: 252px;
   box-sizing: border-box;
   background-color: #f7f8fb;
 }
@@ -111,12 +116,13 @@
 .createBtn{
   background-color: #5b4b8a;
   border-radius: 50px;
-  width: 296px;
+  width: 100%;
+  max-width: 252px;
   height: 44px;
   color: #ffffff;
   font-size: 16px;
   font-weight: 700;
-  margin-bottom: 20px;
+  margin-bottom: 16px;
   transition: background-color 0.2s ease, transform 0.1s ease, border-color 0.2s ease;
   border: 1px solid #5b4b8a;       
   outline: none;
@@ -142,8 +148,9 @@
 
 @media only screen and (min-width: 768px) {
   .registerContainer {
-    width: 522px;
-    margin: 120px auto;
+    width: 444px;
+    max-width: calc(100% - 64px);
+    margin: 0 auto;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -151,48 +158,49 @@
 
   }
   .title {
-    width: 456px;
+    max-width: 388px;
   }
 
   .registerForm {
-    width: 458px;
+    max-width: 389px;
 
   }
 
   .fieldForm {
-    width: 458px;
+    max-width: 389px;
   }
 
 
   .createBtn {
-    width: 458px;
+    max-width: 389px;
   }
 
 }
 
 @media only screen and (min-width: 1440px) {
   .registerContainer {
-    width: 392px;
-    margin: 50px auto;
+    width: 333px;
+    max-width: calc(100% - 64px);
+    margin: 0 auto;
        
 
   }
 
   .title {
-    width: 328px;
+    max-width: 279px;
   }
 
   .registerForm {
-    width: 328px;
+    max-width: 279px;
 
   }
 
   .fieldForm {
-    width: 328px;
+    max-width: 279px;
   }
 
 
   .createBtn {
-    width: 328px;
+    max-width: 279px;
   }
 }

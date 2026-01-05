@@ -29,7 +29,8 @@
 .input {
   border: 1px solid #c8cada;
   border-radius: 12px;
-  width: 266px;
+  width: 100%;
+  max-width: 266px;
   height: 44px;
   background-color: #f7f8fb;
   box-sizing: border-box;
@@ -43,7 +44,8 @@
 .btn {
   border-radius: 64px;
   padding: 10px 14px;
-  width: 266px;
+  width: 100%;
+  max-width: 266px;
   height: 44px;
   background-color: #5b4b8a;
   color: #ffffff;
@@ -112,6 +114,7 @@ font-size: 8px;
   align-items: center;
   justify-content: center;
   width: 330px;
+  max-width: calc(100% - 64px);
   height: 408px;
   background-color: #E9ECF1;
   border-radius: 32px;

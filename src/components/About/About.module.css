@@ -111,10 +111,15 @@
 
 @media (max-width: 760px) {
   .aboutBg {
-    min-height: 80vh;
-    padding: 48px 0 64px;
+    min-height: 100dvh;
+    padding: 0;
     background-size: cover;
     background-position: center top;
+  }
+
+  .aboutBg :global(.container) {
+    padding-top: 0;
+    padding-bottom: 0;
   }
 
   .titleCustom,

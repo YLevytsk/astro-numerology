@@ -20393,6 +20393,13 @@ textarea[resize="horizontal"] {
   padding-bottom: 4rem;
 }
 
+@media (max-width: 767.98px) {
+  .section {
+    padding-top: 32px;
+    padding-bottom: 32px;
+  }
+}
+
 .section-xl {
   padding-top: 8rem;
   padding-bottom: 8rem;
