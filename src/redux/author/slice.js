@@ -6,6 +6,7 @@ import {
   fetchAuthorSavedArticles,
   fetchTopAuthors,
 } from "./operations.js";
+import { logoutThunk } from "../auth/operations";
 
 const handlePending = (state) => {
   state.isLoading = true;
@@ -16,16 +17,18 @@ const handleRejected = (state, action) => {
   state.error = action.payload;
 };
 
+const initialState = {
+  items: [],
+  topItems: [],
+  savedArticles: [],
+  currentCreator: {},
+  isLoading: false,
+  error: null,
+};
+
 const slice = createSlice({
   name: "authors",
-  initialState: {
-    items: [],
-    topItems: [],
-    savedArticles: [],
-    currentCreator: {},
-    isLoading: false,
-    error: null,
-  },
+  initialState,
   extraReducers: (builder) => {
     builder
       .addCase(fetchAuthors.pending, handlePending)
@@ -73,7 +76,10 @@ const slice = createSlice({
           state.savedArticles.push(newArticle);
         }
       })
-      .addCase(addAuthorSavedArticles.rejected, handleRejected);
+      .addCase(addAuthorSavedArticles.rejected, handleRejected)
+
+      // RESET ON LOGOUT
+      .addCase(logoutThunk.fulfilled, () => initialState);
   },
 });
 

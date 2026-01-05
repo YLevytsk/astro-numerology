@@ -39,17 +39,14 @@ const ArticlePage = () => {
   const getUserName = (usersArray, ownerId) => {
     const id = ownerId?.$oid ?? ownerId;
     const user = usersArray.find(({ _id }) => _id === id);
-    return user?.name ?? "ﾐ斷ｵﾐｲﾑ孟ｴﾐｾﾐｼﾐｾ";
+    return user?.name ?? "Unknown author";
   };
 
- const getRandomArticles = (allArticles, currentId, count = 3) => {
-  const filtered = allArticles.filter(
-    (item) => item._id !== currentId
-  );
-  const shuffled = [...filtered].sort(() => 0.5 - Math.random());
-  return shuffled.slice(0, count);
-};
-
+  const getRandomArticles = (allArticles, currentId, count = 3) => {
+    const filtered = allArticles.filter((item) => item._id !== currentId);
+    const shuffled = [...filtered].sort(() => 0.5 - Math.random());
+    return shuffled.slice(0, count);
+  };
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -74,11 +71,9 @@ const ArticlePage = () => {
           allArticlesRes.data.data?.data ?? allArticlesRes.data;
         const articlesArray = Array.isArray(rawArticles) ? rawArticles : [];
 
-        setRelatedArticles(
-          getRandomArticles(articlesArray, articleId, 3)
-        );
+        setRelatedArticles(getRandomArticles(articlesArray, articleId, 3));
       } catch (error) {
-        console.error("Error fetching:", error);
+        console.error("Error while fetching data:", error);
       } finally {
         setLoading({ article: false, related: false, users: false });
       }
@@ -108,26 +103,27 @@ const ArticlePage = () => {
 
       await dispatch(fetchBookmarks(userId));
     } catch (error) {
-      console.error("ﾐ渙ｾﾐｼﾐｸﾐｻﾐｺﾐｰ ﾐｿﾑﾐｸ ﾐｾﾐｽﾐｾﾐｲﾐｻﾐｵﾐｽﾐｽﾑ・ﾐｷﾐｰﾐｺﾐｻﾐｰﾐｴﾐｺﾐｸ:", error);
+      console.error("Error while updating bookmarks:", error);
     }
   };
 
   if (loading.article || loading.users) return <Loader />;
 
   if (!article) {
-    return <p className={s.empty}>ﾐ｡ﾑひｰﾑびび・ﾐｽﾐｵ ﾐｷﾐｽﾐｰﾐｹﾐｴﾐｵﾐｽﾐｰ</p>;
+    return <p className={s.empty}>Article not found</p>;
   }
 
   const formattedText = article.article.replace(/\/n/g, "<br><br>");
 
   const articleOwnerId = article.ownerId?.$oid ?? article.ownerId;
   const user = users.find(({ _id }) => _id === articleOwnerId);
-  const authorName = user?.name ?? "ﾐ斷ｵﾐｲﾑ孟ｴﾐｾﾐｼﾐｾ";
+  const authorName = user?.name ?? "Unknown author";
 
   return (
     <div className="container">
       <div className={s.articleWrapper}>
         <h1 className={s.title}>{article.title}</h1>
+
         {article.img && (
           <img
             className={s.articleImage}
@@ -136,25 +132,32 @@ const ArticlePage = () => {
                 ? article.img
                 : `http://95.217.129.211:3000${article.img}`
             }
-            alt={`ﾐ厘ｾﾐｱﾑﾐｰﾐｶﾐｵﾐｽﾐｽﾑ・ ${article.title}`}
+            alt={`Article image ${article.title}`}
           />
         )}
+
         <div className={s.contentBlock}>
           <p
             className={s.articleText}
             dangerouslySetInnerHTML={{ __html: formattedText }}
           />
+
           <div className={s.wrapper}>
             <div className={s.metaBlock}>
               <p className={s.author}>
-                <strong>Author:</strong>&nbsp;
+                <strong>Author:</strong>{" "}
                 <span className={s.authorName}>{authorName}</span>
               </p>
+
               <p className={s.date}>
-                <strong>Publication date:</strong>&nbsp;
+                <strong>Publication date:</strong>{" "}
                 {new Date(article.date).toLocaleDateString()}
               </p>
-              <p className={s.bottomText}>You can also interested</p>
+
+              <p className={s.bottomText}>
+                You may also be interested in
+              </p>
+
               <ul className={s.links}>
                 {relatedArticles.map((suggested) => {
                   const id = suggested._id;
@@ -178,6 +181,7 @@ const ArticlePage = () => {
                             &rarr;
                           </Link>
                         </div>
+
                         <p className={s.similarArticlesAuthor}>
                           {getUserName(users, suggested.ownerId)}
                         </p>
@@ -187,10 +191,12 @@ const ArticlePage = () => {
                 })}
               </ul>
             </div>
+
             <button onClick={handleToggleBookmark} className={s.button}>
               {isBookmarked ? "Unsave" : "Save"}
               <BookmarkIcon className={s.buttonIcon} size={24} />
             </button>
+
             {!isLoggedIn && isOpen && <AuthModal onClose={close} />}
           </div>
         </div>

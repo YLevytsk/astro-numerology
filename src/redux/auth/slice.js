@@ -8,6 +8,9 @@ import {
   uploadAvatarThunk,
   updateBioThunk,
 } from "./operations";
+import { getCookie } from "../../utils/cookies.js";
+
+/* ===================== HELPERS ===================== */
 
 const emptyUser = {
   id: null,
@@ -19,25 +22,52 @@ const emptyUser = {
 
 const loadToken = () => {
   try {
-    return localStorage.getItem("accessToken");
+    return (
+      getCookie("accessToken") ||
+      localStorage.getItem("accessToken") ||
+      localStorage.getItem("token")
+    );
   } catch {
     return null;
   }
 };
 
+const loadUser = () => {
+  try {
+    const raw =
+      localStorage.getItem("user") || localStorage.getItem("userCache");
+    if (!raw) return emptyUser;
+    const parsed = JSON.parse(raw);
+    return {
+      id: parsed.id || parsed._id || null,
+      email: parsed.email || null,
+      name: parsed.name || parsed.fullName || parsed.username || null,
+      avatarUrl: parsed.avatarUrl || parsed.avatar || null,
+      bio: parsed.bio || parsed.description || parsed.about || null,
+    };
+  } catch {
+    return emptyUser;
+  }
+};
+
+/* ===================== INITIAL STATE ===================== */
+
 const initialState = {
-  user: emptyUser,
+  user: loadUser(),
   token: loadToken(),
-  isLoggedIn: !!loadToken(), // восстановление логина после перезагрузки
+  isLoggedIn: Boolean(loadToken()),
   isRefreshing: false,
 };
+
+/* ===================== SLICE ===================== */
 
 const slice = createSlice({
   name: "auth",
   initialState,
+  reducers: {},
   extraReducers: (builder) => {
     builder
-      // ===== CURRENT =====
+      /* ===== CURRENT USER (НИКОГДА НЕ ЛОГАУТИТ) ===== */
       .addCase(fetchCurrentUserThunk.pending, (state) => {
         state.isRefreshing = true;
       })
@@ -48,13 +78,11 @@ const slice = createSlice({
         state.isRefreshing = false;
       })
       .addCase(fetchCurrentUserThunk.rejected, (state) => {
-        state.user = emptyUser;
-        state.token = null;
-        state.isLoggedIn = false;
+        // ❗ намеренно НЕ сбрасываем auth
         state.isRefreshing = false;
       })
 
-      // ===== REFRESH =====
+      /* ===== REFRESH (ЕДИНСТВЕННОЕ МЕСТО, ГДЕ МОЖНО ЛОГАУТИТЬ) ===== */
       .addCase(refreshThunk.pending, (state) => {
         state.isRefreshing = true;
       })
@@ -65,27 +93,26 @@ const slice = createSlice({
         state.isRefreshing = false;
       })
       .addCase(refreshThunk.rejected, (state) => {
-        state.user = emptyUser;
-        state.token = null;
-        state.isLoggedIn = false;
+        // keep existing auth data; just stop refreshing
+        state.isLoggedIn = Boolean(state.token);
         state.isRefreshing = false;
       })
 
-      // ===== REGISTER =====
+      /* ===== REGISTER ===== */
       .addCase(registerThunk.fulfilled, (state, action) => {
         state.user = action.payload.user;
         state.token = action.payload.token;
         state.isLoggedIn = true;
       })
 
-      // ===== LOGIN =====
+      /* ===== LOGIN ===== */
       .addCase(loginThunk.fulfilled, (state, action) => {
         state.user = action.payload.user;
         state.token = action.payload.token;
         state.isLoggedIn = true;
       })
 
-      // ===== LOGOUT =====
+      /* ===== LOGOUT ===== */
       .addCase(logoutThunk.fulfilled, (state) => {
         state.user = emptyUser;
         state.token = null;
@@ -93,17 +120,20 @@ const slice = createSlice({
         state.isRefreshing = false;
       })
 
-      // ===== UPLOAD AVATAR =====
+      /* ===== UPLOAD AVATAR ===== */
       .addCase(uploadAvatarThunk.fulfilled, (state, action) => {
-        state.user.avatarUrl = action.payload;
+        if (state.user) {
+          state.user.avatarUrl = action.payload;
+        }
       })
 
-      // ===== UPDATE BIO =====
+      /* ===== UPDATE BIO ===== */
       .addCase(updateBioThunk.fulfilled, (state, action) => {
-        state.user.bio = action.payload;
+        if (state.user) {
+          state.user.bio = action.payload;
+        }
       });
   },
 });
 
 export const authReducer = slice.reducer;
-

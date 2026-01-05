@@ -1,5 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { publicAPI } from "../api/publicAPI.js";
+import { axiosAPI } from "../auth/operations";
 
 // ===================== AUTHORS =====================
 
@@ -43,7 +44,7 @@ export const fetchAuthorSavedArticles = createAsyncThunk(
   "authors/fetchAuthorSavedArticles",
   async (id, thunkAPI) => {
     try {
-      const response = await publicAPI.get(`/users/${id}/saved-articles`);
+      const response = await axiosAPI.get(`/users/${id}/saved-articles`);
       return response.data;
     } catch (e) {
       return thunkAPI.rejectWithValue(e.message);
@@ -55,7 +56,7 @@ export const addAuthorSavedArticles = createAsyncThunk(
   "authors/addAuthorSavedArticles",
   async ({ userId, articleId }, thunkAPI) => {
     try {
-      const response = await publicAPI.post(
+      const response = await axiosAPI.post(
         `/users/${userId}/saved-articles/${articleId}`
       );
       return response.data;

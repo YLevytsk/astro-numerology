@@ -1,12 +1,22 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams, Link } from "react-router-dom";
 
-import { fetchAuthor, fetchAuthorSavedArticles } from "../../redux/author/operations";
-import { selectCreator, selectSavedArticles } from "../../redux/author/selectors";
+import {
+  fetchAuthor,
+  fetchAuthorSavedArticles,
+} from "../../redux/author/operations";
+import {
+  selectCreator,
+  selectSavedArticles,
+} from "../../redux/author/selectors";
 
-import { selectUser } from "../../redux/auth/selectors";
-import { uploadAvatarThunk, updateBioThunk } from "../../redux/auth/operations";
+import {
+  selectUser,
+} from "../../redux/auth/selectors";
+import {
+  uploadAvatarThunk,
+} from "../../redux/auth/operations";
 
 import {
   fetchArticlesByOwner,
@@ -15,8 +25,10 @@ import {
 import { selectArticlesByOwner } from "../../redux/articles/selectors";
 
 import ArticlesList from "../ArticlesList/ArticlesList.jsx";
+import ProfileBio from "../ProfileBio/ProfileBio.jsx";
 import css from "./AuthorProfilePage.module.css";
 
+/* ===================== ASSETS ===================== */
 const API_URL = import.meta.env.VITE_API_URL || "http://95.217.129.211:3000";
 const ASSET_BASE = API_URL.replace(/\/api\/?$/, "");
 const buildAssetUrl = (path) => {
@@ -31,6 +43,7 @@ const AuthorProfilePage = () => {
   const currentUser = useSelector(selectUser);
   const author = useSelector(selectCreator);
 
+  /* ===================== PROFILE CONTEXT ===================== */
   const isMyProfile = Boolean(
     currentUser?.id && (!authorId || authorId === currentUser.id)
   );
@@ -38,6 +51,7 @@ const AuthorProfilePage = () => {
   const profileUser = isMyProfile ? currentUser : author;
   const profileId = isMyProfile ? currentUser?.id : authorId;
 
+  /* ===================== DATA ===================== */
   const articles =
     useSelector((state) => selectArticlesByOwner(state, profileId)) || [];
   const savedArticles = useSelector(selectSavedArticles) || [];
@@ -50,14 +64,7 @@ const AuthorProfilePage = () => {
     profileUser?.about ||
     "";
 
-  const [bioValue, setBioValue] = useState(bio);
-  const [isEditingBio, setIsEditingBio] = useState(!bio);
-
-  useEffect(() => {
-    setBioValue(bio);
-    setIsEditingBio(!bio);
-  }, [bio]);
-
+  /* ===================== LOAD PROFILE ===================== */
   useEffect(() => {
     if (!profileId) return;
 
@@ -68,12 +75,14 @@ const AuthorProfilePage = () => {
     dispatch(fetchArticlesByOwner(profileId));
   }, [dispatch, authorId, profileId, isMyProfile]);
 
+  /* ===================== SAVED ARTICLES (MY PROFILE) ===================== */
   useEffect(() => {
     if (isMyProfile && profileId) {
       dispatch(fetchAuthorSavedArticles(profileId));
     }
   }, [dispatch, isMyProfile, profileId]);
 
+  /* ===================== DELETE ARTICLE ===================== */
   const handleDelete = async (articleId) => {
     try {
       await dispatch(deleteArticle(articleId)).unwrap();
@@ -83,6 +92,7 @@ const AuthorProfilePage = () => {
     }
   };
 
+  /* ===================== LOADING ===================== */
   if (!profileUser) {
     return (
       <section className={css.authorProfile}>
@@ -93,6 +103,7 @@ const AuthorProfilePage = () => {
     );
   }
 
+  /* ===================== RENDER ===================== */
   return (
     <section className={css.authorProfile}>
       <div className={css.contentBlock}>
@@ -113,19 +124,7 @@ const AuthorProfilePage = () => {
                   className={css.editAvatarButton}
                   title="Change avatar"
                 >
-                  <svg
-                    className={css.editAvatarIcon}
-                    width="20"
-                    height="20"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04a1.003 1.003 0 000-1.42l-2.34-2.34a1.003 1.003 0 00-1.42 0l-1.83 1.83 3.75 3.75 1.84-1.82z"
-                      fill="currentColor"
-                    />
-                  </svg>
+                  ✎
                 </label>
 
                 <input
@@ -148,75 +147,31 @@ const AuthorProfilePage = () => {
               </>
             )}
 
-            <p className={css.articleCount}>{articles.length} Articles</p>
+            <p className={css.articleCount}>
+              {articles.length} Articles
+            </p>
           </div>
 
           {/* INFO */}
           <div className={css.profileInfo}>
-            <div className={css.leftInfo}>
-              <h1 className={css.authorName}>{profileUser.name}</h1>
-            </div>
+            <h1 className={css.authorName}>
+              {profileUser.name}
+            </h1>
 
-            {/* BIO VIEW */}
-            {bio && !isEditingBio && (
-              <div className={css.bioView}>
-                <p className={css.bioText}>{bio}</p>
-                <button
-                  type="button"
-                  className={css.editBioLink}
-                  onClick={() => setIsEditingBio(true)}
-                >
-                  Edit bio
-                </button>
-              </div>
-            )}
-
-            {/* BIO EDITOR */}
-            {isMyProfile && isEditingBio && (
-              <div className={css.bioEditor}>
-                <textarea
-                  className={css.bioTextarea}
-                  value={bioValue}
-                  onChange={(e) => setBioValue(e.target.value)}
-                  maxLength={1000}
-                  placeholder="Tell readers about yourself"
-                />
-
-                <button
-                  type="button"
-                  className={css.saveBioButton}
-                  onClick={() => {
-                    const targetId =
-                      currentUser?.id || profileUser?.id || profileId || authorId;
-
-                    if (!targetId) {
-                      console.warn("No user id for bio update");
-                      return;
-                    }
-
-                    dispatch(
-                      updateBioThunk({
-                        bio: bioValue,
-                        userId: targetId,
-                      })
-                    )
-                      .unwrap()
-                      .then(() => setIsEditingBio(false))
-                      .catch((err) => {
-                        console.error("Failed to save bio", err);
-                      });
-                  }}
-                >
-                  Save bio
-                </button>
-              </div>
-            )}
+            <ProfileBio
+              bio={bio}
+              isMyProfile={isMyProfile}
+              userId={currentUser?.id}
+            />
           </div>
         </div>
 
         {/* CREATE ARTICLE */}
         {isMyProfile && (
-          <Link className={css.createButton} to="/profile/articles/new">
+          <Link
+            className={css.createButton}
+            to="/profile/articles/new"
+          >
             + Create Article
           </Link>
         )}
@@ -228,30 +183,37 @@ const AuthorProfilePage = () => {
           onDelete={handleDelete}
         />
 
+        {/* SAVED */}
         {isMyProfile && (
           <div className={css.savedSection}>
             <h2 className={css.savedHeading}>Saved</h2>
+
             {savedArticles.length ? (
               <ul className={css.savedList}>
                 {savedArticles.map((saved) => {
                   const savedId =
-                    typeof saved?._id === "object" && saved._id.$oid
-                      ? saved._id.$oid
-                      : saved?._id || saved?.id;
+                    saved?._id?.$oid ||
+                    saved?._id ||
+                    saved?.id;
 
                   if (!savedId) return null;
 
                   return (
                     <li key={savedId} className={css.savedItem}>
-                      <Link to={`/articles/${savedId}`} className={css.savedLink}>
-                        {saved?.title || "Без названия"}
+                      <Link
+                        to={`/articles/${savedId}`}
+                        className={css.savedLink}
+                      >
+                        {saved?.title || "Untitled"}
                       </Link>
                     </li>
                   );
                 })}
               </ul>
             ) : (
-              <p className={css.savedEmpty}>There are no saved articles yet.</p>
+              <p className={css.savedEmpty}>
+                There are no saved articles yet.
+              </p>
             )}
           </div>
         )}

@@ -1,39 +1,26 @@
 import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
+import { Navigate } from "react-router-dom";
 
-import AuthModal from "../ModalErrorSave/ModalErrorSave.jsx";
 import {
   selectIsLoggedIn,
   selectIsRefreshing,
 } from "../../redux/auth/selectors";
+import { getCookie } from "../../utils/cookies.js";
 
-// Guard for private routes: while refreshing do nothing; if not authed -> show modal with redirect to home
-const PrivateRoute = ({ children }) => {
+// Guard for private routes: while refreshing do nothing; if not authed -> redirect
+const PrivateRoute = ({ children, redirectTo = "/login" }) => {
   const isLoggedIn = useSelector(selectIsLoggedIn);
   const isRefreshing = useSelector(selectIsRefreshing);
 
-  const token = localStorage.getItem("accessToken");
-  const navigate = useNavigate();
+  const token =
+    localStorage.getItem("accessToken") ||
+    localStorage.getItem("token") ||
+    getCookie("accessToken");
 
-  useEffect(() => {
-    if (!isRefreshing && !isLoggedIn && !token) {
-      navigate("/", { replace: true });
-    }
-  }, [isRefreshing, isLoggedIn, token, navigate]);
-
-  if (isRefreshing) {
-    return null;
-  }
+  if (isRefreshing) return null;
 
   if (!isLoggedIn && !token) {
-    return (
-      <AuthModal
-        onClose={() => {
-          navigate("/", { replace: true });
-        }}
-      />
-    );
+    return <Navigate to={redirectTo} replace />;
   }
 
   return children;

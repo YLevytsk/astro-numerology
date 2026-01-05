@@ -12,7 +12,10 @@ import { setAuthHeader } from "./redux/api/privateAPI";
 import { getCookie } from "./utils/cookies.js";
 
 // восстановление accessToken при старте
-const token = getCookie("accessToken") || localStorage.getItem("accessToken");
+const token =
+  getCookie("accessToken") ||
+  localStorage.getItem("accessToken") ||
+  localStorage.getItem("token");
 if (token) {
   setAuthHeader(token);
 }

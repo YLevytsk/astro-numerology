@@ -1,6 +1,6 @@
 import { Routes, Route } from "react-router-dom";
-import { useEffect } from "react";
-import { useDispatch } from "react-redux";
+import { useEffect, useRef } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 import Navbar from "./components/Navbar.jsx";
 import Footer from "./components/Footer/Footer.jsx";
@@ -11,7 +11,6 @@ import PythagorasPage from "./pages/PythagorasPage/PythagorasPage.jsx";
 import RegisterPage from "./pages/RegisterPage/RegisterPage.jsx";
 import LoginPage from "./pages/LoginPage/LoginPage.jsx";
 import NotFoundPage from "./pages/NotFoundPage/NotFoundPage.jsx";
-
 import ArticlePage from "./pages/ArticlePage/ArticlePage.jsx";
 import AuthorProfilePage from "./components/AuthorProfilePage/AuthorProfilePage.jsx";
 import CreateArticlePage from "./pages/CreateArticlePage/CreateArticlePage.jsx";
@@ -22,35 +21,31 @@ import PrivacySecurityPage from "./pages/PrivacySecurityPage/PrivacySecurityPage
 import PrivateRoute from "./components/PrivateRoute/PrivateRoute";
 import RestrictedRoute from "./components/RestrictedRoute.jsx";
 
-import { axiosAPI, fetchCurrentUserThunk, refreshThunk } from "./redux/auth/operations";
+import { refreshThunk } from "./redux/auth/operations";
 import { getCookie } from "./utils/cookies.js";
-
-// Simple wrapper page (used for placeholders)
-function Page({ title }) {
-  return (
-    <div className="container py-5">
-      <h2 className="mb-4">{title}</h2>
-    </div>
-  );
-}
 
 export default function App() {
   const dispatch = useDispatch();
+  const { isRefreshing } = useSelector((state) => state.auth);
+  const initRef = useRef(false);
 
-  // Restore token from localStorage
+  /* ================= RESTORE SESSION ================= */
   useEffect(() => {
-    const accessToken =
-      getCookie("accessToken") || localStorage.getItem("accessToken");
+    if (initRef.current) return;
+    initRef.current = true;
+
     const refreshToken =
       getCookie("refreshToken") || localStorage.getItem("refreshToken");
 
     if (refreshToken) {
       dispatch(refreshThunk());
-    } else if (accessToken) {
-      axiosAPI.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
-      dispatch(fetchCurrentUserThunk());
     }
   }, [dispatch]);
+
+  /* ⛔ НЕ РЕНДЕРИМ РОУТЫ, ПОКА REFRESH */
+  if (isRefreshing) {
+    return null; // или <Loader />
+  }
 
   return (
     <>
@@ -65,29 +60,22 @@ export default function App() {
         <Route
           path="/register"
           element={
-            <RestrictedRoute
-              redirectTo="/profile"
-              component={<RegisterPage />}
-            />
+            <RestrictedRoute redirectTo="/profile">
+              <RegisterPage />
+            </RestrictedRoute>
           }
         />
-
         <Route
           path="/login"
           element={
-            <RestrictedRoute
-              redirectTo="/profile"
-              component={<LoginPage />}
-            />
+            <RestrictedRoute redirectTo="/profile">
+              <LoginPage />
+            </RestrictedRoute>
           }
         />
 
         {/* NUMEROLOGY */}
         <Route path="/numerology/pifagor" element={<PythagorasPage />} />
-        <Route
-          path="/numerology/compatibility"
-          element={<Page title="Couple Compatibility" />}
-        />
 
         {/* BLOG */}
         <Route path="/blog" element={<ArticlesPage />} />
@@ -125,6 +113,3 @@ export default function App() {
     </>
   );
 }
-
-
-
