@@ -31,9 +31,19 @@ export default function Navbar() {
     }
   }, [location]);
 
-  // ================= WAIT FOR REFRESH =================
   if (isRefreshing) return null;
 
+  // ================= CLOSE MOBILE MENU =================
+  const closeMobileMenu = () => {
+    const navbar = document.getElementById("navbar_global");
+    const toggler = document.querySelector(".navbar-toggler");
+
+    if (navbar?.classList.contains("show") && toggler) {
+      toggler.click();
+    }
+  };
+
+  // ================= NAV CLICK =================
   const handleNavClick = (e, hash) => {
     e.preventDefault();
 
@@ -45,12 +55,15 @@ export default function Navbar() {
         el.scrollIntoView({ behavior: "smooth", block: "start" });
       }
     }
+
+    closeMobileMenu();
   };
 
   // ================= LOGOUT =================
   const handleLogout = async () => {
     try {
       await dispatch(logoutThunk()).unwrap();
+      closeMobileMenu();
       navigate("/");
     } catch (err) {
       console.error("Logout failed:", err);
@@ -58,16 +71,14 @@ export default function Navbar() {
   };
 
   return (
-    <nav
-  className="navbar navbar-expand-lg navbar-dark sticky-top shadow-sm py-2 custom-navbar"
->
-
+    <nav className="navbar navbar-expand-lg navbar-dark sticky-top shadow-sm py-2 custom-navbar">
       <div className="container">
         {/* LOGO */}
-        <Link className="navbar-brand me-lg-5" to="/">
+        <Link className="navbar-brand me-lg-5" to="/" onClick={closeMobileMenu}>
           <img src={logo} alt="ASTRONUMEROLOGY" style={{ height: 40 }} />
         </Link>
 
+        {/* TOGGLER */}
         <button
           className="navbar-toggler"
           type="button"
@@ -84,7 +95,7 @@ export default function Navbar() {
           {/* LEFT MENU */}
           <ul className="navbar-nav align-items-lg-center">
             <li className="nav-item">
-              <NavLink className="nav-link" to="/">
+              <NavLink className="nav-link" to="/" onClick={closeMobileMenu}>
                 Home
               </NavLink>
             </li>
@@ -120,12 +131,12 @@ export default function Navbar() {
             </li>
 
             <li className="nav-item">
-              <NavLink className="nav-link" to="/blog">
+              <NavLink className="nav-link" to="/blog" onClick={closeMobileMenu}>
                 Blog
               </NavLink>
             </li>
 
-            {/* NUMEROLOGY */}
+            {/* DROPDOWN */}
             <li className="nav-item dropdown">
               <a
                 className="nav-link dropdown-toggle"
@@ -136,12 +147,20 @@ export default function Navbar() {
               </a>
               <ul className="dropdown-menu">
                 <li>
-                  <Link className="dropdown-item" to="/numerology/pifagor">
+                  <Link
+                    className="dropdown-item"
+                    to="/numerology/pifagor"
+                    onClick={closeMobileMenu}
+                  >
                     Pythagoras square
                   </Link>
                 </li>
                 <li>
-                  <Link className="dropdown-item" to="/numerology/compatibility">
+                  <Link
+                    className="dropdown-item"
+                    to="/numerology/compatibility"
+                    onClick={closeMobileMenu}
+                  >
                     Compatibility
                   </Link>
                 </li>
@@ -151,58 +170,24 @@ export default function Navbar() {
 
           {/* RIGHT MENU */}
           <ul className="navbar-nav ms-auto align-items-lg-center">
-            {/* SOCIAL */}
-            <li className="nav-item">
-              <a
-                className="nav-link nav-link-icon"
-                href="https://www.facebook.com/"
-                target="_blank"
-                rel="noreferrer"
-              >
-                <i className="fa fa-facebook-square"></i>
-              </a>
-            </li>
-
-            <li className="nav-item">
-              <a
-                className="nav-link nav-link-icon"
-                href="https://www.instagram.com/"
-                target="_blank"
-                rel="noreferrer"
-              >
-                <i className="fa fa-instagram"></i>
-              </a>
-            </li>
-            <li className="nav-item">
-              <a
-                className="nav-link nav-link-icon"
-                href="https://t.me/"
-                target="_blank"
-                rel="noreferrer"
-              >
-                <i className="fa fa-telegram"></i>
-              </a>
-            </li>
-            <li className="nav-item">
-              <a
-                className="nav-link nav-link-icon"
-                href="mailto:example@mail.com"
-              >
-                <i className="fa fa-envelope"></i>
-              </a>
-            </li>
-
-            {/* AUTH */}
             {!isLoggedIn && (
               <>
                 <li className="nav-item me-2">
-                  <Link className="btn-login" to="/login">
+                  <Link
+                    className="btn-login"
+                    to="/login"
+                    onClick={closeMobileMenu}
+                  >
                     Login
                   </Link>
                 </li>
 
                 <li className="nav-item">
-                  <Link className="btn-register" to="/register">
+                  <Link
+                    className="btn-register"
+                    to="/register"
+                    onClick={closeMobileMenu}
+                  >
                     Register
                   </Link>
                 </li>
@@ -215,7 +200,7 @@ export default function Navbar() {
                   <Link
                     to="/profile"
                     className="nav-link"
-                    style={{ color: "#E9ECF1", fontWeight: 600 }}
+                    onClick={closeMobileMenu}
                   >
                     {user?.name ? `Hello, ${user.name}` : "Hello"}
                   </Link>
@@ -224,15 +209,10 @@ export default function Navbar() {
                 <li className="nav-item">
                   <button
                     onClick={handleLogout}
-                    className="btn p-0 border-0 bg-transparent"
+                    className="btn p-0 border-0 bg-transparent logout-icon"
                     title="Logout"
                   >
-                    <svg
-                      width="26"
-                      height="26"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                    >
+                    <svg width="26" height="26" viewBox="0 0 24 24" fill="none">
                       <path
                         d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"
                         stroke="currentColor"
