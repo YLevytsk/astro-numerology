@@ -210,8 +210,8 @@
 
 @media (max-width: 760px) {
   .magic-paragraph {
-    margin: 16px auto;
-    min-height: 72px;
+    margin: 8px auto;
+    min-height: 64px;
   }
 
   .magic-paragraph .star {
@@ -269,7 +269,7 @@
 /* ﾐｿﾐｰﾑﾐｰﾐｳﾑﾐｰﾑ・・ﾑ・ﾐｸﾐｺﾐｾﾐｽﾐｺﾐｾﾐｹ-ﾐｷﾐｲﾐｵﾐｷﾐｴﾐｾﾐｹ */
 .magic-paragraph {
   position: relative;
-  margin: 5rem auto;
+  margin: 2.5rem auto;
   cursor: pointer;
   min-height: 120px;
 }
@@ -734,16 +734,16 @@
 
 @media (max-width: 767.98px) {
   .about-bg {
-    min-height: 100dvh;
+    min-height: auto;
     padding: 0 16px;
     box-sizing: border-box;
   }
 
   .section-hero.about-bg .container {
-    min-height: calc(100dvh - 64px);
+    min-height: auto;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
     padding: 0;
   }
 }

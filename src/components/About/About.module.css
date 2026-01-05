@@ -111,7 +111,7 @@
 
 @media (max-width: 760px) {
   .aboutBg {
-    min-height: 100dvh;
+    min-height: auto;
     padding: 0;
     background-size: cover;
     background-position: center top;
@@ -120,11 +120,13 @@
   .aboutBg :global(.container) {
     padding-top: 0;
     padding-bottom: 0;
+    min-height: auto;
   }
 
   .titleCustom,
   .sectionTitle {
     font-size: 26px;
+    margin-bottom: 0 !important;
   }
 
   .textCustom {
