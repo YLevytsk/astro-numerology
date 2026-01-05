@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 
 import AuthModal from "../ModalErrorSave/ModalErrorSave.jsx";
 import {
@@ -8,43 +8,35 @@ import {
   selectIsRefreshing,
 } from "../../redux/auth/selectors";
 
+// Guard for private routes: while refreshing do nothing; if not authed -> show modal with redirect to home
 const PrivateRoute = ({ children }) => {
   const isLoggedIn = useSelector(selectIsLoggedIn);
   const isRefreshing = useSelector(selectIsRefreshing);
 
   const token = localStorage.getItem("accessToken");
-
-  const [showModal, setShowModal] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
-    // 🔥 КЛЮЧ: если есть token — НЕ показываем модалку
     if (!isRefreshing && !isLoggedIn && !token) {
-      setShowModal(true);
+      navigate("/", { replace: true });
     }
-  }, [isRefreshing, isLoggedIn, token]);
+  }, [isRefreshing, isLoggedIn, token, navigate]);
 
-  // ⏳ если был бы refresh — ждали бы
   if (isRefreshing) {
     return null;
   }
 
-  // ❌ реально не авторизован
-  if (!isLoggedIn && !token && showModal) {
+  if (!isLoggedIn && !token) {
     return (
       <AuthModal
         onClose={() => {
-          setShowModal(false);
           navigate("/", { replace: true });
         }}
       />
     );
   }
 
-  // ✅ либо Redux, либо token
   return children;
 };
 
 export default PrivateRoute;
-
-

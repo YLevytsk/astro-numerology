@@ -3,6 +3,8 @@ import {
   loginThunk,
   logoutThunk,
   registerThunk,
+  refreshThunk,
+  fetchCurrentUserThunk,
   uploadAvatarThunk,
   updateBioThunk,
 } from "./operations";
@@ -15,15 +17,6 @@ const emptyUser = {
   bio: null,
 };
 
-const loadUser = () => {
-  try {
-    const stored = localStorage.getItem("user");
-    return stored ? JSON.parse(stored) : emptyUser;
-  } catch {
-    return emptyUser;
-  }
-};
-
 const loadToken = () => {
   try {
     return localStorage.getItem("accessToken");
@@ -33,9 +26,10 @@ const loadToken = () => {
 };
 
 const initialState = {
-  user: loadUser(),
+  user: emptyUser,
   token: loadToken(),
   isLoggedIn: !!loadToken(), // восстановление логина после перезагрузки
+  isRefreshing: false,
 };
 
 const slice = createSlice({
@@ -43,6 +37,39 @@ const slice = createSlice({
   initialState,
   extraReducers: (builder) => {
     builder
+      // ===== CURRENT =====
+      .addCase(fetchCurrentUserThunk.pending, (state) => {
+        state.isRefreshing = true;
+      })
+      .addCase(fetchCurrentUserThunk.fulfilled, (state, action) => {
+        state.user = action.payload.user;
+        state.token = action.payload.token;
+        state.isLoggedIn = true;
+        state.isRefreshing = false;
+      })
+      .addCase(fetchCurrentUserThunk.rejected, (state) => {
+        state.user = emptyUser;
+        state.token = null;
+        state.isLoggedIn = false;
+        state.isRefreshing = false;
+      })
+
+      // ===== REFRESH =====
+      .addCase(refreshThunk.pending, (state) => {
+        state.isRefreshing = true;
+      })
+      .addCase(refreshThunk.fulfilled, (state, action) => {
+        state.user = action.payload.user;
+        state.token = action.payload.token;
+        state.isLoggedIn = true;
+        state.isRefreshing = false;
+      })
+      .addCase(refreshThunk.rejected, (state) => {
+        state.user = emptyUser;
+        state.token = null;
+        state.isLoggedIn = false;
+        state.isRefreshing = false;
+      })
 
       // ===== REGISTER =====
       .addCase(registerThunk.fulfilled, (state, action) => {
@@ -63,6 +90,7 @@ const slice = createSlice({
         state.user = emptyUser;
         state.token = null;
         state.isLoggedIn = false;
+        state.isRefreshing = false;
       })
 
       // ===== UPLOAD AVATAR =====
@@ -78,3 +106,4 @@ const slice = createSlice({
 });
 
 export const authReducer = slice.reducer;
+

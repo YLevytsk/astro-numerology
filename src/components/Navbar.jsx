@@ -128,12 +128,12 @@ export default function Navbar() {
                 role="button"
                 data-bs-toggle="dropdown"
               >
-                Numerology
+                Numerological calculations
               </a>
               <ul className="dropdown-menu">
                 <li>
                   <Link className="dropdown-item" to="/numerology/pifagor">
-                    Pythagoras Square
+                    Pythagoras square
                   </Link>
                 </li>
                 <li>
@@ -169,6 +169,24 @@ export default function Navbar() {
                 <i className="fa fa-instagram"></i>
               </a>
             </li>
+            <li className="nav-item">
+              <a
+                className="nav-link nav-link-icon"
+                href="https://t.me/"
+                target="_blank"
+                rel="noreferrer"
+              >
+                <i className="fa fa-telegram"></i>
+              </a>
+            </li>
+            <li className="nav-item">
+              <a
+                className="nav-link nav-link-icon"
+                href="mailto:example@mail.com"
+              >
+                <i className="fa fa-envelope"></i>
+              </a>
+            </li>
 
             {/* AUTH */}
             {!isLoggedIn && (
@@ -193,11 +211,9 @@ export default function Navbar() {
                   <Link
                     to="/profile"
                     className="nav-link"
-                    style={{ color: "#28a745", fontWeight: 600 }}
+                    style={{ color: "#E9ECF1", fontWeight: 600 }}
                   >
-                    {user?.name
-                      ? `My Cabinet (${user.name})`
-                      : "My Cabinet"}
+                    {user?.name ? `Hello, ${user.name}` : "Hello"}
                   </Link>
                 </li>
 

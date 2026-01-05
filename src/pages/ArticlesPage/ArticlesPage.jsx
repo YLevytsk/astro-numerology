@@ -19,7 +19,6 @@ import {
 } from "../../redux/articles/selectors.js";
 
 import s from "./ArticlesPage.module.css";
-import chevronIcon from "../../assets/images/icons/chevron-down.svg";
 
 const limit = 12;
 const filterOptions = ["All", "Popular"];
@@ -73,8 +72,11 @@ const ArticlesPage = () => {
   if (loading && articles.length === 0) {
     return (
       <section>
-        <Container>
+        <Container className={s.page}>
           <SectionTitle title="Articles" />
+          <div className={s.articleCountRow}>
+            <span className={s.articleCount}>{articles.length} articles</span>
+          </div>
           <Loader />
         </Container>
       </section>
@@ -83,10 +85,13 @@ const ArticlesPage = () => {
 
   return (
     <section>
-      <Container>
+      <Container className={s.page}>
         <SectionTitle title="Articles" />
-        <div className={s.articlesHeader}>
+        <div className={s.articleCountRow}>
           <span className={s.articleCount}>{articles.length} articles</span>
+        </div>
+
+        <div className={s.filterBar}>
           <div
             className={s.dropdownWrapper}
             onFocus={() => setIsOpen(true)}
@@ -97,24 +102,24 @@ const ArticlesPage = () => {
               onChange={handleFilterChange}
               className={s.dropdown}
             >
-              {filterOptions.map((type) => (
-                <option key={type} value={type}>
-                  {type}
-                </option>
-              ))}
+            {filterOptions.map((type) => (
+              <option key={type} value={type}>
+                {type}
+              </option>
+            ))}
             </select>
-            <img
-              src={chevronIcon}
-              alt=""
-              width="16"
-              height="16"
+            <span
               className={`${s.dropdownIcon} ${isOpen ? s.open : ""}`}
               aria-hidden="true"
-            />
+            >
+              ▾
+            </span>
           </div>
         </div>
 
-        <ArticlesList articles={articles} listRef={listRef} />
+        <div className={s.listGap}>
+          <ArticlesList articles={articles} listRef={listRef} />
+        </div>
 
         {loading && articles.length > 0 && (
           <div style={{ textAlign: "center", margin: "20px 0" }}>

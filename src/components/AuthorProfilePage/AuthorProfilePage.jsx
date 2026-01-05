@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams, Link } from "react-router-dom";
 
-import { fetchAuthor } from "../../redux/author/operations";
-import { selectCreator } from "../../redux/author/selectors";
+import { fetchAuthor, fetchAuthorSavedArticles } from "../../redux/author/operations";
+import { selectCreator, selectSavedArticles } from "../../redux/author/selectors";
 
 import { selectUser } from "../../redux/auth/selectors";
 import { uploadAvatarThunk, updateBioThunk } from "../../redux/auth/operations";
@@ -40,6 +40,7 @@ const AuthorProfilePage = () => {
 
   const articles =
     useSelector((state) => selectArticlesByOwner(state, profileId)) || [];
+  const savedArticles = useSelector(selectSavedArticles) || [];
 
   const avatarSrc = buildAssetUrl(profileUser?.avatarUrl);
 
@@ -66,6 +67,12 @@ const AuthorProfilePage = () => {
 
     dispatch(fetchArticlesByOwner(profileId));
   }, [dispatch, authorId, profileId, isMyProfile]);
+
+  useEffect(() => {
+    if (isMyProfile && profileId) {
+      dispatch(fetchAuthorSavedArticles(profileId));
+    }
+  }, [dispatch, isMyProfile, profileId]);
 
   const handleDelete = async (articleId) => {
     try {
@@ -220,6 +227,34 @@ const AuthorProfilePage = () => {
           canDelete={isMyProfile}
           onDelete={handleDelete}
         />
+
+        {isMyProfile && (
+          <div className={css.savedSection}>
+            <h2 className={css.savedHeading}>Saved</h2>
+            {savedArticles.length ? (
+              <ul className={css.savedList}>
+                {savedArticles.map((saved) => {
+                  const savedId =
+                    typeof saved?._id === "object" && saved._id.$oid
+                      ? saved._id.$oid
+                      : saved?._id || saved?.id;
+
+                  if (!savedId) return null;
+
+                  return (
+                    <li key={savedId} className={css.savedItem}>
+                      <Link to={`/articles/${savedId}`} className={css.savedLink}>
+                        {saved?.title || "Без названия"}
+                      </Link>
+                    </li>
+                  );
+                })}
+              </ul>
+            ) : (
+              <p className={css.savedEmpty}>There are no saved articles yet.</p>
+            )}
+          </div>
+        )}
       </div>
     </section>
   );

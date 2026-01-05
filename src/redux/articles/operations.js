@@ -67,6 +67,24 @@ export const addArticle = createAsyncThunk(
   }
 );
 
+/* ===================== UPDATE ARTICLE (WITH IMAGE) ===================== */
+export const updateArticle = createAsyncThunk(
+  "articles/updateArticle",
+  async ({ articleId, formData }, thunkAPI) => {
+    try {
+      const response = await axiosAPI.put(
+        `/articles/${articleId}`,
+        formData
+      );
+      return response.data;
+    } catch (e) {
+      return thunkAPI.rejectWithValue(
+        e.response?.data?.message || e.message
+      );
+    }
+  }
+);
+
 /* ===================== DELETE ARTICLE ===================== */
 export const deleteArticle = createAsyncThunk(
   "articles/deleteArticle",

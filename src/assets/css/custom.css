@@ -11,6 +11,18 @@
   color: #E9ECF1;
   transition: color 0.25s ease;
 }
+.custom-navbar .dropdown-toggle,
+.custom-navbar .nav-link.dropdown-toggle {
+  color: #E9ECF1 !important;
+  font-weight: inherit;
+}
+.custom-navbar .dropdown-toggle::after {
+  border-top-color: #E9ECF1 !important;
+}
+.custom-navbar .dropdown-toggle:focus,
+.custom-navbar .dropdown-toggle:hover {
+  color: #E9ECF1 !important;
+}
 .custom-navbar .nav-link:hover {
   color: #FFD166;
 }

@@ -20,7 +20,7 @@ const authPersistConfig = {
   key: "root-auth",
   version: 3,
   storage,
-  whitelist: ["user", "token", "isLoggedIn"],
+  whitelist: ["token", "isLoggedIn"],
 };
 
 const bookmarksPersistConfig = {

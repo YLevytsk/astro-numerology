@@ -1,8 +1,10 @@
 import { Routes, Route } from "react-router-dom";
 import { useEffect } from "react";
+import { useDispatch } from "react-redux";
 
 import Navbar from "./components/Navbar.jsx";
 import Footer from "./components/Footer/Footer.jsx";
+import CookieBanner from "./components/CookieBanner/CookieBanner.jsx";
 
 import Home from "./pages/Home.jsx";
 import PythagorasPage from "./pages/PythagorasPage/PythagorasPage.jsx";
@@ -10,15 +12,18 @@ import RegisterPage from "./pages/RegisterPage/RegisterPage.jsx";
 import LoginPage from "./pages/LoginPage/LoginPage.jsx";
 import NotFoundPage from "./pages/NotFoundPage/NotFoundPage.jsx";
 
-import ArticlesList from "./components/ArticlesList/ArticlesList.jsx";
 import ArticlePage from "./pages/ArticlePage/ArticlePage.jsx";
 import AuthorProfilePage from "./components/AuthorProfilePage/AuthorProfilePage.jsx";
 import CreateArticlePage from "./pages/CreateArticlePage/CreateArticlePage.jsx";
+import ArticlesPage from "./pages/ArticlesPage/ArticlesPage.jsx";
+import CookiesPage from "./pages/CookiesPage/CookiesPage.jsx";
+import PrivacySecurityPage from "./pages/PrivacySecurityPage/PrivacySecurityPage.jsx";
 
 import PrivateRoute from "./components/PrivateRoute/PrivateRoute";
 import RestrictedRoute from "./components/RestrictedRoute.jsx";
 
-import { axiosAPI } from "./redux/auth/operations";
+import { axiosAPI, fetchCurrentUserThunk, refreshThunk } from "./redux/auth/operations";
+import { getCookie } from "./utils/cookies.js";
 
 // Simple wrapper page (used for placeholders)
 function Page({ title }) {
@@ -30,17 +35,27 @@ function Page({ title }) {
 }
 
 export default function App() {
+  const dispatch = useDispatch();
+
   // Restore token from localStorage
   useEffect(() => {
-    const token = localStorage.getItem("accessToken");
-    if (token) {
-      axiosAPI.defaults.headers.common.Authorization = `Bearer ${token}`;
+    const accessToken =
+      getCookie("accessToken") || localStorage.getItem("accessToken");
+    const refreshToken =
+      getCookie("refreshToken") || localStorage.getItem("refreshToken");
+
+    if (refreshToken) {
+      dispatch(refreshThunk());
+    } else if (accessToken) {
+      axiosAPI.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
+      dispatch(fetchCurrentUserThunk());
     }
-  }, []);
+  }, [dispatch]);
 
   return (
     <>
       <Navbar />
+      <CookieBanner />
 
       <Routes>
         {/* HOME */}
@@ -75,8 +90,10 @@ export default function App() {
         />
 
         {/* BLOG */}
-        <Route path="/blog" element={<ArticlesList articles={[]} />} />
+        <Route path="/blog" element={<ArticlesPage />} />
         <Route path="/articles/:articleId" element={<ArticlePage />} />
+        <Route path="/cookies" element={<CookiesPage />} />
+        <Route path="/security" element={<PrivacySecurityPage />} />
 
         {/* PROFILE */}
         <Route
@@ -108,12 +125,6 @@ export default function App() {
     </>
   );
 }
-
-
-
-
-
-
 
 
 

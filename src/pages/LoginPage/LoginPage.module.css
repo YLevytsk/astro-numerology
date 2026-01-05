@@ -1,0 +1,13 @@
+.page {
+  min-height: calc(100vh - 140px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 16px;
+  background-image:
+    linear-gradient(120deg, rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.55)),
+    url("http://95.217.129.211:3000/uploads/ai-generated-8888074_1920.webp");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}

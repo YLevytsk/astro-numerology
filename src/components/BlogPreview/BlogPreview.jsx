@@ -1,12 +1,21 @@
-import { useSelector } from "react-redux";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import ArticlesItem from "../ArticlesItem/ArticlesItem.jsx";
 import { selectArticles } from "../../redux/articles/selectors.js";
+import { fetchArticles } from "../../redux/articles/operations.js";
 import s from "./BlogPreview.module.css";
 import RightArrowIcon from "../../assets/img/right.svg?react";
 
 export default function BlogPreview() {
+  const dispatch = useDispatch();
   const articles = useSelector(selectArticles) || [];
+
+  useEffect(() => {
+    if (!articles.length) {
+      dispatch(fetchArticles({ page: 1, limit: 3, type: "All" }));
+    }
+  }, [articles.length, dispatch]);
 
   // если нет данных из Redux → берём дефолтные
   const defaultArticles = [
@@ -46,11 +55,19 @@ export default function BlogPreview() {
         </div>
 
         <ul className={s.articlesList}>
-          {previewArticles.map((article) => (
-            <li key={article._id}>
-              <ArticlesItem article={article} />
-            </li>
-          ))}
+          {previewArticles.map((article, index) => {
+            const articleKey =
+              article?._id ?? article?.id ?? `article-${index}`;
+
+            return (
+              <li key={articleKey}>
+                <ArticlesItem
+                  article={article}
+                  authorName={article.author || article.ownerName || ""}
+                />
+              </li>
+            );
+          })}
         </ul>
 
  <div className={s.goToBlogWrapper}>

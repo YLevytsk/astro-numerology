@@ -1,73 +1,81 @@
 .registerContainer{
-padding: 48px 32px ;
-background-color: #e9ecef;
-border-radius: 32px;
-width: 360px;
-box-sizing: border-box;
-margin: 85px auto;
+  padding: 48px 32px;
+  background-color: #E9ECF1;
+  border-radius: 32px;
+  width: 360px;
+  box-sizing: border-box;
+  margin: 85px auto;
+  box-shadow: 0 10px 30px rgba(91, 75, 138, 0.08);
 }
 .title{
-font-size: 32px;
-margin-bottom: 20px;
-text-align: center;
-width: 296px;
-color: #28a745;
+  font-size: 32px;
+  margin-bottom: 20px;
+  text-align: center;
+  width: 296px;
+  color: #5b4b8a;
 }
 .description{
-font-size: 16px;
-font-weight: 400;
-text-align: center;
-margin-bottom: 20px;
-width: 278px;
-height: 50px;
+  font-size: 16px;
+  font-weight: 400;
+  text-align: center;
+  margin-bottom: 20px;
+  width: 278px;
+  height: 50px;
+  color: #5b4b8a;
 }
 .fieldWrapper{
-margin-bottom: 16px;
+  margin-bottom: 16px;
 }
 .fieldWrapper:last-of-type{
-    margin-bottom: 27px;
+  margin-bottom: 27px;
 }
 .registerForm{
-display: flex;
-justify-content: center;
-align-items: center;
-flex-direction: column;
-width: 296px;
-
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  width: 296px;
 }
 .labelForm{
-font-size: 12px;
-margin-bottom: 4px;
-display: flex;
-flex-direction: column;
+  font-size: 12px;
+  margin-bottom: 4px;
+  display: flex;
+  flex-direction: column;
+  font-weight: 600;
+  color: #5b4b8a;
 }
 .fieldForm{
-height: 41px;
-border-radius: 8px;
-border: 1px solid #ced4da;
-padding:0 0 0 5px;
-width: 296px;
-box-sizing: border-box;
+  height: 44px;
+  border-radius: 12px;
+  border: 1px solid #c8cada;
+  padding: 0 12px;
+  width: 296px;
+  box-sizing: border-box;
+  background-color: #f7f8fb;
 }
 .fieldForm:focus {
-    outline: none;
-    border-color: #28a745;
+  outline: none;
+  border-color: #5b4b8a;
+  box-shadow: 0 0 0 3px rgba(91, 75, 138, 0.15);
 }
 .passwordWrapper {
-    position: relative;
-    display: flex;
-    align-items: center;
+  position: relative;
+  display: flex;
+  align-items: center;
 }
 .eyeBtn {
-    position: absolute;
-    right: 8px;
-    top: 50%;
-    transform: translateY(-50%);
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 0;
-    fill: transparent;
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #5b4b8a;
 }
 .eyeBtn svg{
    width: 24px; 
@@ -75,115 +83,116 @@ box-sizing: border-box;
    fill: none;
 }
 .progressWrapper{
-    margin-top: 8px;
+  margin-top: 8px;
 }
 .progressBar {
-    height: 6px;
-    width: 180px;
-    background-color: #dc3545;
-    border-radius: 3px;
-    overflow: hidden;
+  height: 6px;
+  width: 180px;
+  background-color: #dc3545;
+  border-radius: 3px;
+  overflow: hidden;
 }
 
 .progressFill {
-    height: 100%;
-    background-color: #70e385;
-    transition: width 0.3s ease;
+  height: 100%;
+  background-color: #70e385;
+  transition: width 0.3s ease;
 }
 .descProgres{
-    font-size: 12px;
+  font-size: 12px;
 }
 .error{
-color: #dc3545;
-font-size: 8px !important;
+  color: #dc3545;
+  font-size: 10px !important;
 }
 .errorInput {
-    border: 1px solid #35dc46
-    
+  border: 1px solid #dc3545;
 }
 .createBtn{
-  background-color: #28a745;
+  background-color: #5b4b8a;
   border-radius: 50px;
   width: 296px;
-  height: 38px;
+  height: 44px;
   color: #ffffff;
   font-size: 16px;
   font-weight: 700;
   margin-bottom: 20px;
-  transition: background-color 0.3s ease, transform 0.3s ease;
-  border: none;       
+  transition: background-color 0.2s ease, transform 0.1s ease, border-color 0.2s ease;
+  border: 1px solid #5b4b8a;       
   outline: none;
+  cursor: pointer;
 }
 .createBtn:hover{
-    background-color: #257238;
-    transform: scale(1.05);
+  background-color: #3c2f66;
+  border-color: #3c2f66;
+  transform: translateY(-1px);
 }
 .descAcc{
   font-size: 16px;  
   font-weight: 400;
-
+  color: #5b4b8a;
 }
 .loginLink{
-    display: inline-block;
-    font-weight: 700;
-    color: #28a745 !important;
-    border-bottom: 1px solid #93c19e;
-    line-height: 0.8;
+  display: inline-block;
+  font-weight: 700;
+  color: #3c2f66 !important;
+  border-bottom: 1px solid #3c2f66;
+  line-height: 0.8;
 }
 
 @media only screen and (min-width: 768px) {
-.registerContainer {
-        width: 522px;
-        margin: 120px auto;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
+  .registerContainer {
+    width: 522px;
+    margin: 120px auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 
-    }
-        .title {
-            width: 456px;
-        }
-    
-        .registerForm {
-            width: 458px;
-    
-        }
-    
-        .fieldForm {
-            width: 458px;
-        }
-    
-    
-        .createBtn {
-            width: 458px;
-        }
-    
+  }
+  .title {
+    width: 456px;
+  }
+
+  .registerForm {
+    width: 458px;
+
+  }
+
+  .fieldForm {
+    width: 458px;
+  }
+
+
+  .createBtn {
+    width: 458px;
+  }
+
 }
 
 @media only screen and (min-width: 1440px) {
-    .registerContainer {
-            width: 392px;
-            margin: 50px auto;
-           
-    
-        }
-    
-        .title {
-            width: 328px;
-        }
-    
-        .registerForm {
-            width: 328px;
-    
-        }
-    
-        .fieldForm {
-            width: 328px;
-        }
-    
-    
-        .createBtn {
-            width: 328px;
-        }
+  .registerContainer {
+    width: 392px;
+    margin: 50px auto;
+       
+
+  }
+
+  .title {
+    width: 328px;
+  }
+
+  .registerForm {
+    width: 328px;
+
+  }
+
+  .fieldForm {
+    width: 328px;
+  }
+
+
+  .createBtn {
+    width: 328px;
+  }
 }

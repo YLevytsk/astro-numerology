@@ -4,6 +4,7 @@ import {
   fetchArticle,
   fetchArticles,
   fetchArticlesByOwner,
+  updateArticle,
   deleteArticle,
 } from "./operations.js";
 
@@ -99,6 +100,38 @@ const slice = createSlice({
         }
       })
       .addCase(addArticle.rejected, handleRejected)
+
+      // ==== UPDATE ARTICLE ====
+      .addCase(updateArticle.pending, handlePending)
+      .addCase(updateArticle.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.error = null;
+
+        const updated = action.payload;
+        const updatedId = String(
+          updated?._id ?? updated?.id ?? updated?._id?.$oid
+        );
+
+        state.items = state.items.map((item) =>
+          String(item._id ?? item.id ?? item) === updatedId ? updated : item
+        );
+
+        Object.keys(state.byOwner).forEach((ownerId) => {
+          const entry = state.byOwner[ownerId];
+          if (entry?.items) {
+            entry.items = entry.items.map((item) =>
+              String(item._id ?? item.id ?? item) === updatedId
+                ? updated
+                : item
+            );
+          }
+        });
+
+        if (state.currentArticle && state.currentArticle._id === updatedId) {
+          state.currentArticle = updated;
+        }
+      })
+      .addCase(updateArticle.rejected, handleRejected)
 
       // ==== FETCH BY OWNER ====
       .addCase(fetchArticlesByOwner.pending, handlePending)

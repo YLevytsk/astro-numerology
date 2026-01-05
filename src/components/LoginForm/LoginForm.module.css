@@ -3,7 +3,7 @@
   align-items: center;
   justify-content: center;
   margin: auto 0;
-  padding: 30px;
+  padding: 30px 16px;
 }
 
 .inputGroup {
@@ -12,49 +12,52 @@
   margin-bottom: 16px;
 }
 
-label {
+.label {
   margin-bottom: 4px;
-  font-weight: 400;
+  font-weight: 600;
   font-size: 12px;
-  color: #6c757d;
+  color: #5b4b8a;
 }
 .title {
   font-family: sans-serif;
   font-weight: 700;
   font-size: 32px;
   text-align: center;
-  color: #28a745;
+  color: #5b4b8a;
   margin-bottom: 20px;
 }
 .input {
-  border: 1px solid #9f9f9f;
-  border-radius: 8px;
+  border: 1px solid #c8cada;
+  border-radius: 12px;
   width: 266px;
-  height: 41px;
-  background-color: white;
+  height: 44px;
+  background-color: #f7f8fb;
   box-sizing: border-box;
+  padding: 10px 14px;
 }
 .input:focus {
-   outline: none;
-    border-color: #28a745;
+  outline: none;
+  border-color: #5b4b8a;
+  box-shadow: 0 0 0 3px rgba(91, 75, 138, 0.15);
 }
 .btn {
   border-radius: 64px;
-  padding: 8px;
+  padding: 10px 14px;
   width: 266px;
-  height: 38px;
-  background-color: #28a745;
-  color: white;
+  height: 44px;
+  background-color: #5b4b8a;
+  color: #ffffff;
   font-weight: 700;
   font-size: 16px;
   font-family: sans-serif;
-  border: none;
+  border: 1px solid #5b4b8a;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.2s ease, transform 0.1s ease, border-color 0.2s ease;
 }
 .btn:hover {
-  background-color: #257238;
-  transform: scale(1.05);
+  background-color: #3c2f66;
+  border-color: #3c2f66;
+  transform: translateY(-1px);
 }
 
 .passwordEye {
@@ -73,6 +76,7 @@ label {
   display: flex;
   align-items: center;
   justify-content: center;
+  color: #5b4b8a;
 }
 
 .eyeButton img {
@@ -85,8 +89,7 @@ color: #dc3545;
 font-size: 8px;
 }
 .errorInput {
-    border: 1px solid #dc3545
-    
+    border: 1px solid #dc3545;
 }
 
 .text {
@@ -94,14 +97,14 @@ font-size: 8px;
   font-size: 16px;
   line-height: 155%;
   text-align: center;
-  color: #6c757d !important;
+  color: #5b4b8a !important;
   margin-top: 20px;
 }
 .navlink {
   font-weight: 700;
   text-decoration: underline;
   text-decoration-skip-ink: none;
- color: #28a745 !important;
+  color: #3c2f66 !important;
 }
 .container {
   display: flex;
@@ -110,8 +113,9 @@ font-size: 8px;
   justify-content: center;
   width: 330px;
   height: 408px;
-  background-color: #e9ecef;
+  background-color: #E9ECF1;
   border-radius: 32px;
+  box-shadow: 0 10px 30px rgba(91, 75, 138, 0.08);
 }
 
 @media screen and (min-width: 768px) {
@@ -121,11 +125,11 @@ font-size: 8px;
   }
   .input {
     width: 458px;
-    height: 41px;
+    height: 44px;
   }
   .btn {
     width: 458px;
-    height: 38px;
+    height: 44px;
   }
 }
 

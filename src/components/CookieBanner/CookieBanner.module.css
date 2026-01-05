@@ -1,0 +1,103 @@
+.banner {
+  position: fixed;
+  z-index: 1100;
+  left: 16px;
+  right: 16px;
+  bottom: 16px;
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  padding: 16px 20px;
+  border-radius: 16px;
+  background: rgba(34, 34, 59, 0.92);
+  color: #f5f5f7;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(6px);
+}
+
+.textBlock {
+  flex: 1;
+  min-width: 0;
+}
+
+.title {
+  margin: 0 0 6px;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.text {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.45;
+  color: #e6e6eb;
+}
+
+.link {
+  display: inline-block;
+  margin-top: 6px;
+  color: #d7d7ff;
+  font-weight: 700;
+  font-size: 14px;
+  text-decoration: underline;
+}
+
+.link:hover,
+.link:focus-visible {
+  color: #ffffff;
+}
+
+.actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.button {
+  border: 1px solid transparent;
+  border-radius: 10px;
+  padding: 10px 16px;
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+.primary {
+  background: #5b4b8a;
+  border-color: #5b4b8a;
+  color: #fff;
+}
+
+.primary:hover,
+.primary:focus-visible {
+  background: #3c2f66;
+  border-color: #3c2f66;
+  color: #fff;
+}
+
+.secondary {
+  background: transparent;
+  border-color: #a7a7b8;
+  color: #f5f5f7;
+}
+
+.secondary:hover,
+.secondary:focus-visible {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: #f5f5f7;
+  color: #fff;
+}
+
+@media (max-width: 768px) {
+  .banner {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .actions {
+    width: 100%;
+    justify-content: flex-start;
+  }
+}

@@ -155,25 +155,34 @@
   padding: 16px;
   min-width: 379px;
   min-height: 57px;
-  background-color: var(--color-general);
+  background-color: var(--color-general, #5b4b8a);
+  border: 1px solid var(--color-general, #5b4b8a);
   font-weight: 700;
   font-size: 18px;
-  color: var(--color-white);
+  color: var(--color-white, #fff);
   display: flex;
   justify-content: center;
   align-items: center;
-  transition: all 0.3s ease;
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+  cursor: pointer;
 }
 
 .button:hover,
 .button:focus,
 .button:active {
-  background-color: var(--color-darker);
-  border: 1px solid var(--color-darker);
+  background-color: var(--color-darker, #3c2f66);
+  border: 1px solid var(--color-darker, #3c2f66);
+  color: var(--color-white, #fff);
+}
+
+.button:focus-visible {
+  outline: none;
+  box-shadow: none;
 }
 
 .buttonIcon {
   stroke-width: 1px;
+  stroke: currentColor;
   fill: none;
   transition: all 0.3s ease;
   margin-left: 16px;

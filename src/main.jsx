@@ -9,9 +9,10 @@ import { BrowserRouter } from "react-router-dom";
 import App from "./App";
 import { store, persistor } from "./redux/store";
 import { setAuthHeader } from "./redux/api/privateAPI";
+import { getCookie } from "./utils/cookies.js";
 
 // восстановление accessToken при старте
-const token = localStorage.getItem("accessToken");
+const token = getCookie("accessToken") || localStorage.getItem("accessToken");
 if (token) {
   setAuthHeader(token);
 }

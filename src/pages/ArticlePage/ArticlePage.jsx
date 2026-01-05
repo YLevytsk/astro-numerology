@@ -170,8 +170,13 @@ const ArticlePage = () => {
                             {suggested.title}
                           </Link>
 
-                          <Link className={s.linkButton} to={`/articles/${id}`}>
-                            竊・                          </Link>
+                          <Link
+                            className={s.linkButton}
+                            to={`/articles/${id}`}
+                            aria-label={`Open article ${suggested.title}`}
+                          >
+                            &rarr;
+                          </Link>
                         </div>
                         <p className={s.similarArticlesAuthor}>
                           {getUserName(users, suggested.ownerId)}

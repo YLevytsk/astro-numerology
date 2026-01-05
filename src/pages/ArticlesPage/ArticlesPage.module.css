@@ -1,8 +1,9 @@
-.articlesHeader {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin: 16px 0;
+.page {
+  padding-bottom: 96px;
+}
+
+.articleCountRow {
+  margin: 8px 0 16px;
 }
 
 .articleCount {
@@ -10,30 +11,54 @@
   font-size: 18px;
 }
 
+.filterBar {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 12px;
+  margin: 0 0 24px;
+  padding: 14px 18px;
+  border: 1px solid #e1e4ed;
+  border-radius: 18px;
+  background: #f7f8fb;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6);
+}
+
 .dropdownWrapper {
   position: relative;
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
 }
 
 .dropdown {
-  border: 1px solid var(--color-input-light);
-  border-radius: 4px;
-  padding: 4px 8px;
-  width: 169px;
-  height: 33px;
-  background-color: var(--color-white);
-  font-weight: 400;
+  border: 1px solid #5b4b8a;
+  border-radius: 10px;
+  padding: 8px 32px 8px 12px;
+  min-width: 140px;
+  height: auto;
+  background-color: #fff;
+  box-shadow: 0 1px 2px rgba(31, 41, 55, 0.1);
+  font-weight: 700;
   font-size: 16px;
-  line-height: 155%;
-  color: var(--color-input);
+  line-height: 1.4;
+  color: #5b4b8a;
   cursor: pointer;
-  appearance: none; /* приховує стрілочку */
-  transition: border 0.2s ease;
+  appearance: none;
+  transition: color 0.2s ease;
+  text-align: right;
+}
+
+.dropdown:focus-visible {
+  outline: 2px solid #7767c7;
+  outline-offset: 2px;
 }
 
 .dropdown:focus,
 .dropdown:hover {
   outline: none;
+  color: #493b73;
+  border-color: #493b73;
+  box-shadow: 0 0 0 3px rgba(75, 59, 115, 0.12);
 }
 
 .dropdown option:focus,
@@ -46,26 +71,23 @@
   width: 304px;
 }
 
-.dropdownWrapper::after {
-  position: absolute;
-  right: 16px;
-  top: 50%;
-  transform: translateY(-50%);
-  font-size: 14px;
-  color: #888;
-  pointer-events: none;
-}
-
 .dropdownIcon {
   position: absolute;
-  stroke-width: 1px;
   right: 8px;
   top: 50%;
   transform: translateY(-50%) rotate(0deg);
   transition: transform 0.5s ease;
   pointer-events: none;
+  font-size: 14px;
+  color: #7a7f8c;
+  line-height: 1;
 }
 
 .dropdownIcon.open {
   transform: translateY(-50%) rotate(180deg);
+}
+
+.listGap {
+  margin-top: 24px;
+  margin-bottom: 32px;
 }
