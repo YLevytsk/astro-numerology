@@ -3,7 +3,7 @@ import axios from "axios";
 import { setCookie, getCookie, deleteCookie } from "../../utils/cookies.js";
 
 const API_BASE_URL =
-  import.meta.env.VITE_API_BASE || "https://harmoniq.disainnova.com";
+  import.meta.env.VITE_API_BASE || "https://harmoniq.disainnova.com/api";
 
 /* ===================== AXIOS INSTANCE ===================== */
 export const axiosAPI = axios.create({

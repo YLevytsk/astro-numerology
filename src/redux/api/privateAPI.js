@@ -2,7 +2,7 @@
 import { getCookie } from "../../utils/cookies.js";
 
 const API_BASE_URL =
-  import.meta.env.VITE_API_BASE || "https://harmoniq.disainnova.com";
+  import.meta.env.VITE_API_BASE || "https://harmoniq.disainnova.com/api";
 
 /**
  * Axios instance for all authenticated requests
