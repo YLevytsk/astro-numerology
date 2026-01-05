@@ -23,10 +23,10 @@
   width: 1.75em;
   height: 1.75em;
   background-size: 100% 100%;
-  background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3e%3cpath stroke='rgba(233, 236, 241, 0.95)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+  background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3e%3cpath stroke='%235B4B8A' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
 }
 .custom-navbar .navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
-  background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3e%3cpath stroke='rgba(233, 236, 241, 0.95)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M7 7l16 16M23 7L7 23'/%3e%3c/svg%3e");
+  background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3e%3cpath stroke='%235B4B8A' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M7 7l16 16M23 7L7 23'/%3e%3c/svg%3e");
 }
 .custom-navbar .dropdown-toggle,
 .custom-navbar .nav-link.dropdown-toggle {
@@ -587,11 +587,13 @@
 
 /* REGISTER */
 .custom-navbar .btn-register {
-  background-color: #fafafa;
-  color: #5B4B8A;
+  background-color: #5B4B8A;
+  color: #ffffff;
+  border: 1px solid #5B4B8A;
 }
 .custom-navbar .btn-register:hover {
-  background-color: #FFB703;
+  background-color: #5B4B8A;
+  color: #ffffff;
 }
 
 /* LOGOUT (ﾐｸﾐｺﾐｾﾐｽﾐｺﾐｰ) */
