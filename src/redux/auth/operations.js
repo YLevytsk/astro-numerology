@@ -2,7 +2,8 @@
 import axios from "axios";
 import { setCookie, getCookie, deleteCookie } from "../../utils/cookies.js";
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE;
+const API_BASE_URL =
+  import.meta.env.VITE_API_BASE || "https://harmoniq.disainnova.com";
 
 /* ===================== AXIOS INSTANCE ===================== */
 export const axiosAPI = axios.create({
@@ -465,4 +466,5 @@ export const logoutThunk = createAsyncThunk("auth/logout", async () => {
   clearPersistedAuth();
   return true;
 });
+
 

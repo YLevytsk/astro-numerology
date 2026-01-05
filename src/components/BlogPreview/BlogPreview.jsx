@@ -23,19 +23,19 @@ export default function BlogPreview() {
       _id: "1",
       title: "Astrology Basics",
       desc: "Learn the fundamentals of astrology and how it influences daily life.",
-      img: "/images/blog1.jpg",
+      img: "/images/annotacia-fioletovogo-i-sinego-oblaka.webp",
     },
     {
       _id: "2",
       title: "Numerology Secrets",
       desc: "Discover what numbers reveal about your personality and destiny.",
-      img: "/images/blog2.jpg",
+      img: "/images/liafs.webp",
     },
     {
       _id: "3",
       title: "Cosmic Predictions",
       desc: "Explore forecasts from the stars for the upcoming season.",
-      img: "/images/blog3.jpg",
+      img: "/images/obloka.webp",
     },
   ];
 

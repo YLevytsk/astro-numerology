@@ -3,8 +3,9 @@ import s from "./ArticlesItem.module.css";
 import ButtonAddToBookmarks from "../ButtonAddToBookmarks/ButtonAddToBookmarks.jsx";
 import placeholderImg from "../../assets/Legacies.png";
 
-const API_URL =
-  (import.meta.env.VITE_API_BASE || "").replace(/\/api\/?$/, "");
+const API_URL = (
+  import.meta.env.VITE_API_BASE || "https://harmoniq.disainnova.com"
+).replace(/\/api\/?$/, "");
 
 const ArticlesItem = ({
   article,

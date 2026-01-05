@@ -1,7 +1,8 @@
 ﻿import axios from "axios";
 import { getCookie } from "../../utils/cookies.js";
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE;
+const API_BASE_URL =
+  import.meta.env.VITE_API_BASE || "https://harmoniq.disainnova.com";
 
 /**
  * Axios instance for all authenticated requests
@@ -55,3 +56,4 @@ privateAPI.interceptors.response.use(
   (response) => response,
   (error) => Promise.reject(error)
 );
+

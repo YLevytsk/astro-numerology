@@ -1,7 +1,8 @@
 import s from "./ConsultationsSection.module.css";
 
-const ASSET_BASE_URL =
-  (import.meta.env.VITE_API_BASE || "").replace(/\/api\/?$/, "");
+const ASSET_BASE_URL = (
+  import.meta.env.VITE_API_BASE || "https://harmoniq.disainnova.com"
+).replace(/\/api\/?$/, "");
 const withBase = (path) => `${ASSET_BASE_URL}${path}`;
 
 export default function ConsultationsSection() {

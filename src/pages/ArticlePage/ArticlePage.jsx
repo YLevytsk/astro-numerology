@@ -17,8 +17,9 @@ import {
 } from "../../redux/bookmarks/operations.js";
 import { selectBookmarks } from "../../redux/bookmarks/selectors.js";
 
-const API_BASE_URL =
-  (import.meta.env.VITE_API_BASE || "").replace(/\/api\/?$/, "");
+const API_BASE_URL = (
+  import.meta.env.VITE_API_BASE || "https://harmoniq.disainnova.com"
+).replace(/\/api\/?$/, "");
 
 const ArticlePage = () => {
   const isLoggedIn = useSelector(selectIsLoggedIn);

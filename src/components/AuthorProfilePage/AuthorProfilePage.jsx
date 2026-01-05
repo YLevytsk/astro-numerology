@@ -29,7 +29,8 @@ import ProfileBio from "../ProfileBio/ProfileBio.jsx";
 import css from "./AuthorProfilePage.module.css";
 
 /* ===================== ASSETS ===================== */
-const API_URL = import.meta.env.VITE_API_BASE || "";
+const API_URL =
+  import.meta.env.VITE_API_BASE || "https://harmoniq.disainnova.com";
 const ASSET_BASE = API_URL.replace(/\/api\/?$/, "");
 const buildAssetUrl = (path) => {
   if (!path) return "/default-avatar.png";
