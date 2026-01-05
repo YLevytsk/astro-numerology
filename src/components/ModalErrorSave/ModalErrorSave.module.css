@@ -31,23 +31,26 @@
   padding: 4px;
   width: 32px;
   height: 32px;
-  background: rgba(91, 75, 138, 0.1);
-  border: 1px solid rgba(91, 75, 138, 0.25);
-  color: #5B4B8A;
+  background: #ffffff;
+  border: 1px solid #5B4B8A;
+  color: #5B4B8A !important;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
-  z-index: 2;
+  z-index: 22;
 }
 .closeBtn:hover {
-  background: rgba(91, 75, 138, 0.2);
-  border-color: rgba(91, 75, 138, 0.45);
+  background: rgba(91, 75, 138, 0.12);
+  border-color: #5B4B8A;
 }
+
 .closeBtn svg {
   width: 20px;
   height: 20px;
+  color: inherit;
+  stroke: currentColor;
 }
 
 .title {

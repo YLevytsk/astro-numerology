@@ -201,7 +201,7 @@ export default function Navbar() {
                   </Link>
                 </li>
 
-                <li className="nav-item d-none d-lg-block">
+                <li className="nav-item">
                   <Link className="btn-register" to="/register">
                     Register
                   </Link>
