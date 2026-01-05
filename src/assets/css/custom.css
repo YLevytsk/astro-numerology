@@ -34,7 +34,7 @@
   font-weight: inherit;
 }
 .custom-navbar .nav-item.dropdown > .nav-link {
-  color: #FFD166 !important;
+  color: #E9ECF1 !important;
   font-weight: 600;
 }
 .custom-navbar .dropdown-toggle::after {
@@ -81,6 +81,23 @@
 }
 
 @media (max-width: 991.98px) {
+  .custom-navbar .navbar-collapse {
+    padding: 0.75rem 0;
+  }
+
+  .custom-navbar .navbar-nav {
+    gap: 0.4rem;
+  }
+
+  .custom-navbar .nav-item {
+    width: 100%;
+  }
+
+  .custom-navbar .nav-link {
+    display: inline-block;
+    padding-left: 0;
+  }
+
   .custom-navbar .nav-link-icon {
     display: none !important;
   }
