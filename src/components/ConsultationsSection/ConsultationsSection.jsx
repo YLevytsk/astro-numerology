@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import toast from "react-hot-toast";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { publicAPI } from "../../redux/api/publicAPI.js";
+import { axiosAPI } from "../../redux/auth/operations.js";
 import { selectIsLoggedIn } from "../../redux/auth/selectors.js";
 import s from "./ConsultationsSection.module.css";
 
@@ -108,13 +108,18 @@ export default function ConsultationsSection() {
     };
 
     setIsSubmitting(true);
-    publicAPI
+    axiosAPI
       .post("/consultations", payload)
       .then(() => {
         toast.success("Request sent successfully");
         setFormState({ firstName: "", lastName: "", email: "", phoneCode: "+44", phone: "", notes: "" });
       })
       .catch((err) => {
+        if (err?.response?.status === 401) {
+          toast.error("Consultations are available only to authorized users.");
+          navigate("/login");
+          return;
+        }
         const message = err?.response?.data?.message || "Failed to send request";
         toast.error(message);
       })
@@ -141,7 +146,7 @@ export default function ConsultationsSection() {
     const cancelUrl = `${window.location.origin}/consultations?paypalStatus=cancel`;
 
     setIsCreatingOrder(true);
-    publicAPI
+    axiosAPI
       .post("/paypal/orders", {
         amount,
         currency: "GBP",
@@ -159,6 +164,11 @@ export default function ConsultationsSection() {
         window.location.href = approveUrl;
       })
       .catch((err) => {
+        if (err?.response?.status === 401) {
+          toast.error("Consultations are available only to authorized users.");
+          navigate("/login");
+          return;
+        }
         const message = err?.response?.data?.message || err?.message || "Failed to create PayPal order";
         toast.error(message);
       })
@@ -178,12 +188,17 @@ export default function ConsultationsSection() {
 
     if (status === "return" && orderId && !isCapturing) {
       setIsCapturing(true);
-      publicAPI
+      axiosAPI
         .post("/paypal/capture", { orderId })
         .then(() => {
           toast.success("Payment confirmed");
         })
         .catch((err) => {
+          if (err?.response?.status === 401) {
+            toast.error("Consultations are available only to authorized users.");
+            navigate("/login");
+            return;
+          }
           const message = err?.response?.data?.message || "Failed to confirm payment";
           toast.error(message);
         })
