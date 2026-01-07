@@ -115,11 +115,17 @@
 }
 
 .cardText {
-  font-size: 15px;
+  font-size: 18px;
   line-height: 1.5;
   color: #6c757d;
 
   flex-grow: 1;               /* 🔥 растягивает */
+}
+
+@media (max-width: 767.98px) {
+  .cardText {
+    font-size: 17px;
+  }
 }
 
 /* BUTTON */
