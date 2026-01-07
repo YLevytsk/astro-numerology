@@ -157,10 +157,142 @@
   font-weight: 600;
 }
 
+.formCard {
+  margin-top: 32px;
+  padding: 24px;
+  background: rgba(255, 255, 255, 0.92);
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  max-width: 420px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.formTitle {
+  margin: 0 0 8px;
+  font-size: 22px;
+  font-weight: 700;
+  color: #5b4b8a;
+}
+
+.formSubtitle {
+  margin: 0 0 16px;
+  color: #595b5d;
+  font-size: 16px;
+}
+
+.form {
+  display: grid;
+  gap: 12px;
+}
+
+.label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  color: #5b4b8a;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.input {
+  height: 44px;
+  border: 1px solid #c8cada;
+  border-radius: 10px;
+  padding: 0 12px;
+  box-sizing: border-box;
+  background-color: #f7f8fb;
+  font-size: 15px;
+}
+
+.input:focus {
+  outline: none;
+  border-color: #5b4b8a;
+  box-shadow: 0 0 0 3px rgba(91, 75, 138, 0.12);
+}
+
+.select {
+  height: 44px;
+  border: 1px solid #c8cada;
+  border-radius: 10px;
+  padding: 0 12px;
+  box-sizing: border-box;
+  background-color: #f7f8fb;
+  font-size: 15px;
+}
+
+.select:focus {
+  outline: none;
+  border-color: #5b4b8a;
+  box-shadow: 0 0 0 3px rgba(91, 75, 138, 0.12);
+}
+
+.submit {
+  margin-top: 4px;
+  height: 46px;
+  border-radius: 12px;
+  border: 1px solid #5b4b8a;
+  background: #5b4b8a;
+  color: #fff;
+  font-weight: 700;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.submit:hover {
+  background: #4a3e73;
+  transform: translateY(-1px);
+}
+
+.payButton {
+  margin-top: 8px;
+  height: 46px;
+  border-radius: 12px;
+  border: 1px solid #00457c;
+  background: #0070ba;
+  color: #fff;
+  font-weight: 700;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.payButton:hover {
+  background: #005c99;
+  transform: translateY(-1px);
+}
+
+.actions {
+  display: grid;
+  gap: 10px;
+}
+
+.textarea {
+  width: 100%;
+  min-height: 80px;
+  border: 1px solid #c8cada;
+  border-radius: 10px;
+  padding: 10px 12px;
+  box-sizing: border-box;
+  background-color: #f7f8fb;
+  font-size: 15px;
+  resize: vertical;
+}
+
+.textarea:focus {
+  outline: none;
+  border-color: #5b4b8a;
+  box-shadow: 0 0 0 3px rgba(91, 75, 138, 0.12);
+}
+
 /* TABLET ≥768px */
 @media (min-width: 768px) {
   .inner {
     max-width: 704px;
+  }
+  .formCard {
+    max-width: 420px;
   }
 
   .list {
@@ -180,6 +312,9 @@
 @media (min-width: 1440px) {
   .inner {
     max-width: 1225px;
+  }
+  .formCard {
+    max-width: 420px;
   }
 
   .list {
