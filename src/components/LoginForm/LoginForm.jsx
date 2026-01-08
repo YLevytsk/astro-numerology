@@ -1,7 +1,7 @@
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import toast from "react-hot-toast";
-import { useId, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate, NavLink } from "react-router-dom";
 
@@ -14,6 +14,7 @@ import eyeClosed from "../../assets/img/eye-closed.svg";
 const LoginForm = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const formikRef = useRef(null);
 
   const validationSchema = Yup.object().shape({
     email: Yup.string().email("Invalid email format").required("Email is required"),
@@ -24,6 +25,10 @@ const LoginForm = () => {
   const initialValues = { email: "", password: "" };
   const emailId = useId();
   const passwordId = useId();
+
+  useEffect(() => {
+    formikRef.current?.resetForm();
+  }, []);
 
   const handleSubmit = async (values) => {
     try {
@@ -40,7 +45,12 @@ const LoginForm = () => {
       <div className={css.container}>
         <h3 className={css.title}>Login</h3>
 
-        <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={handleSubmit}>
+        <Formik
+          initialValues={initialValues}
+          validationSchema={validationSchema}
+          onSubmit={handleSubmit}
+          innerRef={formikRef}
+        >
           <Form>
             <div className={css.inputGroup}>
               <label htmlFor={emailId} className={css.label}>Email</label>

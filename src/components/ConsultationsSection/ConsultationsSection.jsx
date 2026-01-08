@@ -65,11 +65,21 @@ export default function ConsultationsSection() {
     phone: "",
     notes: "",
   });
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const [isCreatingOrder, setIsCreatingOrder] = useState(false);
   const [isCapturing, setIsCapturing] = useState(false);
 
   const formRef = useRef(null);
+
+  const resetForm = () => {
+    setFormState({
+      firstName: "",
+      lastName: "",
+      email: "",
+      phoneCode: "+44",
+      phone: "",
+      notes: "",
+    });
+  };
 
   const openConsultationForm = (consultation) => {
     if (!isLoggedIn) {
@@ -79,6 +89,7 @@ export default function ConsultationsSection() {
     }
     setSelected(consultation);
     setIsConsultationOpen(true);
+    resetForm();
     if (formRef.current) {
       formRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
     }
@@ -87,44 +98,6 @@ export default function ConsultationsSection() {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormState((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (!selected) return;
-
-    if (!isLoggedIn) {
-      toast.error("Consultations are available only to authorized users.");
-      navigate("/login");
-      return;
-    }
-
-    const payload = {
-      consultationId: selected.id,
-      firstName: formState.firstName,
-      lastName: formState.lastName,
-      email: formState.email,
-      phone: `${formState.phoneCode}${formState.phone}`.trim(),
-      notes: formState.notes,
-    };
-
-    setIsSubmitting(true);
-    axiosAPI
-      .post("/consultations", payload)
-      .then(() => {
-        toast.success("Request sent successfully");
-        setFormState({ firstName: "", lastName: "", email: "", phoneCode: "+44", phone: "", notes: "" });
-      })
-      .catch((err) => {
-        if (err?.response?.status === 401) {
-          toast.error("Consultations are available only to authorized users.");
-          navigate("/login");
-          return;
-        }
-        const message = err?.response?.data?.message || "Failed to send request";
-        toast.error(message);
-      })
-      .finally(() => setIsSubmitting(false));
   };
 
   const handlePayPal = () => {
@@ -141,6 +114,10 @@ export default function ConsultationsSection() {
       toast.error("Enter email before paying");
       return;
     }
+    if (!formState.firstName || !formState.lastName || !formState.phone) {
+      toast.error("Please fill in all required fields");
+      return;
+    }
 
     const amount = parseFloat(String(selected.price).replace(/[^\d.]/g, "")) || 0;
     const returnUrl = `${window.location.origin}/consultations?paypalStatus=return`;
@@ -153,7 +130,13 @@ export default function ConsultationsSection() {
         currency: "GBP",
         description: selected.title,
         consultationId: selected.id,
-        customerEmail: formState.email,
+        customer: {
+          firstName: formState.firstName,
+          lastName: formState.lastName,
+          email: formState.email,
+          phone: `${formState.phoneCode}${formState.phone}`.trim(),
+          notes: formState.notes,
+        },
         returnUrl,
         cancelUrl,
       })
@@ -193,6 +176,9 @@ export default function ConsultationsSection() {
         .post("/paypal/capture", { orderId })
         .then(() => {
           toast.success("Payment confirmed");
+          setIsConsultationOpen(false);
+          setSelected(null);
+          resetForm();
         })
         .catch((err) => {
           if (err?.response?.status === 401) {
@@ -262,7 +248,7 @@ export default function ConsultationsSection() {
             <p className={s.formSubtitle}>
               Selected: <strong>{selected.title}</strong>
             </p>
-            <form className={s.form} onSubmit={handleSubmit}>
+            <form className={s.form}>
               <label className={s.label}>
                 First name
                 <input
@@ -335,9 +321,6 @@ export default function ConsultationsSection() {
             </label>
 
             <div className={s.actions}>
-              <button type="submit" className={s.submit} disabled={isSubmitting}>
-                {isSubmitting ? "Sending..." : "Send request"}
-              </button>
               {isLoggedIn && (
                 <button
                   type="button"
@@ -345,7 +328,7 @@ export default function ConsultationsSection() {
                   onClick={handlePayPal}
                   disabled={isCreatingOrder || isCapturing}
                 >
-                  {isCreatingOrder ? "Paying..." : "Pay with PayPal"}
+                  {isCreatingOrder ? "Paying..." : isCapturing ? "Confirming..." : "Pay with PayPal"}
                 </button>
               )}
             </div>

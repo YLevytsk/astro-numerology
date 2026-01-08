@@ -3,7 +3,7 @@ import * as Yup from "yup";
 import { Link, useNavigate } from "react-router-dom";
 import s from "./RegisterForm.module.css";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import IconEye from "../../assets/img/eye.svg";
 import IconEyeClosed from "../../assets/img/eye-closed.svg";
 import { toast } from "react-hot-toast";
@@ -35,6 +35,7 @@ const validationSchema = Yup.object({
 const RegisterForm = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const formikRef = useRef(null);
 
   const initialValues = {
     name: "",
@@ -45,6 +46,10 @@ const RegisterForm = () => {
 
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+  useEffect(() => {
+    formikRef.current?.resetForm();
+  }, []);
 
   const handleSubmit = async (values, { setSubmitting, resetForm }) => {
     setSubmitting(true);
@@ -78,6 +83,7 @@ const RegisterForm = () => {
         initialValues={initialValues}
         validationSchema={validationSchema}
         onSubmit={handleSubmit}
+        innerRef={formikRef}
       >
         {({ isSubmitting }) => (
           <Form className={s.registerForm}>
