@@ -104,8 +104,7 @@ export default function ConsultationsSection() {
       firstName: formState.firstName,
       lastName: formState.lastName,
       email: formState.email,
-      phone: `${formState.phoneCode} ${formState.phone}`.trim(),
-      phoneCode: formState.phoneCode,
+      phone: `${formState.phoneCode}${formState.phone}`.trim(),
       notes: formState.notes,
     };
 
