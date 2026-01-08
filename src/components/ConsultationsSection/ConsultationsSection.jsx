@@ -134,10 +134,10 @@ export default function ConsultationsSection() {
         returnUrl,
         cancelUrl,
       })
-      .then(({ data }) => {
-        const approveUrl = data?.approveUrl;
+      .then((res) => {
+        const approveUrl = res.data?.data?.approveUrl;
         if (!approveUrl) {
-          throw new Error("Missing approve URL");
+          throw new Error("PayPal approveUrl missing");
         }
         window.location.href = approveUrl;
       })
