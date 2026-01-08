@@ -293,7 +293,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 24px 12px;
+  padding: 64px 12px 24px;
   overflow-y: auto;
   z-index: 20;
 }
