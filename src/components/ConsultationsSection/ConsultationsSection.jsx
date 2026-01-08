@@ -130,13 +130,7 @@ export default function ConsultationsSection() {
         currency: "GBP",
         description: selected.title,
         consultationId: selected.id,
-        customer: {
-          firstName: formState.firstName,
-          lastName: formState.lastName,
-          email: formState.email,
-          phone: `${formState.phoneCode}${formState.phone}`.trim(),
-          notes: formState.notes,
-        },
+        customerEmail: formState.email,
         returnUrl,
         cancelUrl,
       })
