@@ -286,6 +286,60 @@
   box-shadow: 0 0 0 3px rgba(91, 75, 138, 0.12);
 }
 
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(12, 14, 23, 0.55);
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 32px 16px;
+  overflow-y: auto;
+  z-index: 20;
+}
+
+.modalCard {
+  margin: 0;
+  max-width: 520px;
+  width: min(520px, 100%);
+  position: relative;
+  animation: fadeInUp 0.2s ease;
+}
+
+.closeButton {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  border: none;
+  background: transparent;
+  color: #5b4b8a;
+  font-size: 18px;
+  font-weight: 700;
+  cursor: pointer;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.closeButton:hover {
+  background-color: rgba(91, 75, 138, 0.1);
+  color: #40356a;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 /* TABLET ≥768px */
 @media (min-width: 768px) {
   .inner {

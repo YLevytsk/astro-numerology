@@ -15,30 +15,33 @@ export default function ConsultationsSection() {
   const navigate = useNavigate();
   const location = useLocation();
   const isLoggedIn = useSelector(selectIsLoggedIn);
-  const consultations = useMemo(() => [
-    {
-      id: "1",
-      title: "Money Code",
-      desc: "Discover your personal money pattern, uncover hidden financial blocks, and learn how to attract stable income with confidence, clarity, and the right timing.",
-      price: "£25",
-      image: withBase("/uploads/chatgpt-hero-02.webp"),
-      icon: "/images/money-code.svg",
-    },
-    {
-      id: "2",
-      title: "Marriage Year",
-      desc: "Find out when love is truly on your side. Identify the most favorable periods for marriage and deep relationships and avoid years that bring challenges.",
-      price: "£25",
-      image: withBase("/uploads/chatgpt-hero-01.webp"),
-    },
-    {
-      id: "3",
-      title: "Life Purpose",
-      desc: "Understand why you are here, what your natural talents are, and which direction brings fulfillment, growth, and long-term success.",
-      price: "£25",
-      image: withBase("/uploads/chatgpt-hero-03.webp"),
-    },
-  ], []);
+  const consultations = useMemo(
+    () => [
+      {
+        id: "1",
+        title: "Money Code",
+        desc: "Discover your personal money pattern, uncover hidden financial blocks, and learn how to attract stable income with confidence, clarity, and the right timing.",
+        price: "£25",
+        image: withBase("/uploads/chatgpt-hero-02.webp"),
+        icon: "/images/money-code.svg",
+      },
+      {
+        id: "2",
+        title: "Marriage Year",
+        desc: "Find out when love is truly on your side. Identify the most favorable periods for marriage and deep relationships and avoid years that bring challenges.",
+        price: "£25",
+        image: withBase("/uploads/chatgpt-hero-01.webp"),
+      },
+      {
+        id: "3",
+        title: "Life Purpose",
+        desc: "Understand why you are here, what your natural talents are, and which direction brings fulfillment, growth, and long-term success.",
+        price: "£25",
+        image: withBase("/uploads/chatgpt-hero-03.webp"),
+      },
+    ],
+    []
+  );
   const countryCodes = useMemo(
     () => [
       { code: "GB", dial: "+44", label: "United Kingdom (+44)" },
@@ -91,7 +94,19 @@ export default function ConsultationsSection() {
     setIsConsultationOpen(true);
     resetForm();
     if (formRef.current) {
-      formRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
+      formRef.current.focus();
+    }
+  };
+
+  const closeConsultationForm = () => {
+    setIsConsultationOpen(false);
+    setSelected(null);
+    resetForm();
+  };
+
+  const handleOverlayClick = (event) => {
+    if (event.target === event.currentTarget) {
+      closeConsultationForm();
     }
   };
 
@@ -237,98 +252,119 @@ export default function ConsultationsSection() {
         </ul>
 
         {isConsultationOpen && selected && isLoggedIn && (
-          <div ref={formRef} className={s.formCard} aria-live="polite">
-            <h3 className={s.formTitle}>Send a request</h3>
-            <p className={s.formSubtitle}>
-              Selected: <strong>{selected.title}</strong>
-            </p>
-            <form className={s.form}>
-              <label className={s.label}>
-                First name
-                <input
-                  className={s.input}
-                  type="text"
-                  name="firstName"
-                  value={formState.firstName}
-                  onChange={handleChange}
-                  required
-                />
-              </label>
-              <label className={s.label}>
-                Last name
-                <input
-                  className={s.input}
-                  type="text"
-                  name="lastName"
-                  value={formState.lastName}
-                  onChange={handleChange}
-                  required
-                />
-              </label>
-              <label className={s.label}>
-                Email
-                <input
-                  className={s.input}
-                  type="email"
-                  name="email"
-                  value={formState.email}
-                  onChange={handleChange}
-                  required
-                />
-            </label>
-            <label className={s.label}>
-              Country code
-              <select
-                className={s.select}
-                name="phoneCode"
-                value={formState.phoneCode}
-                onChange={handleChange}
-                required
+          <div
+            className={s.modalOverlay}
+            onClick={handleOverlayClick}
+            role="presentation"
+          >
+            <div
+              ref={formRef}
+              className={`${s.formCard} ${s.modalCard}`}
+              aria-live="polite"
+              role="dialog"
+              aria-modal="true"
+              tabIndex={-1}
+            >
+              <button
+                type="button"
+                className={s.closeButton}
+                onClick={closeConsultationForm}
+                aria-label="Close consultation form"
               >
-                {countryCodes.map((c) => (
-                  <option key={c.code} value={c.dial}>
-                    {c.label}
-                  </option>
-                ))}
-              </select>
-            </label>
-            <label className={s.label}>
-              Phone
-              <input
-                className={s.input}
-                type="tel"
-                name="phone"
-                value={formState.phone}
-                onChange={handleChange}
-                required
-              />
-            </label>
-            <label className={s.label}>
-              Notes (optional)
-              <textarea
-                className={s.textarea}
-                name="notes"
-                value={formState.notes}
-                onChange={handleChange}
-                rows="3"
-              />
-            </label>
+                X
+              </button>
+              <h3 className={s.formTitle}>Send a request</h3>
+              <p className={s.formSubtitle}>
+                Selected: <strong>{selected.title}</strong>
+              </p>
+              <form className={s.form}>
+                <label className={s.label}>
+                  First name
+                  <input
+                    className={s.input}
+                    type="text"
+                    name="firstName"
+                    value={formState.firstName}
+                    onChange={handleChange}
+                    required
+                  />
+                </label>
+                <label className={s.label}>
+                  Last name
+                  <input
+                    className={s.input}
+                    type="text"
+                    name="lastName"
+                    value={formState.lastName}
+                    onChange={handleChange}
+                    required
+                  />
+                </label>
+                <label className={s.label}>
+                  Email
+                  <input
+                    className={s.input}
+                    type="email"
+                    name="email"
+                    value={formState.email}
+                    onChange={handleChange}
+                    required
+                  />
+                </label>
+                <label className={s.label}>
+                  Country code
+                  <select
+                    className={s.select}
+                    name="phoneCode"
+                    value={formState.phoneCode}
+                    onChange={handleChange}
+                    required
+                  >
+                    {countryCodes.map((c) => (
+                      <option key={c.code} value={c.dial}>
+                        {c.label}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+                <label className={s.label}>
+                  Phone
+                  <input
+                    className={s.input}
+                    type="tel"
+                    name="phone"
+                    value={formState.phone}
+                    onChange={handleChange}
+                    required
+                  />
+                </label>
+                <label className={s.label}>
+                  Notes (optional)
+                  <textarea
+                    className={s.textarea}
+                    name="notes"
+                    value={formState.notes}
+                    onChange={handleChange}
+                    rows="3"
+                  />
+                </label>
 
-            <div className={s.actions}>
-              {isLoggedIn && (
-                <button
-                  type="button"
-                  className={s.payButton}
-                  onClick={handlePayPal}
-                  disabled={isCreatingOrder || isCapturing}
-                >
-                  {isCreatingOrder ? "Paying..." : isCapturing ? "Confirming..." : "Pay with PayPal"}
-                </button>
-              )}
+                <div className={s.actions}>
+                  {isLoggedIn && (
+                    <button
+                      type="button"
+                      className={s.payButton}
+                      onClick={handlePayPal}
+                      disabled={isCreatingOrder || isCapturing}
+                    >
+                      {isCreatingOrder ? "Paying..." : isCapturing ? "Confirming..." : "Pay with PayPal"}
+                    </button>
+                  )}
+                </div>
+              </form>
             </div>
-          </form>
-        </div>
-      )}
+          </div>
+        )}
       </div>
     </section>
   );
