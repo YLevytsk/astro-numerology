@@ -293,7 +293,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 64px 12px 24px;
+  padding: 56px 10px 16px;
   overflow-y: auto;
   z-index: 20;
 }
@@ -304,9 +304,9 @@
   width: min(520px, 100%);
   position: relative;
   animation: fadeInUp 0.2s ease;
-  max-height: calc(100vh - 32px);
+  max-height: calc(100vh - 24px);
   overflow: auto;
-  padding: 16px;
+  padding: 14px;
 }
 
 .closeButton {
