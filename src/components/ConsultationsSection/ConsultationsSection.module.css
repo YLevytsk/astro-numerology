@@ -304,9 +304,9 @@
   width: min(520px, 100%);
   position: relative;
   animation: fadeInUp 0.2s ease;
-  max-height: calc(100vh - 48px);
+  max-height: calc(100vh - 32px);
   overflow: auto;
-  padding: 20px;
+  padding: 16px;
 }
 
 .closeButton {

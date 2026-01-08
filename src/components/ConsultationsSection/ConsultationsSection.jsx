@@ -338,17 +338,6 @@ export default function ConsultationsSection() {
                     required
                   />
                 </label>
-                <label className={s.label}>
-                  Notes (optional)
-                  <textarea
-                    className={s.textarea}
-                    name="notes"
-                    value={formState.notes}
-                    onChange={handleChange}
-                    rows="3"
-                  />
-                </label>
-
                 <div className={s.actions}>
                   {isLoggedIn && (
                     <button
