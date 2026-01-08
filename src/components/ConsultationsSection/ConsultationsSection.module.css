@@ -291,9 +291,9 @@
   inset: 0;
   background: rgba(12, 14, 23, 0.55);
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: center;
-  padding: 32px 16px;
+  padding: 24px 12px;
   overflow-y: auto;
   z-index: 20;
 }
@@ -304,6 +304,9 @@
   width: min(520px, 100%);
   position: relative;
   animation: fadeInUp 0.2s ease;
+  max-height: calc(100vh - 48px);
+  overflow: auto;
+  padding: 20px;
 }
 
 .closeButton {
