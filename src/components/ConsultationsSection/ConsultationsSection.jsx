@@ -56,6 +56,7 @@ export default function ConsultationsSection() {
   );
 
   const [selected, setSelected] = useState(null);
+  const [isConsultationOpen, setIsConsultationOpen] = useState(false);
   const [formState, setFormState] = useState({
     firstName: "",
     lastName: "",
@@ -70,13 +71,14 @@ export default function ConsultationsSection() {
 
   const formRef = useRef(null);
 
-  const handleSelect = (consultation) => {
+  const openConsultationForm = (consultation) => {
     if (!isLoggedIn) {
       toast.error("Consultations are available only to authorized users.");
       navigate("/login");
       return;
     }
     setSelected(consultation);
+    setIsConsultationOpen(true);
     if (formRef.current) {
       formRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
     }
@@ -240,7 +242,11 @@ export default function ConsultationsSection() {
 
                   <p className={s.cardText}>{desc}</p>
 
-                  <button className={s.button} type="button" onClick={() => handleSelect({ id, title, desc, price })}>
+                  <button
+                    className={s.button}
+                    type="button"
+                    onClick={() => openConsultationForm({ id, title, desc, price })}
+                  >
                     Book Consultation
                   </button>
                 </div>
@@ -251,7 +257,7 @@ export default function ConsultationsSection() {
           ))}
         </ul>
 
-        {selected && isLoggedIn && (
+        {isConsultationOpen && selected && isLoggedIn && (
           <div ref={formRef} className={s.formCard} aria-live="polite">
             <h3 className={s.formTitle}>Send a request</h3>
             <p className={s.formSubtitle}>
