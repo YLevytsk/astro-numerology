@@ -72,7 +72,7 @@ export const updateArticle = createAsyncThunk(
   "articles/updateArticle",
   async ({ articleId, formData }, thunkAPI) => {
     try {
-      const response = await axiosAPI.put(
+      const response = await axiosAPI.patch(
         `/articles/${articleId}`,
         formData
       );
