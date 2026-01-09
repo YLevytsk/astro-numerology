@@ -1,7 +1,7 @@
 .registerContainer{
   padding: 40px 28px;
   background-color: #E9ECF1;
-  border-radius: 32px;
+  border-radius: 20px;
   width: 306px;
   box-sizing: border-box;
   max-width: calc(100% - 64px);
@@ -15,6 +15,8 @@
   width: 100%;
   max-width: 252px;
   color: #5b4b8a;
+  font-weight: 700;
+  font-family: "Manrope", sans-serif;
 }
 .description{
   font-size: 16px;
@@ -38,7 +40,10 @@
   align-items: center;
   flex-direction: column;
   width: 100%;
-  max-width: 252px;
+  max-width: 100%;
+}
+.registerForm > * {
+  width: 100%;
 }
 .labelForm{
   font-size: 12px;
@@ -50,11 +55,10 @@
 }
 .fieldForm{
   height: 44px;
-  border-radius: 12px;
+  border-radius: 12px !important;
   border: 1px solid #c8cada;
   padding: 0 12px;
   width: 100%;
-  max-width: 252px;
   box-sizing: border-box;
   background-color: #f7f8fb;
 }
@@ -67,6 +71,7 @@
   position: relative;
   display: flex;
   align-items: center;
+  width: 100%;
 }
 .eyeBtn {
   position: absolute;
@@ -115,9 +120,9 @@
 }
 .createBtn{
   background-color: #5b4b8a;
-  border-radius: 64px !important;
+  border-radius: 12px !important;
   width: 100%;
-  max-width: 252px;
+  box-sizing: border-box;
   height: 44px;
   padding: 10px 14px !important;
   color: #ffffff;
@@ -133,6 +138,7 @@
 .createBtn:hover{
   background-color: #3c2f66;
   border-color: #3c2f66;
+  color: #ffd166;
   transform: translateY(-1px);
 }
 .descAcc{
@@ -164,17 +170,16 @@
   }
 
   .registerForm {
-    max-width: 389px;
-
+    max-width: 100%;
   }
 
   .fieldForm {
-    max-width: 389px;
+    max-width: 100%;
   }
 
 
   .createBtn {
-    max-width: 389px;
+    max-width: 100%;
   }
 
 }
@@ -193,16 +198,16 @@
   }
 
   .registerForm {
-    max-width: 279px;
+    max-width: 100%;
 
   }
 
   .fieldForm {
-    max-width: 279px;
+    max-width: 100%;
   }
 
 
   .createBtn {
-    max-width: 279px;
+    max-width: 100%;
   }
 }

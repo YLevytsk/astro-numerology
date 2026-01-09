@@ -33,7 +33,7 @@
   max-width: 760px;
   margin-left: auto;
   margin-right: auto;
-  background: rgba(255, 255, 255, 0.9);
+  background: #E9ECF1;
   border-radius: 16px;
   text-align: center;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
@@ -404,4 +404,22 @@
 .cardWrapper:hover .card {
   transform: translateY(-4px);
   box-shadow: 0 14px 40px rgba(0, 0, 0, 0.12);
+}
+
+/* Button hover override */
+.button {
+  transition: transform 0.2s ease, opacity 0.2s ease, color 0.2s ease;
+}
+
+.button:hover {
+  color: #ffd166;
+}
+
+/* Override: ensure consultation buttons darken on hover */
+.button {
+  transition: transform 0.2s ease, opacity 0.2s ease, background-color 0.2s ease, color 0.2s ease;
+}
+
+.button:hover {
+  background: #3c2f66;
 }

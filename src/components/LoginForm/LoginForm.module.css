@@ -19,7 +19,7 @@
   color: #5b4b8a;
 }
 .title {
-  font-family: sans-serif;
+  font-family: "Manrope", sans-serif;
   font-weight: 700;
   font-size: 32px;
   text-align: center;
@@ -28,7 +28,7 @@
 }
 .input {
   border: 1px solid #c8cada;
-  border-radius: 12px;
+  border-radius: 12px !important;
   width: 100%;
   max-width: 266px;
   height: 44px;
@@ -42,11 +42,12 @@
   box-shadow: 0 0 0 3px rgba(91, 75, 138, 0.15);
 }
 .btn {
-  border-radius: 64px !important;
+  border-radius: 12px !important;
   padding: 10px 14px !important;
   width: 100%;
   max-width: 266px;
   height: 44px;
+  margin-top: 16px;
   background-color: #5b4b8a;
   color: #ffffff;
   font-weight: 700 !important;
@@ -59,6 +60,7 @@
 .btn:hover {
   background-color: #3c2f66;
   border-color: #3c2f66;
+  color: #ffd166;
   transform: translateY(-1px);
 }
 
@@ -117,7 +119,7 @@ font-size: 8px;
   max-width: calc(100% - 64px);
   height: 408px;
   background-color: #E9ECF1;
-  border-radius: 32px;
+  border-radius: 20px;
   box-shadow: 0 10px 30px rgba(91, 75, 138, 0.08);
 }
 
@@ -133,6 +135,7 @@ font-size: 8px;
   .btn {
     width: 458px;
     height: 44px;
+    margin-top: 16px;
   }
 }
 
@@ -143,10 +146,11 @@ font-size: 8px;
   }
   .input {
     width: 328px;
-    height: 41px;
+    height: 44px;
   }
   .btn {
     width: 328px;
-    height: 38px;
+    height: 44px;
+    margin-top: 16px;
   }
 }
