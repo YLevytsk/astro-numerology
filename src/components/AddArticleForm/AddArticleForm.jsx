@@ -183,10 +183,6 @@ export const CreateArticleForm = () => {
           createFormData.append("img", values.image);
         }
         createFormData.append("desc", values.text.slice(0, 40000));
-        createFormData.append(
-          "date",
-          editingArticle?.date || new Date().toISOString().slice(0, 10)
-        ); // YYYY-MM-DD
 
         await dispatch(addArticle(createFormData)).unwrap();
         toast.success("Article successfully created!");
