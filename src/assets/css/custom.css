@@ -612,7 +612,7 @@
    BLOG SECTION
    ========================= */
 .section-blog {
-  background: linear-gradient(rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.4)), url("https://harmoniq.disainnova.com/uploads/koncepcia-numerologii-s-sinimi-i-fioletovymi-ottenkami.webp")
+  background: linear-gradient(rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.4)), url("/images/koncepcia-numerologii-s-sinimi-i-fioletovymi-ottenkami.webp")
               center/cover no-repeat;
   position: relative;
   min-height: 600px;
