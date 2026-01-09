@@ -160,29 +160,35 @@ export const CreateArticleForm = () => {
   };
 
   const handleSubmit = async (values, { resetForm, setFieldValue }) => {
-    const formData = new FormData();
-    formData.append("title", values.title);
-    formData.append("article", values.text);
-    if (values.image) {
-      formData.append("img", values.image);
-    }
-    formData.append("desc", values.text.slice(0, 40000));
-    formData.append(
-      "date",
-      editingArticle?.date || new Date().toISOString().slice(0, 10)
-    ); // YYYY-MM-DD
-
     try {
       if (isEdit && normalizedArticleId) {
+        const editFormData = new FormData();
+        editFormData.append("article", values.text);
+        if (values.image) {
+          editFormData.append("img", values.image);
+        }
+
         await dispatch(
           updateArticle({
             articleId: normalizedArticleId,
-            formData,
+            formData: editFormData,
           })
         ).unwrap();
         toast.success("Article updated!");
       } else {
-        await dispatch(addArticle(formData)).unwrap();
+        const createFormData = new FormData();
+        createFormData.append("title", values.title);
+        createFormData.append("article", values.text);
+        if (values.image) {
+          createFormData.append("img", values.image);
+        }
+        createFormData.append("desc", values.text.slice(0, 40000));
+        createFormData.append(
+          "date",
+          editingArticle?.date || new Date().toISOString().slice(0, 10)
+        ); // YYYY-MM-DD
+
+        await dispatch(addArticle(createFormData)).unwrap();
         toast.success("Article successfully created!");
       }
 
