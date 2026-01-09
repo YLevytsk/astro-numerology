@@ -126,7 +126,7 @@ export const fetchArticlesByOwner = createAsyncThunk(
   async (ownerId, thunkAPI) => {
     try {
       const response = await publicAPI.get("/articles", {
-        params: { ownerId },
+        params: { ownerId, page: 1, limit: 100 },
       });
 
       const articles = Array.isArray(response.data?.data?.data)

@@ -72,7 +72,7 @@ const slice = createSlice({
         }
 
         // Оновлюємо hasMore
-        state.hasMore = action.payload.length >= state.limit;
+        state.hasMore = action.payload.length > 0;
       })
       .addCase(fetchArticles.rejected, handleRejected)
 
