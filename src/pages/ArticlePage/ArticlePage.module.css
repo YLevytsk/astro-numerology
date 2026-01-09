@@ -151,14 +151,14 @@
 }
 
 .button {
-  border-radius: 64px;
-  padding: 16px;
-  min-width: 379px;
-  min-height: 57px;
+  border-radius: 12px;
+  padding: 10px 20px;
+  min-width: 200px;
+  min-height: 44px;
   background-color: var(--color-general, #5b4b8a);
   border: 1px solid var(--color-general, #5b4b8a);
   font-weight: 700;
-  font-size: 18px;
+  font-size: 16px;
   color: var(--color-white, #fff);
   display: flex;
   justify-content: center;

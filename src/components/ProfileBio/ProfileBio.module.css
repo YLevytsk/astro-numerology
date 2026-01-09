@@ -26,21 +26,21 @@
   align-items: center;
   justify-content: center;
   min-width: 120px;
-  height: 42px;
+  height: 44px;
   padding: 0 16px;
   background: #fff;
-  border: 1px solid #a42dd7;
-  color: #a42dd7;
+  border: 1px solid #5b4b8a;
+  color: #5b4b8a;
   font-weight: 700;
   font-size: 14px;
   cursor: pointer;
-  border-radius: 16px;
+  border-radius: 12px;
   transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
 }
 
 .editButton:hover {
-  background: #360450;
-  border-color: #360450;
+  background: #4a3e73;
+  border-color: #4a3e73;
   color: #fff;
 }
 
@@ -68,14 +68,14 @@
   align-items: center;
   justify-content: center;
   align-self: flex-end;
-  height: 48px;
-  padding: 0 24px;
-  border-radius: 24px;
-  background: #fff;
-  border: 1px solid #a42dd7;
-  color: #a42dd7;
+  height: 44px;
+  padding: 0 20px;
+  border-radius: 12px;
+  background: #5b4b8a;
+  border: 1px solid #5b4b8a;
+  color: #fff;
   font-weight: 700;
-  font-size: 16px;
+  font-size: 15px;
   line-height: 1;
   cursor: pointer;
   transition: background 0.3s ease, border-color 0.3s ease;
@@ -83,8 +83,8 @@
 }
 
 .saveButton:hover {
-  background: #360450;
-  border-color: #360450;
+  background: #4a3e73;
+  border-color: #4a3e73;
   color: #fff;
 }
 

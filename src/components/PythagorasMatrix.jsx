@@ -140,17 +140,17 @@ export default function PythagorasMatrix() {
                 </select>
               </div>
 
-              <div className="col-12 mt-3">
-                <button type="submit" className="btn btn-primary">
+              <div className="col-12 mt-3 d-flex gap-2 justify-content-center flex-wrap">
+                <button type="submit" className="btn btn-primary pytha-btn">
                   Calculate Pythagoras Square
                 </button>
                 <button
-    type="button"
-    className="btn btn-outline-secondary"
-    onClick={() => setResult(null)}
-  >
-    Reset
-  </button>
+                  type="button"
+                  className="btn btn-outline-secondary pytha-btn"
+                  onClick={() => setResult(null)}
+                >
+                  Reset
+                </button>
               </div>
             </form>
 

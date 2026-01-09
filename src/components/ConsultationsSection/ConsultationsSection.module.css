@@ -134,10 +134,11 @@
   background: #5B4B8A;
   color: #fff;
   border: none;
-  border-radius: 30px;
-  padding: 10px 24px;
+  border-radius: 12px;
+  padding: 10px 20px;
   cursor: pointer;
   transition: transform 0.2s ease, opacity 0.2s ease;
+  min-height: 44px;
 }
 
 .button:hover {

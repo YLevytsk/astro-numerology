@@ -42,16 +42,16 @@
   box-shadow: 0 0 0 3px rgba(91, 75, 138, 0.15);
 }
 .btn {
-  border-radius: 64px;
-  padding: 10px 14px;
+  border-radius: 64px !important;
+  padding: 10px 14px !important;
   width: 100%;
   max-width: 266px;
   height: 44px;
   background-color: #5b4b8a;
   color: #ffffff;
-  font-weight: 700;
-  font-size: 16px;
-  font-family: sans-serif;
+  font-weight: 700 !important;
+  font-size: 16px !important;
+  font-family: "Manrope", sans-serif !important;
   border: 1px solid #5b4b8a;
   cursor: pointer;
   transition: background-color 0.2s ease, transform 0.1s ease, border-color 0.2s ease;

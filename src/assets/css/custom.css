@@ -223,6 +223,101 @@
   background: #f5f5f8;
   box-shadow: none;
 }
+
+/* Rounded action buttons (reuse) */
+.btn-pill {
+  border-radius: 999px !important;
+  font-weight: 700;
+  padding: 10px 20px;
+  min-width: 140px;
+}
+
+.btn.btn-primary.btn-pill {
+  background: #5b4b8a;
+  border: 1px solid #5b4b8a;
+  color: #fff;
+  transition: background-color 0.2s ease, box-shadow 0.2s ease, transform 0.1s ease;
+}
+
+.btn.btn-primary.btn-pill:hover {
+  background: #4a3e73;
+  border-color: #4a3e73;
+  box-shadow: 0 10px 20px rgba(91, 75, 138, 0.25);
+  transform: translateY(-1px);
+}
+
+.btn.btn-primary.btn-pill:active {
+  transform: translateY(0);
+}
+
+.btn.btn-outline-secondary.btn-pill {
+  border: 1px solid #5b4b8a;
+  color: #5b4b8a;
+  background: #fff;
+  transition: background-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btn.btn-outline-secondary.btn-pill:hover {
+  background: rgba(91, 75, 138, 0.08);
+  color: #4a3e73;
+  box-shadow: 0 8px 18px rgba(91, 75, 138, 0.18);
+}
+
+/* Global button shape/height */
+.btn {
+  border-radius: 64px !important;
+  min-height: 44px !important;
+  padding: 10px 14px !important;
+  font-weight: 700 !important;
+  line-height: 1.2;
+  font-family: "Manrope", sans-serif !important;
+}
+
+.pytha-btn {
+  border-radius: 64px !important;
+  min-height: 44px !important;
+  padding: 10px 14px !important;
+  font-size: 16px !important;
+  font-weight: 700 !important;
+  font-family: "Manrope", sans-serif !important;
+}
+
+.pytha-btn.btn-primary {
+  background: #5b4b8a !important;
+  border: 1px solid #5b4b8a !important;
+  color: #fff !important;
+}
+
+.pytha-btn.btn-primary:hover {
+  background: #4a3e73 !important;
+  border-color: #4a3e73 !important;
+  color: #FFD166 !important;
+}
+
+.pytha-btn.btn-outline-secondary {
+  background: #fff !important;
+  border: 1px solid #5b4b8a !important;
+  color: #5b4b8a !important;
+}
+
+.pytha-btn.btn-outline-secondary:hover {
+  background: #FFD166 !important;
+  border-color: #FFD166 !important;
+  color: #5b4b8a !important;
+}
+
+/* Force font on Pythagoras buttons */
+.pythagoras-section .btn {
+  font-family: "Manrope", sans-serif !important;
+  font-weight: 500 !important;
+  font-size: 16px !important;
+  letter-spacing: 0 !important;
+  text-transform: none !important;
+}
+
+.pythagoras-section .text-muted {
+  color: #5b4b8a !important;
+}
 @media (max-width: 991.98px) {
    .custom-navbar .navbar-collapse {
     max-width: 360px;
@@ -610,6 +705,11 @@
   background: rgba(17, 205, 239, 0.12);
   color: #0b2530;
   outline: 1px dashed rgba(17, 205, 239, 0.35);
+}
+
+.pythagoras-section .card {
+  background: #ffffff;
+  border-radius: 18px;
 }
 
 /* ﾐｰﾐｴﾐｰﾐｿﾑひｸﾐｲ ﾐｴﾐｻﾑ・ﾐｼﾐｾﾐｱﾐｸﾐｻﾐｾﾐｺ */

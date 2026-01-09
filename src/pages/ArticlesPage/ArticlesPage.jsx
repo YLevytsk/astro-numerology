@@ -126,10 +126,6 @@ const ArticlesPage = () => {
             <Loader />
           </div>
         )}
-
-        {!loading && hasMore && articles.length > 0 && (
-          <LoadMoreBtn onClick={handleLoadMore} />
-        )}
       </Container>
     </section>
   );

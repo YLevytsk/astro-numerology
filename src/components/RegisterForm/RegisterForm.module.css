@@ -115,13 +115,15 @@
 }
 .createBtn{
   background-color: #5b4b8a;
-  border-radius: 50px;
+  border-radius: 64px !important;
   width: 100%;
   max-width: 252px;
   height: 44px;
+  padding: 10px 14px !important;
   color: #ffffff;
-  font-size: 16px;
-  font-weight: 700;
+  font-size: 16px !important;
+  font-weight: 700 !important;
+  font-family: "Manrope", sans-serif !important;
   margin-bottom: 16px;
   transition: background-color 0.2s ease, transform 0.1s ease, border-color 0.2s ease;
   border: 1px solid #5b4b8a;       
