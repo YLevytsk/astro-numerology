@@ -90,7 +90,7 @@ const buildValidationSchema = (isEdit, hasExistingImage) =>
 
     text: Yup.string()
       .min(100, "Text must be at least 100 characters")
-      .max(4000, "Text must be at most 4000 characters")
+      .max(40000, "Text must be at most 40000 characters")
       .required("Text is required"),
 
     image: Yup.mixed()
@@ -166,7 +166,7 @@ export const CreateArticleForm = () => {
     if (values.image) {
       formData.append("img", values.image);
     }
-    formData.append("desc", values.text.slice(0, 4000));
+    formData.append("desc", values.text.slice(0, 40000));
     formData.append(
       "date",
       editingArticle?.date || new Date().toISOString().slice(0, 10)
@@ -318,6 +318,7 @@ export const CreateArticleForm = () => {
                       value={values.text}
                       onInput={handleInput}
                     />
+                    <p className={css.hint}>Text must be no more than 40,000 characters.</p>
                     <ErrorMessage
                       name="text"
                       component="div"
