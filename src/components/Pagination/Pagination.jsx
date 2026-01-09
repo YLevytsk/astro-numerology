@@ -17,8 +17,9 @@ export default function Pagination({ currentPage, totalPages, onPageChange }) {
             className="page-link"
             onClick={() => onPageChange(currentPage - 1)}
             disabled={currentPage === 1}
+            aria-label="Previous page"
           >
-            Previous
+            ‹
           </button>
         </li>
 
@@ -43,8 +44,9 @@ export default function Pagination({ currentPage, totalPages, onPageChange }) {
             className="page-link"
             onClick={() => onPageChange(currentPage + 1)}
             disabled={currentPage === totalPages}
+            aria-label="Next page"
           >
-            Next
+            ›
           </button>
         </li>
       </ul>
