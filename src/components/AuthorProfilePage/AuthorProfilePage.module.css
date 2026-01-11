@@ -108,7 +108,7 @@
   font-weight: 700;
   font-size: 14px;
   cursor: pointer;
-  border-radius: 12px;
+  border-radius: 8px;
   transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
 }
 
@@ -126,7 +126,7 @@
   align-self: flex-end;
   height: 44px;
   padding: 0 20px;
-  border-radius: 12px;
+  border-radius: 8px;
   background: #5b4b8a;
   border: 1px solid #5b4b8a;
   color: #fff;
@@ -152,7 +152,7 @@
   justify-content: center;
   margin-bottom: 24px;
   padding: 10px 20px;
-  border-radius: 12px;
+  border-radius: 8px;
   background: #5b4b8a;
   border: 1px solid #5b4b8a;
   color: #fff;

@@ -1,7 +1,7 @@
 .registerContainer{
   padding: 40px 28px;
   background-color: #E9ECF1;
-  border-radius: 20px;
+  border-radius: 8px;
   width: 306px;
   box-sizing: border-box;
   max-width: calc(100% - 64px);
@@ -55,7 +55,7 @@
 }
 .fieldForm{
   height: 44px;
-  border-radius: 12px !important;
+  border-radius: 8px !important;
   border: 1px solid #c8cada;
   padding: 0 12px;
   width: 100%;
@@ -120,7 +120,7 @@
 }
 .createBtn{
   background-color: #5b4b8a;
-  border-radius: 12px !important;
+  border-radius: 8px !important;
   width: 100%;
   box-sizing: border-box;
   height: 44px;

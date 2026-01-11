@@ -26,7 +26,7 @@
   margin: 0 auto 32px;
   padding: 16px 20px;
   background: #E9ECF1;
-  border-radius: 16px;
+  border-radius: 8px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
   text-align: center;
 }
@@ -57,7 +57,7 @@
   margin: 0;
 }
 
-/* Tablet ≥768px → 4 карточки */
+/* Tablet ≥768px ↁE4 картосE�и */
 @media (min-width: 768px) {
   .inner {
     max-width: 704px;
@@ -71,7 +71,7 @@
   }
 
   .articlesList > li {
-    flex: 0 1 calc((100% - 72px) / 4); /* 4 карточки */
+    flex: 0 1 calc((100% - 72px) / 4); /* 4 картосE�и */
     max-width: calc((100% - 72px) / 4);
   }
 
@@ -82,7 +82,7 @@
     color: #6c757d;
     margin: 0;
 }
-/* Desktop ≥1440px → 3 карточки */
+/* Desktop ≥1440px ↁE3 картосE�и */
 @media (min-width: 1440px) {
   .inner {
     max-width: 1225px;
@@ -93,18 +93,18 @@
   }
 
   .articlesList > li {
-    flex: 0 1 calc((100% - 48px) / 3); /* 3 карточки */
+    flex: 0 1 calc((100% - 48px) / 3); /* 3 картосE�и */
     max-width: calc((100% - 48px) / 3);
   }
 
-  /* Скрываем 4-ю карточку на десктопе */
+  /* Скрываем 4-сEкартосE�сEна десE�топе */
   .articlesList > li:nth-child(4) {
     display: none !important;
   }
 }
 .goToBlogWrapper {
   display: flex;
-  justify-content: flex-end; /* прижимає вправо */
+  justify-content: flex-end; /* прижимасEвправо */
   margin-top: 16px;
 }
 
@@ -121,7 +121,7 @@
 
 .goToBlog:hover,
 .goToBlog:focus-visible {
-  color: #FFD166;             /* темніший фіолет при ховері */
+  color: #FFD166;             /* темніший сE�олесEпри сE�версE*/
   text-decoration: underline;
 }
 
@@ -136,7 +136,7 @@
 }
 
 .goToBlog:hover .goToBlogIcon {
-  transform: translateX(3px); /* анімація стрілки вправо */
+  transform: translateX(3px); /* анімасE�сEсE�рілки вправо */
 }
 
 .goToBlogIcon {

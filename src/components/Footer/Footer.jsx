@@ -18,7 +18,7 @@ const Footer = () => {
           </a>
 
           <a
-            href="https://www.facebook.com/"
+            href="https://www.facebook.com/groups/1422770269183102?locale=en_US"
             target="_blank"
             rel="noopener noreferrer"
             aria-label="Facebook"
@@ -27,7 +27,7 @@ const Footer = () => {
           </a>
 
           <a
-            href="https://t.me/"
+            href="https://t.me/+2k6BZ_Da6swyMjNi"
             target="_blank"
             rel="noopener noreferrer"
             aria-label="Telegram"
@@ -36,7 +36,7 @@ const Footer = () => {
           </a>
 
           <a
-            href="mailto:example@mail.com"
+            href="mailto:yuliialevytska2@gmail.com"
             aria-label="Email"
           >
             <i className="fa fa-envelope"></i>

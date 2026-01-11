@@ -7,7 +7,7 @@
 }
 
 .articleImage {
-  border-radius: 24px;
+  border-radius: 8px;
   width: 100%;
   max-width: 1226px;
   height: 624px;
@@ -45,12 +45,12 @@
   display: flex;
   flex-direction: column;
   gap: 15px;
-  border-radius: 32px;
+  border-radius: 8px;
   padding: 32px 32px 40px 32px;
   min-width: 393px;
   width: 100%;
-  height: 551px;
-  background-color: var(--color-background);
+  
+  background-color: #E9ECF1;
 }
 
 .linkBlock {
@@ -89,11 +89,11 @@
 }
 
 .similarArticles {
-  border-radius: 32px;
+  border-radius: 8px;
   padding: 16px;
   min-width: 329px;
   height: 109px;
-  background: var(--color-white);
+  background: white;
 }
 
 .titleWithIcon {
@@ -108,74 +108,75 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  border: 1px solid var(--color-darker);
-  border-radius: 64px;
+  border: 1px solid #5B4B8A;
+  border-radius: 8px;
   padding: 8px;
   width: 40px;
   height: 40px;
   cursor: pointer;
   transition: all 0.3s ease;
   background-color: transparent;
-  color: var(--color-darker);
-  stroke: var(--color-darker);
+  color: #5B4B8A;
+  stroke: #5B4B8A;
 }
 
 .linkButton:hover,
 .linkButton:focus,
 .linkButton:active {
-  background-color: var(--color-general);
-  border: 1px solid var(--color-general);
+  background-color: #4A3E73;
+  border: 1px solid #4A3E73;
   stroke: var(--color-white);
 }
 
 .linkIcon {
   stroke-width: 1px;
-  fill: var(--color-default);
+  fill: #E9ECF1;
   width: 24px;
   height: 24px;
 }
 
 .similarArticlesTitle {
-  color: var(--color-black);
+  color: #5B4B8A;
   font-weight: 700;
   font-size: 16px;
   width: 100%;
 }
 
 .similarArticlesAuthor {
-  color: var(--color-black);
+  color: #5B4B8A;
   font-weight: 400;
   font-size: 16px;
   line-height: 155%;
   margin-top: 8px;
 }
 
-.button {
-  border-radius: 12px;
-  padding: 10px 20px;
-  min-width: 200px;
-  min-height: 44px;
-  background-color: var(--color-general, #5b4b8a);
-  border: 1px solid var(--color-general, #5b4b8a);
-  font-weight: 700;
-  font-size: 16px;
-  color: var(--color-white, #fff);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+.saveButton{
+  background-color: #5b4b8a;
+  border-radius: 8px !important;
+  width: 100%;
+  box-sizing: border-box;
+  height: 44px;
+  padding: 10px 14px !important;
+  color: #ffffff;
+  font-size: 16px !important;
+  font-weight: 700 !important;
+  font-family: "Manrope", sans-serif !important;
+  margin-bottom: 16px;
+  transition: background-color 0.2s ease, transform 0.1s ease, border-color 0.2s ease;
+  border: 1px solid #5b4b8a;       
+  outline: none;
   cursor: pointer;
 }
 
-.button:hover,
-.button:focus,
-.button:active {
+.saveButton:hover,
+.saveButton:focus,
+.saveButton:active {
   background-color: var(--color-darker, #3c2f66);
   border: 1px solid var(--color-darker, #3c2f66);
   color: var(--color-white, #fff);
 }
 
-.button:focus-visible {
+.saveButton:focus-visible {
   outline: none;
   box-shadow: none;
 }
@@ -188,4 +189,10 @@
   margin-left: 16px;
   width: 24px;
   height: 24px;
+}
+
+/* Dedicated hook for ArticlePage save button overrides */
+.saveButton {
+  background-color: #5b4b8a;
+  border-color: #5b4b8a;
 }

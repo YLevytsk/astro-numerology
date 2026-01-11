@@ -4,7 +4,6 @@ import { useSelector, useDispatch } from "react-redux";
 
 import { publicAPI } from "../../redux/api/publicAPI.js";
 
-import BookmarkIcon from "../../assets/img/icons/bookmark.svg?react";
 import s from "./ArticlePage.module.css";
 import Loader from "../../components/Loader/Loader.jsx";
 import { selectIsLoggedIn, selectUserId } from "../../redux/auth/selectors.js";
@@ -196,9 +195,11 @@ const ArticlePage = () => {
               </ul>
             </div>
 
-            <button onClick={handleToggleBookmark} className={s.button}>
+            <button
+              onClick={handleToggleBookmark}
+              className={`${s.button} ${s.saveButton}`}
+            >
               {isBookmarked ? "Unsave" : "Save"}
-              <BookmarkIcon className={s.buttonIcon} size={24} />
             </button>
 
             {!isLoggedIn && isOpen && <AuthModal onClose={close} />}
