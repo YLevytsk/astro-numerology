@@ -397,7 +397,14 @@ export const updateBioThunk = createAsyncThunk(
       const userData = data?.user || data || {};
 
       const shaped = shapeUser(userData);
-      const mergedUser = persistAuth({ user: shaped }) || shaped;
+      const mergedUser = {
+        ...stateUser,
+        ...shaped,
+        id: stateUser.id || shaped.id,
+        bio: shaped.bio || bio || stateUser.bio || "",
+      };
+
+      persistAuth({ user: mergedUser });
 
       return mergedUser;
     } catch (err) {
