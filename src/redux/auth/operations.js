@@ -391,32 +391,15 @@ export const updateBioThunk = createAsyncThunk(
 
       if (!id) return thunkAPI.rejectWithValue("User id is missing");
 
-      const attemptUpdate = async (url) => {
-        try {
-          return await axiosAPI.patch(url, { bio });
-        } catch (err) {
-          if (err.response?.status === 404) return null;
-          throw err;
-        }
-      };
+      // API contract: PATCH /api/users/:userId { bio }
+      const res = await axiosAPI.patch(`/users/${id}`, { bio });
+      const data = res.data?.data || res.data;
+      const userData = data?.user || data || {};
 
-      let res = await attemptUpdate(`/users/${id}`);
-      if (!res) res = await attemptUpdate(`/users/${id}/bio`);
-      if (!res) return thunkAPI.rejectWithValue("Update bio endpoint is unavailable");
+      const shaped = shapeUser(userData);
+      const mergedUser = persistAuth({ user: shaped }) || shaped;
 
-      const data = res.data?.data;
-      const newBio = data?.bio ?? data?.description ?? data?.about ?? bio ?? "";
-
-      // persist updated user in localStorage
-      const storedUser = localStorage.getItem("user");
-      if (storedUser) {
-        const parsed = JSON.parse(storedUser);
-        parsed.bio = newBio;
-        localStorage.setItem("user", JSON.stringify(parsed));
-        persistUserCache(parsed);
-      }
-
-      return newBio;
+      return mergedUser;
     } catch (err) {
       return thunkAPI.rejectWithValue(
         err.response?.data?.message || err.message

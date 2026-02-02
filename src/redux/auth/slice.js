@@ -129,9 +129,7 @@ const slice = createSlice({
 
       /* ===== UPDATE BIO ===== */
       .addCase(updateBioThunk.fulfilled, (state, action) => {
-        if (state.user) {
-          state.user.bio = action.payload;
-        }
+        state.user = action.payload || state.user;
       });
   },
 });
