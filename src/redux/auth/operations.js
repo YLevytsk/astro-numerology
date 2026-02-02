@@ -58,11 +58,11 @@ const clearPersistedAuth = () => {
 
 /* ===================== HELPERS ===================== */
 const shapeUser = (raw = {}) => ({
-  id: raw._id || raw.id || null,
+  id: raw._id ?? raw.id ?? null,
   name: raw.name ?? raw.fullName ?? raw.username ?? "",
   email: raw.email ?? "",
   avatarUrl: raw.avatarUrl ?? raw.avatar ?? "",
-  bio: raw.bio ?? raw.description ?? raw.about ?? "",
+  bio: raw.bio ?? "",
 });
 
 const cacheKeyFromUser = (user = {}) => {
@@ -385,7 +385,7 @@ export const updateBioThunk = createAsyncThunk(
         ...stateUser,
         ...shaped,
         id: shaped.id || stateUser.id || id,
-        bio: shaped.bio || "",
+        bio: shaped.bio ?? "",
       };
 
       persistAuth({ user: mergedUser });
