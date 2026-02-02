@@ -1,4 +1,4 @@
-﻿import { createAsyncThunk } from "@reduxjs/toolkit";
+import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import { setCookie, getCookie, deleteCookie } from "../../utils/cookies.js";
 
@@ -130,7 +130,7 @@ const persistUserCache = (user) => {
 };
 
 const persistAuth = ({ user, accessToken, refreshToken }) => {
-  let mergedUser = user ? mergeWithStoredUser(user) : null;
+  let mergedUser = user || null;
   if (accessToken) {
     setAuthHeader(accessToken);
     setCookie("accessToken", accessToken, 7);
@@ -187,7 +187,7 @@ axiosAPI.interceptors.response.use(
 
     if (!originalRequest) return Promise.reject(error);
 
-    // ﾐｽﾐｵ ﾑびﾐｾﾐｳﾐｰﾐｵﾐｼ auth endpoints, ﾐｸ ﾐｽﾐｵ ﾑﾐｵﾑびﾐｰﾐｸﾐｼ ﾐｴﾐｲﾐｰﾐｶﾐｴﾑ・    const url = originalRequest.url || "";
+    // не трогаем auth endpoints, и не ретраим дваждсE    const url = originalRequest.url || "";
     if (
       status !== 401 ||
       originalRequest._retry ||
@@ -245,30 +245,13 @@ export const registerThunk = createAsyncThunk(
       const data = res.data?.data || res.data;
       const { accessToken, refreshToken } = extractTokens(data);
       const userData = data.user || data;
-      let user = shapeUser(userData);
+      const user = shapeUser(userData);
 
-      const mergedUser = persistAuth({
+      persistAuth({
         user,
         accessToken,
         refreshToken,
       });
-      user = mergedUser || user;
-
-      // Best-effort enrichment (bio, avatar, etc.) if backend omits fields
-      try {
-        const freshUser = await fetchUserFromCurrent(accessToken);
-        if (freshUser) {
-          user = freshUser;
-          const mergedFresh = persistAuth({
-            user,
-            accessToken,
-            refreshToken,
-          });
-          user = mergedFresh || user;
-        }
-      } catch {
-        // ignore enrichment errors, keep basic user
-      }
 
       return { user, token: accessToken };
     } catch (err) {
@@ -288,14 +271,13 @@ export const loginThunk = createAsyncThunk(
       const data = res.data?.data || res.data;
       const { accessToken, refreshToken } = extractTokens(data);
       const userData = data.user || data;
-      let user = shapeUser(userData);
+      const user = shapeUser(userData);
 
-      const mergedUser = persistAuth({
+      persistAuth({
         user,
         accessToken,
         refreshToken,
       });
-      user = mergedUser || user;
 
       return { user, token: accessToken };
     } catch (err) {
@@ -326,14 +308,13 @@ export const refreshThunk = createAsyncThunk(
       const data = res.data?.data || res.data;
       const { accessToken, refreshToken: newRefreshToken } = extractTokens(data);
       const userData = data.user || data;
-      let user = shapeUser(userData);
+      const user = shapeUser(userData);
 
-      const mergedUser = persistAuth({
+      persistAuth({
         user,
         accessToken,
         refreshToken: newRefreshToken || refreshToken,
       });
-      user = mergedUser || user;
 
       return { user, token: accessToken };
     } catch (err) {
@@ -365,14 +346,14 @@ export const fetchCurrentUserThunk = createAsyncThunk(
       const userData = data?.user || data;
       const user = shapeUser(userData || {});
 
-      const mergedUser = persistAuth({
+      persistAuth({
         user,
         accessToken: token,
         refreshToken:
           getCookie("refreshToken") || localStorage.getItem("refreshToken"),
       });
 
-      return { user: mergedUser || user, token };
+      return { user, token };
     } catch (err) {
       return thunkAPI.rejectWithValue(
         err.response?.data?.message || err.message
@@ -392,7 +373,10 @@ export const updateBioThunk = createAsyncThunk(
       if (!id) return thunkAPI.rejectWithValue("User id is missing");
 
       // API contract: PATCH /api/users/:userId { bio }
-      const res = await axiosAPI.patch(`/users/${id}`, { bio });
+      await axiosAPI.patch(`/users/${id}`, { bio });
+
+      // Reload user from server to ensure bio persisted server-side
+      const res = await axiosAPI.get(`/users/${id}`);
       const data = res.data?.data || res.data;
       const userData = data?.user || data || {};
 
@@ -400,8 +384,8 @@ export const updateBioThunk = createAsyncThunk(
       const mergedUser = {
         ...stateUser,
         ...shaped,
-        id: stateUser.id || shaped.id,
-        bio: shaped.bio || bio || stateUser.bio || "",
+        id: shaped.id || stateUser.id || id,
+        bio: shaped.bio || "",
       };
 
       persistAuth({ user: mergedUser });
@@ -456,5 +440,6 @@ export const logoutThunk = createAsyncThunk("auth/logout", async () => {
   clearPersistedAuth();
   return true;
 });
+
 
 
