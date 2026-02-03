@@ -65,72 +65,7 @@ const shapeUser = (raw = {}) => ({
   bio: raw.bio ?? "",
 });
 
-const cacheKeyFromUser = (user = {}) => {
-  const id = user.id || user._id;
-  if (id) return `userCache_${id}`;
-  if (user.email) return `userCache_${user.email}`;
-  return null;
-};
-
-const readStoredUser = (userHint = null) => {
-  try {
-    const key = cacheKeyFromUser(userHint || {});
-    if (key) {
-      const rawKeyed = localStorage.getItem(key);
-      if (rawKeyed) return JSON.parse(rawKeyed);
-    }
-
-    const raw = localStorage.getItem("user") || localStorage.getItem("userCache");
-    return raw ? JSON.parse(raw) : null;
-  } catch {
-    return null;
-  }
-};
-
-// Merge with cached user to keep profile fields (bio/avatar/etc.) if backend omits them
-const mergeWithStoredUser = (user = {}) => {
-  const stored = readStoredUser(user);
-  if (!stored) return user;
-
-  const sameUser =
-    (user.id && stored.id && user.id === stored.id) ||
-    (user.email && stored.email && user.email === stored.email);
-
-  const canAssumeSame = !user.id && !user.email;
-
-  if (!sameUser && !canAssumeSame) return user;
-
-  const bio = user.bio && user.bio.trim() ? user.bio : stored.bio ?? "";
-  const avatarUrl =
-    user.avatarUrl && user.avatarUrl.trim()
-      ? user.avatarUrl
-      : stored.avatarUrl ?? "";
-  const name = user.name && user.name.trim() ? user.name : stored.name ?? "";
-  const email =
-    user.email && user.email.trim() ? user.email : stored.email ?? "";
-
-  return {
-    ...stored,
-    ...user,
-    bio,
-    avatarUrl,
-    name,
-    email,
-  };
-};
-
-const persistUserCache = (user) => {
-  try {
-    const key = cacheKeyFromUser(user || {});
-    if (key) {
-      localStorage.setItem(key, JSON.stringify(user));
-    }
-    localStorage.setItem("userCache", JSON.stringify(user));
-  } catch {}
-};
-
 const persistAuth = ({ user, accessToken, refreshToken }) => {
-  let mergedUser = user || null;
   if (accessToken) {
     setAuthHeader(accessToken);
     setCookie("accessToken", accessToken, 7);
@@ -141,11 +76,7 @@ const persistAuth = ({ user, accessToken, refreshToken }) => {
     setCookie("refreshToken", refreshToken, 30);
     localStorage.setItem("refreshToken", refreshToken);
   }
-  if (mergedUser) {
-    localStorage.setItem("user", JSON.stringify(mergedUser));
-    persistUserCache(mergedUser);
-  }
-  return mergedUser;
+  return user || null;
 };
 
 const extractTokens = (data = {}) => ({
@@ -245,15 +176,15 @@ export const registerThunk = createAsyncThunk(
       const data = res.data?.data || res.data;
       const { accessToken, refreshToken } = extractTokens(data);
       const userData = data.user || data;
-      const user = shapeUser(userData);
+      const userId = userData?._id ?? userData?.id;
 
-      persistAuth({
-        user,
-        accessToken,
-        refreshToken,
-      });
+      persistAuth({ user: null, accessToken, refreshToken });
 
-      return { user, token: accessToken };
+      const profileRes = await axiosAPI.get(`/users/${userId}`);
+      const profileData = profileRes.data?.data || profileRes.data;
+      const profileUser = shapeUser(profileData?.user || profileData || {});
+
+      return { user: profileUser, token: accessToken, userId };
     } catch (err) {
       return thunkAPI.rejectWithValue(
         err.response?.data?.message || err.message
@@ -271,15 +202,15 @@ export const loginThunk = createAsyncThunk(
       const data = res.data?.data || res.data;
       const { accessToken, refreshToken } = extractTokens(data);
       const userData = data.user || data;
-      const user = shapeUser(userData);
+      const userId = userData?._id ?? userData?.id;
 
-      persistAuth({
-        user,
-        accessToken,
-        refreshToken,
-      });
+      persistAuth({ user: null, accessToken, refreshToken });
 
-      return { user, token: accessToken };
+      const profileRes = await axiosAPI.get(`/users/${userId}`);
+      const profileData = profileRes.data?.data || profileRes.data;
+      const profileUser = shapeUser(profileData?.user || profileData || {});
+
+      return { user: profileUser, token: accessToken, userId };
     } catch (err) {
       return thunkAPI.rejectWithValue(
         err.response?.data?.message || err.message
@@ -308,15 +239,19 @@ export const refreshThunk = createAsyncThunk(
       const data = res.data?.data || res.data;
       const { accessToken, refreshToken: newRefreshToken } = extractTokens(data);
       const userData = data.user || data;
-      const user = shapeUser(userData);
+      const userId = userData?._id ?? userData?.id;
 
       persistAuth({
-        user,
+        user: null,
         accessToken,
         refreshToken: newRefreshToken || refreshToken,
       });
 
-      return { user, token: accessToken };
+      const profileRes = await axiosAPI.get(`/users/${userId}`);
+      const profileData = profileRes.data?.data || profileRes.data;
+      const profileUser = shapeUser(profileData?.user || profileData || {});
+
+      return { user: profileUser, token: accessToken, userId };
     } catch (err) {
       return thunkAPI.rejectWithValue(
         err.response?.data?.message || err.message
@@ -333,27 +268,31 @@ export const fetchCurrentUserThunk = createAsyncThunk(
       getCookie("accessToken") ||
       localStorage.getItem("accessToken") ||
       localStorage.getItem("token");
+    const userId =
+      localStorage.getItem("userId") ||
+      thunkAPI.getState().auth.userId ||
+      null;
 
-    if (!token) {
-      return thunkAPI.rejectWithValue("Access token is missing");
+    if (!token || !userId) {
+      return thunkAPI.rejectWithValue("Access token or user id is missing");
     }
 
     setAuthHeader(token);
 
     try {
-      const res = await axiosAPI.get("/users/current");
+      const res = await axiosAPI.get(`/users/${userId}`);
       const data = res?.data?.data || res?.data;
       const userData = data?.user || data;
       const user = shapeUser(userData || {});
 
       persistAuth({
-        user,
+        user: null,
         accessToken: token,
         refreshToken:
           getCookie("refreshToken") || localStorage.getItem("refreshToken"),
       });
 
-      return { user, token };
+      return { user, token, userId };
     } catch (err) {
       return thunkAPI.rejectWithValue(
         err.response?.data?.message || err.message
@@ -367,8 +306,9 @@ export const updateBioThunk = createAsyncThunk(
   "auth/updateBio",
   async ({ bio, userId }, thunkAPI) => {
     try {
-      const stateUser = thunkAPI.getState().auth.user || {};
-      const id = userId || stateUser.id || stateUser._id;
+      const stateAuth = thunkAPI.getState().auth || {};
+      const stateUser = stateAuth.user || {};
+      const id = userId || stateAuth.userId || stateUser.id || stateUser._id;
 
       if (!id) return thunkAPI.rejectWithValue("User id is missing");
 

@@ -32,28 +32,11 @@ const loadToken = () => {
   }
 };
 
-const loadUser = () => {
-  try {
-    const raw =
-      localStorage.getItem("user") || localStorage.getItem("userCache");
-    if (!raw) return emptyUser;
-    const parsed = JSON.parse(raw);
-    return {
-      id: parsed.id || parsed._id || null,
-      email: parsed.email || null,
-      name: parsed.name || parsed.fullName || parsed.username || null,
-      avatarUrl: parsed.avatarUrl || parsed.avatar || null,
-      bio: parsed.bio || parsed.description || parsed.about || null,
-    };
-  } catch {
-    return emptyUser;
-  }
-};
-
 /* ===================== INITIAL STATE ===================== */
 
 const initialState = {
-  user: loadUser(),
+  user: emptyUser,
+  userId: null,
   token: loadToken(),
   isLoggedIn: Boolean(loadToken()),
   isRefreshing: false,
@@ -73,6 +56,7 @@ const slice = createSlice({
       })
       .addCase(fetchCurrentUserThunk.fulfilled, (state, action) => {
         state.user = action.payload.user;
+        state.userId = action.payload.userId || action.payload.user?.id;
         state.token = action.payload.token;
         state.isLoggedIn = true;
         state.isRefreshing = false;
@@ -88,6 +72,7 @@ const slice = createSlice({
       })
       .addCase(refreshThunk.fulfilled, (state, action) => {
         state.user = action.payload.user;
+        state.userId = action.payload.userId || action.payload.user?.id;
         state.token = action.payload.token;
         state.isLoggedIn = true;
         state.isRefreshing = false;
@@ -101,6 +86,7 @@ const slice = createSlice({
       /* ===== REGISTER ===== */
       .addCase(registerThunk.fulfilled, (state, action) => {
         state.user = action.payload.user;
+        state.userId = action.payload.userId || action.payload.user?.id;
         state.token = action.payload.token;
         state.isLoggedIn = true;
       })
@@ -108,6 +94,7 @@ const slice = createSlice({
       /* ===== LOGIN ===== */
       .addCase(loginThunk.fulfilled, (state, action) => {
         state.user = action.payload.user;
+        state.userId = action.payload.userId || action.payload.user?.id;
         state.token = action.payload.token;
         state.isLoggedIn = true;
       })
@@ -115,6 +102,7 @@ const slice = createSlice({
       /* ===== LOGOUT ===== */
       .addCase(logoutThunk.fulfilled, (state) => {
         state.user = emptyUser;
+        state.userId = null;
         state.token = null;
         state.isLoggedIn = false;
         state.isRefreshing = false;
