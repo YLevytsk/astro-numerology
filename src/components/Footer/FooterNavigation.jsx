@@ -8,7 +8,7 @@ import { selectIsLoggedIn, selectUserId } from "../../redux/auth/selectors.js";
 function FooterNavigation() {
   const isLoggedIn = useSelector(selectIsLoggedIn);
   const userId = useSelector(selectUserId);
-  const accountPath = isLoggedIn && userId ? `/profile/${userId}` : "/login";
+  const accountPath = isLoggedIn && userId ? "/profile" : "/login";
 
   return (
     <div className={css.footerNavWrap}>
@@ -43,9 +43,9 @@ function FooterNavigation() {
           </Link>
         </li>
         <li className={css.footerNavItem}>
-          <Link className={css.footerNavLink} to="/consultations">
+          <HashLink className={css.footerNavLink} smooth to="/#consultations">
             Consultations
-          </Link>
+          </HashLink>
         </li>
         <li className={css.footerNavItem}>
           <Link className={css.footerNavLink} to={accountPath}>
