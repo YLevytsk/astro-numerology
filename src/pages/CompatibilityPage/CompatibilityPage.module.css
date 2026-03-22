@@ -42,12 +42,19 @@
   gap: 12px;
 }
 
+.dateFields {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
 .label {
   font-weight: 700;
   color: #5b4b8a;
 }
 
-.input {
+.input,
+.select {
   height: 44px;
   border: 1px solid #c8cada;
   border-radius: 10px;
@@ -56,7 +63,8 @@
   font-size: 15px;
 }
 
-.input:focus {
+.input:focus,
+.select:focus {
   outline: none;
   border-color: #5b4b8a;
   box-shadow: 0 0 0 3px rgba(91, 75, 138, 0.12);
@@ -189,6 +197,10 @@
 
 @media (max-width: 640px) {
   .row {
+    grid-template-columns: 1fr;
+  }
+
+  .dateFields {
     grid-template-columns: 1fr;
   }
 }

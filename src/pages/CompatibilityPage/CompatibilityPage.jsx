@@ -11,6 +11,27 @@ const SERVICE = {
   title: "Compatibility by Birth Date",
   price: "£25",
 };
+const MAX_YEAR = 2026;
+const MIN_YEAR = 1900;
+const MONTHS = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
+];
+const DAYS = Array.from({ length: 31 }, (_, i) => String(i + 1));
+const YEARS = Array.from(
+  { length: MAX_YEAR - MIN_YEAR + 1 },
+  (_, i) => String(MAX_YEAR - i)
+);
 
 export default function CompatibilityPage() {
   const navigate = useNavigate();
@@ -18,8 +39,8 @@ export default function CompatibilityPage() {
   const isLoggedIn = useSelector(selectIsLoggedIn);
 
   const [birthData, setBirthData] = useState({
-    firstDate: "",
-    secondDate: "",
+    first: { day: "", month: "", year: "" },
+    second: { day: "", month: "", year: "" },
   });
   const [isOrderOpen, setIsOrderOpen] = useState(false);
   const [formState, setFormState] = useState({
@@ -33,11 +54,24 @@ export default function CompatibilityPage() {
   const [isCapturing, setIsCapturing] = useState(false);
   const formRef = useRef(null);
 
-  const isBirthComplete = Boolean(birthData.firstDate && birthData.secondDate);
+  const isBirthComplete = Boolean(
+    birthData.first.day &&
+      birthData.first.month &&
+      birthData.first.year &&
+      birthData.second.day &&
+      birthData.second.month &&
+      birthData.second.year
+  );
 
-  const handleBirthChange = (e) => {
-    const { name, value } = e.target;
-    setBirthData((prev) => ({ ...prev, [name]: value }));
+  const handleBirthChange = (person, field) => (e) => {
+    const { value } = e.target;
+    setBirthData((prev) => ({
+      ...prev,
+      [person]: {
+        ...prev[person],
+        [field]: value,
+      },
+    }));
   };
 
   const openOrder = () => {
@@ -166,23 +200,85 @@ export default function CompatibilityPage() {
         <div className={styles.formCard}>
           <div className={styles.row}>
             <div className={styles.label}>Person 1</div>
-            <input
-              className={styles.input}
-              type="date"
-              name="firstDate"
-              value={birthData.firstDate}
-              onChange={handleBirthChange}
-            />
+            <div className={styles.dateFields}>
+              <select
+                className={styles.select}
+                value={birthData.first.day}
+                onChange={handleBirthChange("first", "day")}
+              >
+                <option value="">Day</option>
+                {DAYS.map((day) => (
+                  <option key={day} value={day}>
+                    {day}
+                  </option>
+                ))}
+              </select>
+              <select
+                className={styles.select}
+                value={birthData.first.month}
+                onChange={handleBirthChange("first", "month")}
+              >
+                <option value="">Month</option>
+                {MONTHS.map((month) => (
+                  <option key={month} value={month}>
+                    {month}
+                  </option>
+                ))}
+              </select>
+              <select
+                className={styles.select}
+                value={birthData.first.year}
+                onChange={handleBirthChange("first", "year")}
+              >
+                <option value="">Year</option>
+                {YEARS.map((year) => (
+                  <option key={year} value={year}>
+                    {year}
+                  </option>
+                ))}
+              </select>
+            </div>
           </div>
           <div className={styles.row}>
             <div className={styles.label}>Person 2</div>
-            <input
-              className={styles.input}
-              type="date"
-              name="secondDate"
-              value={birthData.secondDate}
-              onChange={handleBirthChange}
-            />
+            <div className={styles.dateFields}>
+              <select
+                className={styles.select}
+                value={birthData.second.day}
+                onChange={handleBirthChange("second", "day")}
+              >
+                <option value="">Day</option>
+                {DAYS.map((day) => (
+                  <option key={day} value={day}>
+                    {day}
+                  </option>
+                ))}
+              </select>
+              <select
+                className={styles.select}
+                value={birthData.second.month}
+                onChange={handleBirthChange("second", "month")}
+              >
+                <option value="">Month</option>
+                {MONTHS.map((month) => (
+                  <option key={month} value={month}>
+                    {month}
+                  </option>
+                ))}
+              </select>
+              <select
+                className={styles.select}
+                value={birthData.second.year}
+                onChange={handleBirthChange("second", "year")}
+              >
+                <option value="">Year</option>
+                {YEARS.map((year) => (
+                  <option key={year} value={year}>
+                    {year}
+                  </option>
+                ))}
+              </select>
+            </div>
           </div>
 
           {isBirthComplete && (
