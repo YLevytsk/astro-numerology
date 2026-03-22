@@ -108,10 +108,12 @@
 
 .reviews-swiper-wrapper .swiper-pagination-bullet {
   background-color: #ffffff !important;
+  opacity: 1 !important;
 }
 
 .reviews-swiper-wrapper .swiper-pagination-bullet-active {
   background-color: #a996e5 !important;
+  opacity: 1 !important;
 }
 
 /* скрыть стрелки на мобильных */
