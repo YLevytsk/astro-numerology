@@ -499,7 +499,7 @@
    REVIEWS (Swiper)
    ========================= */
 .section-reviews {
-  background: var(--home-sections-bg) center/cover no-repeat;
+  background: transparent;
 }
 
 .reviews-swiper-wrapper {
@@ -616,7 +616,7 @@
 }
 
 .section-blog {
-  background: var(--home-sections-bg) center/cover no-repeat;
+  background: transparent;
   position: relative;
   min-height: 600px;
   color: #5B4B8A;
@@ -878,8 +878,7 @@
         rgba(30, 25, 45, 0.48) 0%,
       rgba(30, 25, 45, 0.55) 100%
     ),
-    url("https://harmoniq.disainnova.com/uploads/koncepcia-numerologiceskogo-kollaza.webp")
-      center/contain no-repeat;
+    var(--home-sections-bg) center/cover no-repeat;
 }
 
 @media (max-width: 767.98px) {
