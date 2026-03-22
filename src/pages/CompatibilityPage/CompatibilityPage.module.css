@@ -1,0 +1,194 @@
+.section {
+  padding: 64px 0;
+}
+
+.container {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.title {
+  margin: 0 0 8px;
+  font-size: 32px;
+  font-weight: 700;
+  color: #5b4b8a;
+}
+
+.subtitle {
+  margin: 0;
+  color: #595b5d;
+  font-size: 16px;
+}
+
+.formCard {
+  background: #ffffff;
+  border-radius: 10px;
+  padding: 24px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  display: grid;
+  gap: 16px;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 120px 1fr;
+  align-items: center;
+  gap: 12px;
+}
+
+.label {
+  font-weight: 700;
+  color: #5b4b8a;
+}
+
+.input {
+  height: 44px;
+  border: 1px solid #c8cada;
+  border-radius: 10px;
+  padding: 0 12px;
+  background-color: #f7f8fb;
+  font-size: 15px;
+}
+
+.input:focus {
+  outline: none;
+  border-color: #5b4b8a;
+  box-shadow: 0 0 0 3px rgba(91, 75, 138, 0.12);
+}
+
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(12, 14, 23, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 56px 8px 8px;
+  overflow-y: auto;
+  z-index: 20;
+}
+
+.modalCard {
+  margin: 0;
+  max-width: 520px;
+  width: min(520px, 100%);
+  position: relative;
+  animation: fadeInUp 0.2s ease;
+  max-height: calc(100vh - 12px);
+  overflow: auto;
+  padding: 12px;
+}
+
+.closeButton {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  border: none;
+  background: transparent;
+  color: #5b4b8a;
+  font-size: 18px;
+  font-weight: 700;
+  cursor: pointer;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.closeButton:hover {
+  background-color: rgba(91, 75, 138, 0.1);
+  color: #40356a;
+}
+
+.formTitle {
+  margin: 0 0 8px;
+  font-size: 22px;
+  font-weight: 700;
+  color: #5b4b8a;
+}
+
+.formSubtitle {
+  margin: 0 0 16px;
+  color: #595b5d;
+  font-size: 16px;
+}
+
+.form {
+  display: grid;
+  gap: 10px;
+}
+
+.formLabel {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  color: #5b4b8a;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.formInput,
+.formSelect {
+  height: 44px;
+  border: 1px solid #c8cada;
+  border-radius: 10px;
+  padding: 0 12px;
+  box-sizing: border-box;
+  background-color: #f7f8fb;
+  font-size: 15px;
+}
+
+.formInput:focus,
+.formSelect:focus {
+  outline: none;
+  border-color: #5b4b8a;
+  box-shadow: 0 0 0 3px rgba(91, 75, 138, 0.12);
+}
+
+.actions {
+  display: grid;
+  gap: 8px;
+}
+
+.payButton {
+  margin-top: 4px;
+  height: 46px;
+  border-radius: 8px;
+  border: 1px solid #00457c;
+  background: #0070ba;
+  color: #fff;
+  font-weight: 700;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.payButton:hover {
+  background: #005c99;
+  transform: translateY(-1px);
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 640px) {
+  .row {
+    grid-template-columns: 1fr;
+  }
+}

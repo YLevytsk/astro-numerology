@@ -17,6 +17,7 @@ import CreateArticlePage from "./pages/CreateArticlePage/CreateArticlePage.jsx";
 import ArticlesPage from "./pages/ArticlesPage/ArticlesPage.jsx";
 import CookiesPage from "./pages/CookiesPage/CookiesPage.jsx";
 import PrivacySecurityPage from "./pages/PrivacySecurityPage/PrivacySecurityPage.jsx";
+import CompatibilityPage from "./pages/CompatibilityPage/CompatibilityPage.jsx";
 
 import PrivateRoute from "./components/PrivateRoute/PrivateRoute";
 import RestrictedRoute from "./components/RestrictedRoute.jsx";
@@ -81,6 +82,10 @@ export default function App() {
 
         {/* NUMEROLOGY */}
         <Route path="/numerology/pifagor" element={<PythagorasPage />} />
+        <Route
+          path="/numerology/compatibility"
+          element={<CompatibilityPage />}
+        />
 
         {/* BLOG */}
         <Route path="/blog" element={<ArticlesPage />} />
