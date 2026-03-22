@@ -499,7 +499,7 @@
    REVIEWS (Swiper)
    ========================= */
 .section-reviews {
-  background: transparent;
+  background: var(--home-sections-bg) center/cover no-repeat;
 }
 
 .reviews-swiper-wrapper {
@@ -611,8 +611,12 @@
 /* =========================
    BLOG SECTION
    ========================= */
+:root {
+  --home-sections-bg: url("https://harmoniq.disainnova.com/uploads/koncepcia-numerologii-s-sinimi-i-fioletovymi-ottenkami.webp");
+}
+
 .section-blog {
-  background: url("https://harmoniq.disainnova.com/uploads/koncepcia-numerologii-s-sinimi-i-fioletovymi-ottenkami.webp") center/cover no-repeat;
+  background: var(--home-sections-bg) center/cover no-repeat;
   position: relative;
   min-height: 600px;
   color: #5B4B8A;

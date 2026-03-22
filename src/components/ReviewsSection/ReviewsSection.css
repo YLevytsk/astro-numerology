@@ -3,7 +3,7 @@
    ========================= */
 
 .section-reviews {
-  background: transparent;
+  background: var(--home-sections-bg) center/cover no-repeat;
   padding: 72px 0;
 }
 

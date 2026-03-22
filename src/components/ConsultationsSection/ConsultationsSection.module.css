@@ -1,7 +1,7 @@
 .section {
   position: relative;
   padding: 64px 0;
-  background: transparent;
+  background: var(--home-sections-bg) center/cover no-repeat;
   overflow: hidden;
 }
 
