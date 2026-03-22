@@ -21,12 +21,12 @@ import PrivacySecurityPage from "./pages/PrivacySecurityPage/PrivacySecurityPage
 import PrivateRoute from "./components/PrivateRoute/PrivateRoute";
 import RestrictedRoute from "./components/RestrictedRoute.jsx";
 
-import { refreshThunk } from "./redux/auth/operations";
+import { refreshThunk, fetchCurrentUserThunk } from "./redux/auth/operations";
 import { getCookie } from "./utils/cookies.js";
 
 export default function App() {
   const dispatch = useDispatch();
-  const { isRefreshing } = useSelector((state) => state.auth);
+  const { isRefreshing, token, userId } = useSelector((state) => state.auth);
   const initRef = useRef(false);
 
   /* ================= RESTORE SESSION ================= */
@@ -34,13 +34,18 @@ export default function App() {
     if (initRef.current) return;
     initRef.current = true;
 
+    if (token && userId) {
+      dispatch(fetchCurrentUserThunk());
+      return;
+    }
+
     const refreshToken =
       getCookie("refreshToken") || localStorage.getItem("refreshToken");
 
     if (refreshToken) {
       dispatch(refreshThunk());
     }
-  }, [dispatch]);
+  }, [dispatch, token, userId]);
 
   /* ⛔ НЕ РЕНДЕРИМ РОУТЫ, ПОКА REFRESH */
   if (isRefreshing) {

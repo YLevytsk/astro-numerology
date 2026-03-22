@@ -11,7 +11,8 @@ export const selectHasMore = (state) => state.articles.hasMore;
 export const selectArticlesByOwner = createSelector(
   [(state) => state.articles.byOwner, (_, ownerId) => ownerId],
   (byOwner, ownerId) => {
-    const result = byOwner?.[ownerId]?.items;
+    const key = ownerId ? String(ownerId) : ownerId;
+    const result = byOwner?.[key]?.items;
     return result ?? [];
   }
 );

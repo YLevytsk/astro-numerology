@@ -53,19 +53,19 @@ const clearPersistedAuth = () => {
   localStorage.removeItem("accessToken");
   localStorage.removeItem("refreshToken");
   localStorage.removeItem("token"); // Important: clear legacy token key as well
-  // keep user/userCache so profile fields (bio) can survive re-login if backend omits them
+  localStorage.removeItem("userId");
 };
 
 /* ===================== HELPERS ===================== */
 const shapeUser = (raw = {}) => ({
-  id: raw._id ?? raw.id ?? null,
+  id: raw._id ?? raw.id ?? raw._id?.$oid ?? null,
   name: raw.name ?? raw.fullName ?? raw.username ?? "",
   email: raw.email ?? "",
   avatarUrl: raw.avatarUrl ?? raw.avatar ?? "",
   bio: raw.bio ?? "",
 });
 
-const persistAuth = ({ user, accessToken, refreshToken }) => {
+const persistAuth = ({ user, accessToken, refreshToken, userId }) => {
   if (accessToken) {
     setAuthHeader(accessToken);
     setCookie("accessToken", accessToken, 7);
@@ -75,6 +75,9 @@ const persistAuth = ({ user, accessToken, refreshToken }) => {
   if (refreshToken) {
     setCookie("refreshToken", refreshToken, 30);
     localStorage.setItem("refreshToken", refreshToken);
+  }
+  if (userId) {
+    localStorage.setItem("userId", userId);
   }
   return user || null;
 };
@@ -96,19 +99,6 @@ const extractTokens = (data = {}) => ({
     null,
 });
 
-const fetchUserFromCurrent = async (token) => {
-  if (!token) return null;
-  try {
-    setAuthHeader(token);
-    const res = await axiosAPI.get("/users/current");
-    const data = res?.data?.data || res?.data;
-    const userData = data?.user || data;
-    return shapeUser(userData || {});
-  } catch {
-    return null;
-  }
-};
-
 /* ===================== AUTO REFRESH ON 401 (SAFE) ===================== */
 axiosAPI.interceptors.response.use(
   (response) => response,
@@ -118,7 +108,8 @@ axiosAPI.interceptors.response.use(
 
     if (!originalRequest) return Promise.reject(error);
 
-    // не трогаем auth endpoints, и не ретраим дваждсE    const url = originalRequest.url || "";
+    // не трогаем auth endpoints, и не ретраим дважды
+    const url = originalRequest.url || "";
     if (
       status !== 401 ||
       originalRequest._retry ||
@@ -178,7 +169,7 @@ export const registerThunk = createAsyncThunk(
       const userData = data.user || data;
       const userId = userData?._id ?? userData?.id;
 
-      persistAuth({ user: null, accessToken, refreshToken });
+      persistAuth({ user: null, accessToken, refreshToken, userId });
 
       const profileRes = await axiosAPI.get(`/users/${userId}`);
       const profileData = profileRes.data?.data || profileRes.data;
@@ -204,7 +195,7 @@ export const loginThunk = createAsyncThunk(
       const userData = data.user || data;
       const userId = userData?._id ?? userData?.id;
 
-      persistAuth({ user: null, accessToken, refreshToken });
+      persistAuth({ user: null, accessToken, refreshToken, userId });
 
       const profileRes = await axiosAPI.get(`/users/${userId}`);
       const profileData = profileRes.data?.data || profileRes.data;
@@ -231,6 +222,8 @@ export const refreshThunk = createAsyncThunk(
     }
 
     try {
+      const fallbackUserId =
+        thunkAPI.getState().auth.userId || localStorage.getItem("userId");
       const res = await axios.post(
         `${API_BASE_URL}/auth/refresh`,
         { refreshToken }
@@ -239,12 +232,17 @@ export const refreshThunk = createAsyncThunk(
       const data = res.data?.data || res.data;
       const { accessToken, refreshToken: newRefreshToken } = extractTokens(data);
       const userData = data.user || data;
-      const userId = userData?._id ?? userData?.id;
+      const userId = userData?._id ?? userData?.id ?? fallbackUserId;
+
+      if (!userId) {
+        return thunkAPI.rejectWithValue("User id is missing");
+      }
 
       persistAuth({
         user: null,
         accessToken,
         refreshToken: newRefreshToken || refreshToken,
+        userId,
       });
 
       const profileRes = await axiosAPI.get(`/users/${userId}`);
@@ -269,8 +267,8 @@ export const fetchCurrentUserThunk = createAsyncThunk(
       localStorage.getItem("accessToken") ||
       localStorage.getItem("token");
     const userId =
-      localStorage.getItem("userId") ||
       thunkAPI.getState().auth.userId ||
+      localStorage.getItem("userId") ||
       null;
 
     if (!token || !userId) {
@@ -290,6 +288,7 @@ export const fetchCurrentUserThunk = createAsyncThunk(
         accessToken: token,
         refreshToken:
           getCookie("refreshToken") || localStorage.getItem("refreshToken"),
+        userId,
       });
 
       return { user, token, userId };
@@ -328,8 +327,6 @@ export const updateBioThunk = createAsyncThunk(
         bio: shaped.bio ?? "",
       };
 
-      persistAuth({ user: mergedUser });
-
       return mergedUser;
     } catch (err) {
       return thunkAPI.rejectWithValue(
@@ -353,15 +350,6 @@ export const uploadAvatarThunk = createAsyncThunk(
       const res = await axiosAPI.post(`/users/${id}/avatar`, formData);
       const data = res.data?.data;
       const avatarUrl = data?.avatarUrl || data || "";
-
-      // persist updated user in localStorage
-      const storedUser = localStorage.getItem("user");
-      if (storedUser) {
-        const parsed = JSON.parse(storedUser);
-        parsed.avatarUrl = avatarUrl;
-        localStorage.setItem("user", JSON.stringify(parsed));
-        persistUserCache(parsed);
-      }
 
       return avatarUrl;
     } catch (err) {

@@ -11,9 +11,7 @@ import {
   selectSavedArticles,
 } from "../../redux/author/selectors";
 
-import {
-  selectUser,
-} from "../../redux/auth/selectors";
+import { selectUser } from "../../redux/auth/selectors";
 import {
   uploadAvatarThunk,
 } from "../../redux/auth/operations";
@@ -42,15 +40,17 @@ const AuthorProfilePage = () => {
   const { authorId } = useParams();
 
   const currentUser = useSelector(selectUser);
+  const persistedUserId = useSelector((state) => state.auth.userId);
   const author = useSelector(selectCreator);
 
   /* ===================== PROFILE CONTEXT ===================== */
+  const currentUserId = currentUser?.id || persistedUserId;
   const isMyProfile = Boolean(
-    currentUser?.id && (!authorId || authorId === currentUser.id)
+    currentUserId && (!authorId || authorId === currentUserId)
   );
 
   const profileUser = isMyProfile ? currentUser : author;
-  const profileId = isMyProfile ? currentUser?.id : authorId;
+  const profileId = isMyProfile ? currentUserId : authorId;
 
   /* ===================== DATA ===================== */
   const articles =
@@ -135,11 +135,11 @@ const AuthorProfilePage = () => {
                   className={css.hiddenInput}
                   onChange={(e) => {
                     const file = e.target.files[0];
-                    if (file && currentUser?.id) {
+                    if (file && currentUserId) {
                       dispatch(
                         uploadAvatarThunk({
                           file,
-                          userId: currentUser.id,
+                          userId: currentUserId,
                         })
                       );
                     }
@@ -162,7 +162,7 @@ const AuthorProfilePage = () => {
             <ProfileBio
               bio={bio}
               isMyProfile={isMyProfile}
-              userId={currentUser?.id}
+              userId={currentUserId}
             />
           </div>
         </div>

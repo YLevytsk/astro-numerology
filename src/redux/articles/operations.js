@@ -125,15 +125,16 @@ export const fetchArticlesByOwner = createAsyncThunk(
   "articles/fetchArticlesByOwner",
   async (ownerId, thunkAPI) => {
     try {
+      const id = ownerId ? String(ownerId) : ownerId;
       const response = await publicAPI.get("/articles", {
-        params: { ownerId, page: 1, limit: 100 },
+        params: { ownerId: id, page: 1, limit: 100 },
       });
 
       const articles = Array.isArray(response.data?.data?.data)
         ? response.data.data.data
         : [];
 
-      return { ownerId, articles };
+      return { ownerId: id, articles };
     } catch (e) {
       return thunkAPI.rejectWithValue({ ownerId, message: e.message });
     }
