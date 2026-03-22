@@ -593,16 +593,6 @@
   margin-top: 16px;
  
 }
-.reviews-swiper-wrapper .swiper-pagination-bullet {
-  background-color: #5B4B8A!important; /* обысE�ые тосE�и */
-}
-
-.reviews-swiper-wrapper .swiper-pagination-bullet-active {
-  background-color: #5B4B8A !important; /* активнасEтосE�а */
-}
-
-
-
 /* сE�рытсEсE�релки на мобильнысE*/
 @media (max-width: 767px) {
   .reviews-nav { display: none; }
