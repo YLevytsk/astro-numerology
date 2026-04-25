@@ -113,6 +113,16 @@ const getApiErrorMessage = (err, fallback = "Request failed") => {
   );
 };
 
+const logApiError = (label, err) => {
+  if (import.meta.env.DEV) {
+    console.error(label, {
+      status: err.response?.status,
+      data: err.response?.data,
+      message: err.message,
+    });
+  }
+};
+
 /* ===================== AUTO REFRESH ON 401 (SAFE) ===================== */
 axiosAPI.interceptors.response.use(
   (response) => response,
@@ -357,7 +367,20 @@ export const uploadAvatarThunk = createAsyncThunk(
       const formData = new FormData();
       formData.append("avatar", file);
 
-      const res = await axiosAPI.post(`/users/${id}/avatar`, formData);
+      let res;
+
+      try {
+        res = await axiosAPI.post(`/users/${id}/avatar`, formData);
+      } catch (postError) {
+        logApiError("Avatar POST failed", postError);
+
+        if (postError.response?.status !== 400) {
+          throw postError;
+        }
+
+        res = await axiosAPI.patch(`/users/${id}`, formData);
+      }
+
       const data = res.data?.data || res.data;
       const avatarUrl =
         data?.avatarUrl ||
