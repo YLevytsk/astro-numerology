@@ -18,9 +18,11 @@ import ArticlesPage from "./pages/ArticlesPage/ArticlesPage.jsx";
 import CookiesPage from "./pages/CookiesPage/CookiesPage.jsx";
 import PrivacySecurityPage from "./pages/PrivacySecurityPage/PrivacySecurityPage.jsx";
 import CompatibilityPage from "./pages/CompatibilityPage/CompatibilityPage.jsx";
+import AdminPage from "./pages/AdminPage/AdminPage.jsx";
 
 import PrivateRoute from "./components/PrivateRoute/PrivateRoute";
 import RestrictedRoute from "./components/RestrictedRoute.jsx";
+import AdminRoute from "./components/AdminRoute.jsx";
 
 import { refreshThunk, fetchCurrentUserThunk } from "./redux/auth/operations";
 import { getCookie } from "./utils/cookies.js";
@@ -114,6 +116,16 @@ export default function App() {
 
         {/* AUTHORS */}
         <Route path="/authors/:authorId" element={<AuthorProfilePage />} />
+
+        {/* ADMIN */}
+        <Route
+          path="/admin"
+          element={
+            <AdminRoute>
+              <AdminPage />
+            </AdminRoute>
+          }
+        />
 
         {/* 404 */}
         <Route path="*" element={<NotFoundPage />} />

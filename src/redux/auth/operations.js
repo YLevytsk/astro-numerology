@@ -63,6 +63,7 @@ const shapeUser = (raw = {}) => ({
   email: raw.email ?? "",
   avatarUrl: raw.avatarUrl ?? raw.avatar ?? "",
   bio: raw.bio ?? "",
+  role: raw.role ?? "user",
 });
 
 const persistAuth = ({ user, accessToken, refreshToken, userId }) => {

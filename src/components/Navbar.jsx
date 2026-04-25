@@ -7,6 +7,7 @@ import {
   selectIsLoggedIn,
   selectUser,
   selectIsRefreshing,
+  selectIsAdmin,
 } from "../redux/auth/selectors";
 import { logoutThunk } from "../redux/auth/operations";
 
@@ -19,6 +20,7 @@ export default function Navbar() {
 
   const isLoggedIn = useSelector(selectIsLoggedIn);
   const isRefreshing = useSelector(selectIsRefreshing);
+  const isAdmin = useSelector(selectIsAdmin);
   const user = useSelector(selectUser);
 
   // ================= SCROLL TO HASH =================
@@ -196,6 +198,18 @@ export default function Navbar() {
 
             {isLoggedIn && (
               <>
+                {isAdmin && (
+                  <li className="nav-item me-3">
+                    <Link
+                      to="/admin"
+                      className="nav-link"
+                      onClick={closeMobileMenu}
+                    >
+                      Admin
+                    </Link>
+                  </li>
+                )}
+
                 <li className="nav-item me-3">
                   <Link
                     to="/profile"

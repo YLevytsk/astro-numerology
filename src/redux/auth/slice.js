@@ -18,6 +18,7 @@ const emptyUser = {
   name: null,
   avatarUrl: null,
   bio: null,
+  role: "user",
 };
 
 const loadToken = () => {

@@ -1,0 +1,148 @@
+.page {
+  width: min(1180px, calc(100% - 32px));
+  margin: 0 auto;
+  padding: 48px 0 96px;
+  color: #2f2945;
+}
+
+.header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 24px;
+}
+
+.kicker {
+  margin: 0 0 6px;
+  color: #5b4b8a;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.title {
+  margin: 0;
+  font-size: 34px;
+  line-height: 1.2;
+  color: #2f2945;
+}
+
+.error {
+  margin: 0 0 18px;
+  padding: 12px 14px;
+  border: 1px solid #f2b6b6;
+  border-radius: 8px;
+  background: #fff5f5;
+  color: #9d2525;
+}
+
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  margin-bottom: 24px;
+}
+
+.statItem {
+  border: 1px solid #e1e4ed;
+  border-radius: 8px;
+  padding: 18px;
+  background: #fff;
+  box-shadow: 0 8px 24px rgba(31, 41, 55, 0.06);
+}
+
+.statLabel {
+  display: block;
+  margin-bottom: 8px;
+  color: #6b647e;
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.statValue {
+  display: block;
+  font-size: 32px;
+  line-height: 1;
+  color: #5b4b8a;
+}
+
+.panel {
+  border: 1px solid #e1e4ed;
+  border-radius: 8px;
+  background: #fff;
+  overflow: hidden;
+}
+
+.tabs {
+  display: flex;
+  gap: 8px;
+  padding: 14px;
+  border-bottom: 1px solid #e1e4ed;
+  background: #f8f7fb;
+}
+
+.tab {
+  border: 1px solid #d7d1eb;
+  border-radius: 8px;
+  padding: 8px 14px;
+  background: #fff;
+  color: #5b4b8a;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.activeTab {
+  background: #5b4b8a;
+  border-color: #5b4b8a;
+  color: #fff;
+}
+
+.tableWrap {
+  overflow-x: auto;
+}
+
+.table {
+  width: 100%;
+  min-width: 760px;
+  border-collapse: collapse;
+}
+
+.table th,
+.table td {
+  padding: 13px 16px;
+  border-bottom: 1px solid #edf0f5;
+  text-align: left;
+  vertical-align: top;
+}
+
+.table th {
+  color: #5b4b8a;
+  font-size: 13px;
+  text-transform: uppercase;
+  background: #fbfbfd;
+}
+
+.table td {
+  color: #342d47;
+}
+
+.empty {
+  margin: 0;
+  padding: 24px;
+  color: #6b647e;
+}
+
+@media (max-width: 760px) {
+  .page {
+    width: min(100% - 20px, 1180px);
+    padding-top: 28px;
+  }
+
+  .statsGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .title {
+    font-size: 28px;
+  }
+}
