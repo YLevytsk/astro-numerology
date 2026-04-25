@@ -370,7 +370,7 @@ export const uploadAvatarThunk = createAsyncThunk(
       return avatarUrl;
     } catch (err) {
       return thunkAPI.rejectWithValue(
-        err.response?.data?.message || err.message
+        getApiErrorMessage(err, "Avatar upload failed")
       );
     }
   }
