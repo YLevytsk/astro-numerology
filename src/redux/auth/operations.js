@@ -127,12 +127,6 @@ const logApiError = (label, err) => {
   }
 };
 
-const createAvatarFormData = (fieldName, file) => {
-  const formData = new FormData();
-  formData.append(fieldName, file);
-  return formData;
-};
-
 /* ===================== AUTO REFRESH ON 401 (SAFE) ===================== */
 axiosAPI.interceptors.response.use(
   (response) => response,
@@ -374,36 +368,13 @@ export const uploadAvatarThunk = createAsyncThunk(
       const id = userId || thunkAPI.getState().auth.user?.id;
       if (!id) return thunkAPI.rejectWithValue("User id is missing");
 
-      let res;
-      let lastPostError;
-      const avatarFieldNames = ["avatar", "image", "photo", "file"];
+      const formData = new FormData();
+      formData.append("avatar", file);
 
-      for (const fieldName of avatarFieldNames) {
-        try {
-          res = await axiosAPI.post(
-            `/users/${id}/avatar`,
-            createAvatarFormData(fieldName, file)
-          );
-          break;
-        } catch (postError) {
-          lastPostError = postError;
-          logApiError(`Avatar POST failed for field "${fieldName}"`, postError);
-
-          if (postError.response?.status !== 400) {
-            throw postError;
-          }
-        }
-      }
-
-      if (!res) {
-        res = await axiosAPI.patch(
-          `/users/${id}`,
-          createAvatarFormData("avatar", file)
-        ).catch((patchError) => {
-          logApiError("Avatar PATCH fallback failed", patchError);
-          throw lastPostError || patchError;
-        });
-      }
+      const res = await axiosAPI.post(`/users/${id}/avatar`, formData).catch((err) => {
+        logApiError("Avatar POST failed", err);
+        throw err;
+      });
 
       const data = res.data?.data || res.data;
       const avatarUrl =
@@ -413,6 +384,10 @@ export const uploadAvatarThunk = createAsyncThunk(
         data?.user?.avatarUrl ||
         (typeof data === "string" ? data : "") ||
         "";
+
+      if (!avatarUrl) {
+        return thunkAPI.rejectWithValue("Server did not return avatar URL");
+      }
 
       return avatarUrl;
     } catch (err) {
