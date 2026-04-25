@@ -371,7 +371,9 @@ export const uploadAvatarThunk = createAsyncThunk(
 export const logoutThunk = createAsyncThunk("auth/logout", async () => {
   try {
     await axiosAPI.post("/auth/logout");
-  } catch {}
+  } catch {
+    // Local auth state still needs to be cleared if the server logout fails.
+  }
   clearPersistedAuth();
   return true;
 });
