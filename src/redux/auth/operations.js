@@ -349,8 +349,14 @@ export const uploadAvatarThunk = createAsyncThunk(
       formData.append("avatar", file);
 
       const res = await axiosAPI.post(`/users/${id}/avatar`, formData);
-      const data = res.data?.data;
-      const avatarUrl = data?.avatarUrl || data || "";
+      const data = res.data?.data || res.data;
+      const avatarUrl =
+        data?.avatarUrl ||
+        data?.avatar ||
+        data?.url ||
+        data?.user?.avatarUrl ||
+        (typeof data === "string" ? data : "") ||
+        "";
 
       return avatarUrl;
     } catch (err) {
