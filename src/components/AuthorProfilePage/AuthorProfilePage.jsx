@@ -138,6 +138,7 @@ const AuthorProfilePage = () => {
               src={avatarSrc}
               alt={profileUser.name}
               className={css.profileImage}
+              onError={() => setAvatarPreviewError(true)}
             />
 
             {isMyProfile && (
@@ -145,7 +146,7 @@ const AuthorProfilePage = () => {
                 <label
                   htmlFor="avatarUpload"
                   className={css.editAvatarButton}
-                  title="Change avatar"
+                  title={isAvatarUploading ? "Uploading avatar" : "Change avatar"}
                 >
                   ✎
                 </label>
