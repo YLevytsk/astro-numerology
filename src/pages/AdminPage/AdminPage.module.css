@@ -126,6 +126,50 @@
   color: #342d47;
 }
 
+.badgeActive,
+.badgeBlocked {
+  display: inline-flex;
+  align-items: center;
+  min-height: 26px;
+  padding: 4px 9px;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 13px;
+}
+
+.badgeActive {
+  background: #eef9f3;
+  color: #177045;
+}
+
+.badgeBlocked {
+  background: #fff0f0;
+  color: #a82c2c;
+}
+
+.actionButton,
+.dangerButton {
+  border: 1px solid #d7d1eb;
+  border-radius: 8px;
+  min-width: 86px;
+  padding: 7px 10px;
+  background: #fff;
+  color: #5b4b8a;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.dangerButton {
+  border-color: #e2b9b9;
+  color: #a82c2c;
+}
+
+.actionButton:disabled,
+.dangerButton:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
 .empty {
   margin: 0;
   padding: 24px;
