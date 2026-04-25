@@ -100,6 +100,19 @@ const extractTokens = (data = {}) => ({
     null,
 });
 
+const getApiErrorMessage = (err, fallback = "Request failed") => {
+  const data = err.response?.data;
+
+  return (
+    data?.message ||
+    data?.error ||
+    data?.errors?.[0]?.message ||
+    (typeof data === "string" ? data : "") ||
+    err.message ||
+    fallback
+  );
+};
+
 /* ===================== AUTO REFRESH ON 401 (SAFE) ===================== */
 axiosAPI.interceptors.response.use(
   (response) => response,
@@ -178,9 +191,7 @@ export const registerThunk = createAsyncThunk(
 
       return { user: profileUser, token: accessToken, userId };
     } catch (err) {
-      return thunkAPI.rejectWithValue(
-        err.response?.data?.message || err.message
-      );
+      return thunkAPI.rejectWithValue(getApiErrorMessage(err));
     }
   }
 );

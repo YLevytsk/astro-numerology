@@ -30,7 +30,8 @@ const ASSET_BASE = API_URL.replace(/\/api\/?$/, "");
 const DEFAULT_AVATAR =
   "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='124' height='124' viewBox='0 0 124 124'%3E%3Crect width='124' height='124' rx='62' fill='%23e9ecf1'/%3E%3Ccircle cx='62' cy='48' r='24' fill='%235b4b8a' opacity='.9'/%3E%3Cpath d='M24 108c5.5-22 20-34 38-34s32.5 12 38 34' fill='%235b4b8a' opacity='.9'/%3E%3C/svg%3E";
 const ALLOWED_AVATAR_TYPES = ["image/jpeg", "image/png", "image/webp"];
-const MAX_AVATAR_SIZE = 5 * 1024 * 1024;
+const MAX_AVATAR_SIZE = 1024 * 1024;
+const AVATAR_SIZE = 512;
 
 const buildAssetUrl = (path) => {
   if (!path) return DEFAULT_AVATAR;
@@ -43,11 +44,64 @@ const validateAvatarFile = (file) => {
   if (!ALLOWED_AVATAR_TYPES.includes(file.type)) {
     return "Avatar must be JPG, PNG, or WebP.";
   }
-  if (file.size > MAX_AVATAR_SIZE) {
-    return "Avatar must be 5 MB or smaller.";
-  }
   return "";
 };
+
+const resizeAvatar = (file) =>
+  new Promise((resolve, reject) => {
+    const image = new Image();
+    const reader = new FileReader();
+
+    reader.onload = (event) => {
+      image.src = event.target.result;
+    };
+    reader.onerror = () => reject(new Error("Failed to read image."));
+    image.onerror = () => reject(new Error("Failed to process image."));
+
+    image.onload = () => {
+      const canvas = document.createElement("canvas");
+      canvas.width = AVATAR_SIZE;
+      canvas.height = AVATAR_SIZE;
+
+      const size = Math.min(image.width, image.height);
+      const sourceX = Math.round((image.width - size) / 2);
+      const sourceY = Math.round((image.height - size) / 2);
+      const context = canvas.getContext("2d");
+
+      context.drawImage(
+        image,
+        sourceX,
+        sourceY,
+        size,
+        size,
+        0,
+        0,
+        AVATAR_SIZE,
+        AVATAR_SIZE
+      );
+
+      canvas.toBlob(
+        (blob) => {
+          if (!blob) {
+            reject(new Error("Failed to compress image."));
+            return;
+          }
+
+          resolve(
+            new File(
+              [blob],
+              file.name.replace(/\.[^.]+$/, ".webp"),
+              { type: "image/webp" }
+            )
+          );
+        },
+        "image/webp",
+        0.82
+      );
+    };
+
+    reader.readAsDataURL(file);
+  });
 
 const AuthorProfilePage = () => {
   const dispatch = useDispatch();
@@ -118,14 +172,21 @@ const AuthorProfilePage = () => {
       return;
     }
 
-    setAvatarError("");
-    setIsAvatarUploading(true);
-    setAvatarPreviewError(false);
-
     try {
+      setAvatarError("");
+      setIsAvatarUploading(true);
+      setAvatarPreviewError(false);
+
+      const avatarFile = await resizeAvatar(file);
+
+      if (avatarFile.size > MAX_AVATAR_SIZE) {
+        setAvatarError("Avatar must be 1 MB or smaller after compression.");
+        return;
+      }
+
       await dispatch(
         uploadAvatarThunk({
-          file,
+          file: avatarFile,
           userId: currentUserId,
         })
       ).unwrap();
