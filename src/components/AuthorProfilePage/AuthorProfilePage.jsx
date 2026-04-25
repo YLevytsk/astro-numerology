@@ -12,9 +12,7 @@ import {
 } from "../../redux/author/selectors";
 
 import { selectUser } from "../../redux/auth/selectors";
-import {
-  uploadAvatarThunk,
-} from "../../redux/auth/operations";
+import { uploadAvatarThunk } from "../../redux/auth/operations";
 
 import {
   fetchArticlesByOwner,
@@ -26,7 +24,6 @@ import ArticlesList from "../ArticlesList/ArticlesList.jsx";
 import ProfileBio from "../ProfileBio/ProfileBio.jsx";
 import css from "./AuthorProfilePage.module.css";
 
-/* ===================== ASSETS ===================== */
 const API_URL =
   import.meta.env.VITE_API_BASE || "https://harmoniq.disainnova.com";
 const ASSET_BASE = API_URL.replace(/\/api\/?$/, "");
@@ -63,7 +60,6 @@ const AuthorProfilePage = () => {
   const persistedUserId = useSelector((state) => state.auth.userId);
   const author = useSelector(selectCreator);
 
-  /* ===================== PROFILE CONTEXT ===================== */
   const currentUserId = currentUser?.id || persistedUserId;
   const isMyProfile = Boolean(
     currentUserId && (!authorId || authorId === currentUserId)
@@ -72,7 +68,6 @@ const AuthorProfilePage = () => {
   const profileUser = isMyProfile ? currentUser : author;
   const profileId = isMyProfile ? currentUserId : authorId;
 
-  /* ===================== DATA ===================== */
   const articles =
     useSelector((state) => selectArticlesByOwner(state, profileId)) || [];
   const savedArticles = useSelector(selectSavedArticles) || [];
@@ -87,7 +82,6 @@ const AuthorProfilePage = () => {
     profileUser?.about ||
     "";
 
-  /* ===================== LOAD PROFILE ===================== */
   useEffect(() => {
     if (!profileId) return;
 
@@ -98,14 +92,55 @@ const AuthorProfilePage = () => {
     dispatch(fetchArticlesByOwner(profileId));
   }, [dispatch, authorId, profileId, isMyProfile]);
 
-  /* ===================== SAVED ARTICLES (MY PROFILE) ===================== */
   useEffect(() => {
     if (isMyProfile && profileId) {
       dispatch(fetchAuthorSavedArticles(profileId));
     }
   }, [dispatch, isMyProfile, profileId]);
 
-  /* ===================== DELETE ARTICLE ===================== */
+  useEffect(() => {
+    setAvatarPreviewError(false);
+  }, [profileUser?.avatarUrl]);
+
+  const handleAvatarChange = async (event) => {
+    const file = event.target.files[0];
+    const validationError = validateAvatarFile(file);
+
+    if (validationError) {
+      setAvatarError(validationError);
+      event.target.value = "";
+      return;
+    }
+
+    if (!currentUserId) {
+      setAvatarError("User id is missing. Please log in again.");
+      event.target.value = "";
+      return;
+    }
+
+    setAvatarError("");
+    setIsAvatarUploading(true);
+    setAvatarPreviewError(false);
+
+    try {
+      await dispatch(
+        uploadAvatarThunk({
+          file,
+          userId: currentUserId,
+        })
+      ).unwrap();
+    } catch (error) {
+      setAvatarError(
+        typeof error === "string"
+          ? error
+          : "Avatar upload failed. Please try another image."
+      );
+    } finally {
+      setIsAvatarUploading(false);
+      event.target.value = "";
+    }
+  };
+
   const handleDelete = async (articleId) => {
     try {
       await dispatch(deleteArticle(articleId)).unwrap();
@@ -115,7 +150,6 @@ const AuthorProfilePage = () => {
     }
   };
 
-  /* ===================== LOADING ===================== */
   if (!profileUser) {
     return (
       <section className={css.authorProfile}>
@@ -126,61 +160,51 @@ const AuthorProfilePage = () => {
     );
   }
 
-  /* ===================== RENDER ===================== */
   return (
     <section className={css.authorProfile}>
       <div className={css.contentBlock}>
-        {/* HEADER */}
         <div className={css.profileHeader}>
-          {/* AVATAR */}
-          <div className={css.avatarWrapper}>
-            <img
-              src={avatarSrc}
-              alt={profileUser.name}
-              className={css.profileImage}
-              onError={() => setAvatarPreviewError(true)}
-            />
+          <div className={css.avatarBlock}>
+            <div className={css.avatarWrapper}>
+              <img
+                src={avatarSrc}
+                alt={profileUser.name || "User"}
+                className={css.profileImage}
+                onError={() => setAvatarPreviewError(true)}
+              />
 
-            {isMyProfile && (
-              <>
-                <label
-                  htmlFor="avatarUpload"
-                  className={css.editAvatarButton}
-                  title={isAvatarUploading ? "Uploading avatar" : "Change avatar"}
-                >
-                  ✎
-                </label>
-
-                <input
-                  id="avatarUpload"
-                  type="file"
-                  accept="image/*"
-                  className={css.hiddenInput}
-                  onChange={(e) => {
-                    const file = e.target.files[0];
-                    if (file && currentUserId) {
-                      dispatch(
-                        uploadAvatarThunk({
-                          file,
-                          userId: currentUserId,
-                        })
-                      );
+              {isMyProfile && (
+                <>
+                  <label
+                    htmlFor="avatarUpload"
+                    className={css.editAvatarButton}
+                    title={
+                      isAvatarUploading ? "Uploading avatar" : "Change avatar"
                     }
-                  }}
-                />
-              </>
-            )}
+                  >
+                    {isAvatarUploading ? "..." : "+"}
+                  </label>
 
-            <p className={css.articleCount}>
-              {articles.length} Articles
-            </p>
+                  <input
+                    id="avatarUpload"
+                    type="file"
+                    accept="image/jpeg,image/png,image/webp"
+                    className={css.hiddenInput}
+                    disabled={isAvatarUploading}
+                    onChange={handleAvatarChange}
+                  />
+                </>
+              )}
+            </div>
+
+            <p className={css.articleCount}>{articles.length} Articles</p>
+            {isMyProfile && avatarError && (
+              <p className={css.avatarError}>{avatarError}</p>
+            )}
           </div>
 
-          {/* INFO */}
           <div className={css.profileInfo}>
-            <h1 className={css.authorName}>
-              {profileUser.name}
-            </h1>
+            <h1 className={css.authorName}>{profileUser.name}</h1>
 
             <ProfileBio
               bio={bio}
@@ -190,24 +214,18 @@ const AuthorProfilePage = () => {
           </div>
         </div>
 
-        {/* CREATE ARTICLE */}
         {isMyProfile && (
-          <Link
-            className={css.createButton}
-            to="/profile/articles/new"
-          >
+          <Link className={css.createButton} to="/profile/articles/new">
             + Create Article
           </Link>
         )}
 
-        {/* ARTICLES */}
         <ArticlesList
           articles={articles}
           canDelete={isMyProfile}
           onDelete={handleDelete}
         />
 
-        {/* SAVED */}
         {isMyProfile && (
           <div className={css.savedSection}>
             <h2 className={css.savedHeading}>Saved</h2>
