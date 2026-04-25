@@ -90,13 +90,13 @@ const resizeAvatar = (file) =>
           resolve(
             new File(
               [blob],
-              file.name.replace(/\.[^.]+$/, ".webp"),
-              { type: "image/webp" }
+              file.name.replace(/\.[^.]+$/, ".jpg"),
+              { type: "image/jpeg" }
             )
           );
         },
-        "image/webp",
-        0.82
+        "image/jpeg",
+        0.86
       );
     };
 
