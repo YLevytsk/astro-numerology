@@ -1,5 +1,5 @@
 import { useSelector } from "react-redux";
-import { Navigate } from "react-router-dom";
+import { Navigate, useLocation } from "react-router-dom";
 
 import {
   selectIsAdmin,
@@ -8,6 +8,7 @@ import {
 } from "../redux/auth/selectors";
 
 const AdminRoute = ({ children }) => {
+  const location = useLocation();
   const isLoggedIn = useSelector(selectIsLoggedIn);
   const isRefreshing = useSelector(selectIsRefreshing);
   const isAdmin = useSelector(selectIsAdmin);
@@ -15,7 +16,7 @@ const AdminRoute = ({ children }) => {
   if (isRefreshing) return null;
 
   if (!isLoggedIn) {
-    return <Navigate to="/login" replace />;
+    return <Navigate to="/login" replace state={{ from: location }} />;
   }
 
   if (!isAdmin) {

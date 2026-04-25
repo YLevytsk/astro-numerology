@@ -3,7 +3,7 @@ import * as Yup from "yup";
 import toast from "react-hot-toast";
 import { useEffect, useId, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
-import { useNavigate, NavLink } from "react-router-dom";
+import { useLocation, useNavigate, NavLink } from "react-router-dom";
 
 import { loginThunk } from "../../redux/auth/operations";
 
@@ -14,6 +14,7 @@ import eyeClosed from "../../assets/img/eye-closed.svg";
 const LoginForm = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
   const formikRef = useRef(null);
 
   const validationSchema = Yup.object().shape({
@@ -30,13 +31,16 @@ const LoginForm = () => {
     formikRef.current?.resetForm();
   }, []);
 
-  const handleSubmit = async (values) => {
+  const handleSubmit = async (values, { setSubmitting }) => {
     try {
       await dispatch(loginThunk(values)).unwrap();
-      navigate("/profile");
+      const redirectTo = location.state?.from?.pathname || "/profile";
+      navigate(redirectTo, { replace: true });
       toast.success("Login successful!");
     } catch (error) {
-      toast.error(error);
+      toast.error(error || "Login failed");
+    } finally {
+      setSubmitting(false);
     }
   };
 
@@ -51,6 +55,7 @@ const LoginForm = () => {
           onSubmit={handleSubmit}
           innerRef={formikRef}
         >
+          {({ isSubmitting }) => (
           <Form>
             <div className={css.inputGroup}>
               <label htmlFor={emailId} className={css.label}>Email</label>
@@ -83,8 +88,11 @@ const LoginForm = () => {
               <ErrorMessage name="password" component="div" className={css.error} />
             </div>
 
-            <button type="submit" className={css.btn}>Login</button>
+            <button type="submit" className={css.btn} disabled={isSubmitting}>
+              {isSubmitting ? "Logging in..." : "Login"}
+            </button>
           </Form>
+          )}
         </Formik>
 
         <p className={css.text}>
