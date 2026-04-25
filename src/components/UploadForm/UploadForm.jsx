@@ -30,10 +30,10 @@ const UploadForm = () => {
   const validationSchema = Yup.object({
     photo: Yup.mixed().test(
       "fileSize",
-      "File size is too large (max 1MB)",
+      "File size is too large (max 5MB)",
       (value) => {
         if (!value) return true;
-        return value.size <= 1024 * 1024;
+        return value.size <= 5 * 1024 * 1024;
       }
     ),
   });

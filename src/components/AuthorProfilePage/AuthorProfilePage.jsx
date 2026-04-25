@@ -30,7 +30,7 @@ const ASSET_BASE = API_URL.replace(/\/api\/?$/, "");
 const DEFAULT_AVATAR =
   "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='124' height='124' viewBox='0 0 124 124'%3E%3Crect width='124' height='124' rx='62' fill='%23e9ecf1'/%3E%3Ccircle cx='62' cy='48' r='24' fill='%235b4b8a' opacity='.9'/%3E%3Cpath d='M24 108c5.5-22 20-34 38-34s32.5 12 38 34' fill='%235b4b8a' opacity='.9'/%3E%3C/svg%3E";
 const ALLOWED_AVATAR_TYPES = ["image/jpeg", "image/png", "image/webp"];
-const MAX_AVATAR_SIZE = 1024 * 1024;
+const MAX_AVATAR_SIZE = 5 * 1024 * 1024;
 const AVATAR_SIZE = 512;
 
 const buildAssetUrl = (path) => {
@@ -68,6 +68,8 @@ const resizeAvatar = (file) =>
       const sourceY = Math.round((image.height - size) / 2);
       const context = canvas.getContext("2d");
 
+      context.fillStyle = "#ffffff";
+      context.fillRect(0, 0, AVATAR_SIZE, AVATAR_SIZE);
       context.drawImage(
         image,
         sourceX,
@@ -180,7 +182,7 @@ const AuthorProfilePage = () => {
       const avatarFile = await resizeAvatar(file);
 
       if (avatarFile.size > MAX_AVATAR_SIZE) {
-        setAvatarError("Avatar must be 1 MB or smaller after compression.");
+        setAvatarError("Avatar must be 5 MB or smaller after compression.");
         return;
       }
 
