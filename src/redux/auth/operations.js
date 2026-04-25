@@ -215,9 +215,7 @@ export const loginThunk = createAsyncThunk(
 
       return { user: profileUser, token: accessToken, userId };
     } catch (err) {
-      return thunkAPI.rejectWithValue(
-        err.response?.data?.message || err.message
-      );
+      return thunkAPI.rejectWithValue(getApiErrorMessage(err, "Avatar upload failed"));
     }
   }
 );
