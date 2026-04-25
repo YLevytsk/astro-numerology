@@ -115,12 +115,22 @@ const getApiErrorMessage = (err, fallback = "Request failed") => {
 
 const logApiError = (label, err) => {
   if (import.meta.env.DEV) {
+    const data = err.response?.data;
+
     console.error(label, {
       status: err.response?.status,
-      data: err.response?.data,
+      data,
+      dataJson:
+        typeof data === "string" ? data : JSON.stringify(data, null, 2),
       message: err.message,
     });
   }
+};
+
+const createAvatarFormData = (fieldName, file) => {
+  const formData = new FormData();
+  formData.append(fieldName, file);
+  return formData;
 };
 
 /* ===================== AUTO REFRESH ON 401 (SAFE) ===================== */
@@ -364,21 +374,35 @@ export const uploadAvatarThunk = createAsyncThunk(
       const id = userId || thunkAPI.getState().auth.user?.id;
       if (!id) return thunkAPI.rejectWithValue("User id is missing");
 
-      const formData = new FormData();
-      formData.append("avatar", file);
-
       let res;
+      let lastPostError;
+      const avatarFieldNames = ["avatar", "image", "photo", "file"];
 
-      try {
-        res = await axiosAPI.post(`/users/${id}/avatar`, formData);
-      } catch (postError) {
-        logApiError("Avatar POST failed", postError);
+      for (const fieldName of avatarFieldNames) {
+        try {
+          res = await axiosAPI.post(
+            `/users/${id}/avatar`,
+            createAvatarFormData(fieldName, file)
+          );
+          break;
+        } catch (postError) {
+          lastPostError = postError;
+          logApiError(`Avatar POST failed for field "${fieldName}"`, postError);
 
-        if (postError.response?.status !== 400) {
-          throw postError;
+          if (postError.response?.status !== 400) {
+            throw postError;
+          }
         }
+      }
 
-        res = await axiosAPI.patch(`/users/${id}`, formData);
+      if (!res) {
+        res = await axiosAPI.patch(
+          `/users/${id}`,
+          createAvatarFormData("avatar", file)
+        ).catch((patchError) => {
+          logApiError("Avatar PATCH fallback failed", patchError);
+          throw lastPostError || patchError;
+        });
       }
 
       const data = res.data?.data || res.data;
