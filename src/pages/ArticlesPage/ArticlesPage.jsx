@@ -40,11 +40,6 @@ const ArticlesPage = () => {
   };
 
   // ➕ Load more
-  const handleLoadMore = () => {
-    const nextPage = page + 1;
-    dispatch(loadArticles({ page: nextPage, limit, type: filter }));
-  };
-
   // ⏳ Первинне завантаження при відкритті сторінки
   useEffect(() => {
     dispatch(clearArticles());
