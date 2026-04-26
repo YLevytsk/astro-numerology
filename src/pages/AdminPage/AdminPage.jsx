@@ -3,6 +3,14 @@ import toast from "react-hot-toast";
 import { axiosAPI } from "../../redux/auth/operations";
 import s from "./AdminPage.module.css";
 
+const initialAiForm = {
+  topic: "",
+  keywords: "",
+  language: "English",
+  tone: "Expert, clear",
+  length: "1200",
+};
+
 const formatDate = (value) => {
   if (!value) return "-";
   const date = new Date(value);
@@ -15,6 +23,9 @@ export default function AdminPage() {
   const [articles, setArticles] = useState([]);
   const [activeTab, setActiveTab] = useState("users");
   const [isLoading, setIsLoading] = useState(true);
+  const [isAiFormOpen, setIsAiFormOpen] = useState(false);
+  const [aiForm, setAiForm] = useState(initialAiForm);
+  const [generatedArticle, setGeneratedArticle] = useState(null);
   const [pendingAction, setPendingAction] = useState("");
   const [error, setError] = useState("");
 
@@ -154,6 +165,56 @@ export default function AdminPage() {
     }
   };
 
+  const handleAiFieldChange = (event) => {
+    const { name, value } = event.target;
+    setAiForm((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleGenerateArticle = async (event) => {
+    event.preventDefault();
+
+    if (!aiForm.topic.trim()) {
+      toast.error("Article topic is required");
+      return;
+    }
+
+    const actionKey = "generate-ai-article";
+    setPendingAction(actionKey);
+    setError("");
+    setGeneratedArticle(null);
+
+    try {
+      const res = await axiosAPI.post("/admin/articles/generate-ai", {
+        topic: aiForm.topic.trim(),
+        keywords: aiForm.keywords
+          .split(",")
+          .map((item) => item.trim())
+          .filter(Boolean),
+        language: aiForm.language.trim(),
+        tone: aiForm.tone.trim(),
+        length: Number(aiForm.length) || 1200,
+      });
+      const createdArticle = res.data?.data || res.data?.article || res.data;
+
+      if (createdArticle?._id || createdArticle?.id) {
+        setArticles((prev) => [createdArticle, ...prev]);
+      }
+
+      setGeneratedArticle(createdArticle || null);
+      setAiForm(initialAiForm);
+      await refreshStats();
+      toast.success("AI article saved as draft");
+      setActiveTab("articles");
+    } catch (err) {
+      const message =
+        err.response?.data?.message || "Failed to generate AI article";
+      setError(message);
+      toast.error(message);
+    } finally {
+      setPendingAction("");
+    }
+  };
+
   return (
     <main className={s.page}>
       <section className={s.header}>
@@ -161,9 +222,128 @@ export default function AdminPage() {
           <p className={s.kicker}>Admin</p>
           <h1 className={s.title}>Site Dashboard</h1>
         </div>
+        <button
+          className={s.primaryButton}
+          type="button"
+          onClick={() => setIsAiFormOpen((prev) => !prev)}
+        >
+          {isAiFormOpen ? "Close AI form" : "Create article with AI"}
+        </button>
       </section>
 
       {error && <p className={s.error}>{error}</p>}
+
+      {isAiFormOpen && (
+        <section className={s.aiPanel} aria-label="AI article generation">
+          <div className={s.aiPanelHeader}>
+            <div>
+              <p className={s.kicker}>Draft generator</p>
+              <h2 className={s.panelTitle}>Create Article With AI</h2>
+            </div>
+            <span className={s.draftBadge}>Always saved as draft</span>
+          </div>
+
+          <form className={s.aiForm} onSubmit={handleGenerateArticle}>
+            <label className={s.field}>
+              Article topic
+              <input
+                name="topic"
+                value={aiForm.topic}
+                onChange={handleAiFieldChange}
+                placeholder="Numerology compatibility by birth date"
+                required
+              />
+            </label>
+
+            <label className={s.field}>
+              Keywords
+              <input
+                name="keywords"
+                value={aiForm.keywords}
+                onChange={handleAiFieldChange}
+                placeholder="numerology, compatibility, birth date"
+              />
+            </label>
+
+            <label className={s.field}>
+              Language
+              <select
+                name="language"
+                value={aiForm.language}
+                onChange={handleAiFieldChange}
+              >
+                <option>English</option>
+                <option>Russian</option>
+                <option>Ukrainian</option>
+                <option>Spanish</option>
+                <option>French</option>
+              </select>
+            </label>
+
+            <label className={s.field}>
+              Tone
+              <select
+                name="tone"
+                value={aiForm.tone}
+                onChange={handleAiFieldChange}
+              >
+                <option>Expert, clear</option>
+                <option>Warm and practical</option>
+                <option>SEO editorial</option>
+                <option>Academic</option>
+                <option>Friendly</option>
+              </select>
+            </label>
+
+            <label className={s.field}>
+              Approximate length, words
+              <input
+                name="length"
+                type="number"
+                min="400"
+                max="4000"
+                step="100"
+                value={aiForm.length}
+                onChange={handleAiFieldChange}
+              />
+            </label>
+
+            <button
+              className={s.primaryButton}
+              type="submit"
+              disabled={pendingAction === "generate-ai-article"}
+            >
+              {pendingAction === "generate-ai-article"
+                ? "Generating..."
+                : "Generate draft"}
+            </button>
+          </form>
+
+          {generatedArticle && (
+            <div className={s.aiResult}>
+              <h3>Draft Created</h3>
+              <dl>
+                <div>
+                  <dt>SEO title</dt>
+                  <dd>{generatedArticle.seoTitle || generatedArticle.title || "-"}</dd>
+                </div>
+                <div>
+                  <dt>Meta description</dt>
+                  <dd>{generatedArticle.metaDescription || generatedArticle.desc || "-"}</dd>
+                </div>
+                <div>
+                  <dt>Slug</dt>
+                  <dd>{generatedArticle.slug || "-"}</dd>
+                </div>
+                <div>
+                  <dt>Status</dt>
+                  <dd>{generatedArticle.status || "draft"}</dd>
+                </div>
+              </dl>
+            </div>
+          )}
+        </section>
+      )}
 
       <section className={s.statsGrid} aria-label="Site statistics">
         <div className={s.statItem}>
@@ -272,6 +452,7 @@ export default function AdminPage() {
                 <tr>
                   <th>Title</th>
                   <th>Author</th>
+                  <th>Status</th>
                   <th>Rate</th>
                   <th>Created</th>
                   <th>Updated</th>
@@ -283,6 +464,15 @@ export default function AdminPage() {
                   <tr key={article._id}>
                     <td>{article.title || "-"}</td>
                     <td>{article.author || article.name || "-"}</td>
+                    <td>
+                      <span
+                        className={
+                          article.status === "draft" ? s.badgeDraft : s.badgeActive
+                        }
+                      >
+                        {article.status || "published"}
+                      </span>
+                    </td>
                     <td>{article.rate ?? 0}</td>
                     <td>{formatDate(article.createdAt || article.date)}</td>
                     <td>{formatDate(article.updatedAt)}</td>

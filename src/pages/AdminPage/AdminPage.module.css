@@ -36,6 +36,117 @@
   color: #9d2525;
 }
 
+.primaryButton {
+  border: 1px solid #5b4b8a;
+  border-radius: 8px;
+  min-height: 40px;
+  padding: 9px 16px;
+  background: #5b4b8a;
+  color: #fff;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.primaryButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.aiPanel {
+  margin-bottom: 24px;
+  border: 1px solid #e1e4ed;
+  border-radius: 8px;
+  padding: 18px;
+  background: #fff;
+  box-shadow: 0 8px 24px rgba(31, 41, 55, 0.06);
+}
+
+.aiPanelHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.panelTitle {
+  margin: 0;
+  font-size: 24px;
+  line-height: 1.25;
+  color: #2f2945;
+}
+
+.draftBadge {
+  display: inline-flex;
+  align-items: center;
+  min-height: 28px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: #f4f1ff;
+  color: #5b4b8a;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.aiForm {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.field {
+  display: grid;
+  gap: 7px;
+  color: #342d47;
+  font-weight: 700;
+}
+
+.field input,
+.field select {
+  width: 100%;
+  min-height: 42px;
+  border: 1px solid #d7d1eb;
+  border-radius: 8px;
+  padding: 9px 11px;
+  background: #fff;
+  color: #342d47;
+}
+
+.aiResult {
+  margin-top: 18px;
+  border-top: 1px solid #edf0f5;
+  padding-top: 16px;
+}
+
+.aiResult h3 {
+  margin: 0 0 12px;
+  font-size: 18px;
+  color: #2f2945;
+}
+
+.aiResult dl {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin: 0;
+}
+
+.aiResult div {
+  display: grid;
+  gap: 4px;
+}
+
+.aiResult dt {
+  color: #6b647e;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.aiResult dd {
+  margin: 0;
+  color: #342d47;
+}
+
 .statsGrid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -127,7 +238,8 @@
 }
 
 .badgeActive,
-.badgeBlocked {
+.badgeBlocked,
+.badgeDraft {
   display: inline-flex;
   align-items: center;
   min-height: 26px;
@@ -145,6 +257,11 @@
 .badgeBlocked {
   background: #fff0f0;
   color: #a82c2c;
+}
+
+.badgeDraft {
+  background: #fff7e8;
+  color: #946200;
 }
 
 .actionButton,
@@ -189,6 +306,17 @@
   }
 
   .statsGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .header,
+  .aiPanelHeader {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .aiForm,
+  .aiResult dl {
     grid-template-columns: 1fr;
   }
 
