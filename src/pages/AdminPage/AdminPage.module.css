@@ -45,11 +45,23 @@
   color: #fff;
   font-weight: 700;
   cursor: pointer;
+  transition: background 0.18s ease, border-color 0.18s ease,
+    box-shadow 0.18s ease, transform 0.18s ease;
+}
+
+.primaryButton:hover,
+.primaryButton:focus-visible {
+  border-color: #46376f;
+  background: #46376f;
+  box-shadow: 0 8px 18px rgba(91, 75, 138, 0.24);
+  transform: translateY(-1px);
 }
 
 .primaryButton:disabled {
   opacity: 0.6;
   cursor: not-allowed;
+  box-shadow: none;
+  transform: none;
 }
 
 .aiPanel {
@@ -213,6 +225,15 @@
   color: #5b4b8a;
   font-weight: 700;
   cursor: pointer;
+  transition: background 0.18s ease, border-color 0.18s ease,
+    color 0.18s ease, box-shadow 0.18s ease;
+}
+
+.tab:hover,
+.tab:focus-visible {
+  border-color: #5b4b8a;
+  background: #f4f1ff;
+  box-shadow: 0 6px 14px rgba(91, 75, 138, 0.14);
 }
 
 .activeTab {
@@ -287,6 +308,8 @@
   color: #5b4b8a;
   font-weight: 700;
   cursor: pointer;
+  transition: background 0.18s ease, border-color 0.18s ease,
+    color 0.18s ease, box-shadow 0.18s ease, transform 0.18s ease;
 }
 
 .actionGroup {
@@ -300,10 +323,30 @@
   color: #a82c2c;
 }
 
+.actionButton:hover,
+.actionButton:focus-visible {
+  border-color: #5b4b8a;
+  background: #5b4b8a;
+  color: #fff;
+  box-shadow: 0 7px 16px rgba(91, 75, 138, 0.2);
+  transform: translateY(-1px);
+}
+
+.dangerButton:hover,
+.dangerButton:focus-visible {
+  border-color: #a82c2c;
+  background: #a82c2c;
+  color: #fff;
+  box-shadow: 0 7px 16px rgba(168, 44, 44, 0.18);
+  transform: translateY(-1px);
+}
+
 .actionButton:disabled,
 .dangerButton:disabled {
   opacity: 0.55;
   cursor: not-allowed;
+  box-shadow: none;
+  transform: none;
 }
 
 .empty {
