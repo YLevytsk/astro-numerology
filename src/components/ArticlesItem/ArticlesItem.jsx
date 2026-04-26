@@ -56,6 +56,11 @@ const ArticlesItem = ({
           >
             {canDelete ? "Edit" : hasValidId ? "Learn more" : "View blog"}
           </Link>
+          {canDelete && hasValidId && article.status !== "draft" && (
+            <Link to={`/articles/${articleId}`} className={s.learn_more}>
+              Read
+            </Link>
+          )}
           {!canDelete && <ButtonAddToBookmarks articleId={articleId} />}
           {canDelete && (
             <button
