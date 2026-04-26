@@ -43,6 +43,7 @@
   align-items: center;
   gap: 6px;
   width: fit-content;
+  align-self: flex-end;
   margin-top: 8px;
   color: #5b4b8a;
   font-size: 16px;
@@ -56,6 +57,20 @@
   color: #3c2f66;
   transform: translateX(2px);
   text-decoration: underline;
+}
+
+.readIcon {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  color: currentColor;
+  stroke: currentColor;
+  transition: transform 0.2s ease;
+}
+
+.readLink:hover .readIcon,
+.readLink:focus-visible .readIcon {
+  transform: translateX(3px);
 }
 
 .wrapper {

@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import s from "./ArticlesItem.module.css";
 import ButtonAddToBookmarks from "../ButtonAddToBookmarks/ButtonAddToBookmarks.jsx";
 import placeholderImg from "../../assets/Legacies.png";
+import RightArrowIcon from "../../assets/img/right.svg?react";
 
 const API_URL = (
   import.meta.env.VITE_API_BASE || "https://harmoniq.disainnova.com"
@@ -42,7 +43,8 @@ const ArticlesItem = ({
           <p className={s.articleDescription}>{desc}</p>
           {canDelete && hasValidId && article.status !== "draft" && (
             <Link to={`/articles/${articleId}`} className={s.readLink}>
-              Read <span aria-hidden="true">-&gt;</span>
+              Read
+              <RightArrowIcon className={s.readIcon} aria-hidden="true" />
             </Link>
           )}
         </div>
