@@ -242,6 +242,13 @@
   color: #fff;
 }
 
+.activeTab:hover,
+.activeTab:focus-visible {
+  background: #46376f;
+  border-color: #46376f;
+  color: #fff;
+}
+
 .tableWrap {
   overflow-x: auto;
 }
