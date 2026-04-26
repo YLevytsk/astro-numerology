@@ -40,6 +40,11 @@ const ArticlesItem = ({
           </p>
           <h3 className={s.articleTitle}>{title}</h3>
           <p className={s.articleDescription}>{desc}</p>
+          {canDelete && hasValidId && article.status !== "draft" && (
+            <Link to={`/articles/${articleId}`} className={s.readLink}>
+              Read <span aria-hidden="true">-&gt;</span>
+            </Link>
+          )}
         </div>
 
         <div className={`${s.actions} ${canDelete ? s.actionsManage : ""}`}>
@@ -56,11 +61,6 @@ const ArticlesItem = ({
           >
             {canDelete ? "Edit" : hasValidId ? "Learn more" : "View blog"}
           </Link>
-          {canDelete && hasValidId && article.status !== "draft" && (
-            <Link to={`/articles/${articleId}`} className={s.learn_more}>
-              Read
-            </Link>
-          )}
           {!canDelete && <ButtonAddToBookmarks articleId={articleId} />}
           {canDelete && (
             <button

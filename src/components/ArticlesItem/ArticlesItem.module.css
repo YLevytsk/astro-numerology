@@ -26,6 +26,7 @@
 }
 
 .articleDescription {
+  margin-bottom: 0;
   font-weight: 400;
   font-size: 16px;
   line-height: 155%;
@@ -35,6 +36,26 @@
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.readLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  width: fit-content;
+  margin-top: 8px;
+  color: #5b4b8a;
+  font-size: 16px;
+  font-weight: 700;
+  text-decoration: none;
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.readLink:hover,
+.readLink:focus-visible {
+  color: #3c2f66;
+  transform: translateX(2px);
+  text-decoration: underline;
 }
 
 .wrapper {
@@ -66,8 +87,9 @@
 }
 
 .actionsManage {
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   align-items: stretch;
+  margin-top: auto;
 }
 
 .deleteButton {
@@ -75,7 +97,7 @@
   align-items: center;
   justify-content: center;
   min-height: 40px;
-  padding: 6px 12px;
+  padding: 8px 14px;
   border-radius: 8px;
   border: 1px solid #dc3545;
   background: #dc3545;
@@ -147,8 +169,9 @@
 .actionsManage .learn_more,
 .actionsManage .deleteButton {
   width: 100%;
-  min-height: 44px;
-  padding: 10px 14px;
+  min-width: 0;
+  min-height: 40px;
+  padding: 8px 14px;
 }
 
 .imageWrapper {
