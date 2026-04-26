@@ -1,5 +1,6 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { useSearchParams } from "react-router-dom";
 
 import SectionTitle from "../../components/SectionTitle/SectionTitle";
 import ArticlesList from "../../components/ArticlesList/ArticlesList";
@@ -12,7 +13,6 @@ import { setFilter, clearArticles } from "../../redux/articles/slice.js";
 import {
   selectArticles,
   selectLoading,
-  selectPage,
   selectFilter,
 } from "../../redux/articles/selectors.js";
 
@@ -23,13 +23,14 @@ const filterOptions = ["All", "Popular"];
 
 const ArticlesPage = () => {
   const dispatch = useDispatch();
+  const [searchParams, setSearchParams] = useSearchParams();
   const articles = useSelector(selectArticles);
   const loading = useSelector(selectLoading);
-  const page = useSelector(selectPage);
   const filter = useSelector(selectFilter);
 
   const [isOpen, setIsOpen] = useState(false);
   const listRef = useRef(null);
+  const queryPage = Math.max(1, Number(searchParams.get("page")) || 1);
 
   // 🔁 При зміні фільтру — очищуємо і завантажуємо 1 сторінку
   const handleFilterChange = (e) => {
@@ -37,7 +38,20 @@ const ArticlesPage = () => {
     dispatch(setFilter(selected));
     dispatch(clearArticles());
     dispatch(loadArticles({ page: 1, limit, type: selected }));
+    setSearchParams({});
   };
+
+  const handlePageChange = useCallback((nextPage) => {
+    const pageParams = new URLSearchParams(searchParams);
+
+    if (nextPage <= 1) {
+      pageParams.delete("page");
+    } else {
+      pageParams.set("page", String(nextPage));
+    }
+
+    setSearchParams(pageParams);
+  }, [searchParams, setSearchParams]);
 
   // ➕ Load more
   // ⏳ Первинне завантаження при відкритті сторінки
@@ -46,10 +60,19 @@ const ArticlesPage = () => {
     dispatch(loadArticles({ page: 1, limit, type: filter }));
   }, [dispatch, filter]);
 
+  useEffect(() => {
+    if (!articles.length) return;
+
+    const totalPages = Math.max(1, Math.ceil(articles.length / 6));
+    if (queryPage > totalPages) {
+      handlePageChange(totalPages);
+    }
+  }, [articles.length, handlePageChange, queryPage]);
+
   // 🧭 Автоматичний скрол при load more
   useEffect(() => {
-    if (page > 1 && listRef.current) {
-      const firstNewIndex = (page - 1) * limit;
+    if (queryPage > 1 && listRef.current) {
+      const firstNewIndex = (queryPage - 1) * 6;
       const el = listRef.current.children[firstNewIndex];
       if (el) {
         window.scrollTo({
@@ -58,7 +81,7 @@ const ArticlesPage = () => {
         });
       }
     }
-  }, [page]);
+  }, [queryPage]);
 
   // 🌀 Loader на старті
   if (loading && articles.length === 0) {
@@ -110,7 +133,12 @@ const ArticlesPage = () => {
         </div>
 
         <div className={s.listGap}>
-          <ArticlesList articles={articles} listRef={listRef} />
+          <ArticlesList
+            articles={articles}
+            currentPage={queryPage}
+            listRef={listRef}
+            onPageChange={handlePageChange}
+          />
         </div>
 
         {loading && articles.length > 0 && (

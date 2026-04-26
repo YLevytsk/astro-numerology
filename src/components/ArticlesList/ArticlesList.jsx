@@ -8,15 +8,23 @@ import { selectCreators } from "../../redux/author/selectors.js";
 import { selectIsLoggedIn, selectUserId } from "../../redux/auth/selectors.js";
 import Pagination from "../Pagination/Pagination.jsx";
 
-const ArticlesList = ({ articles, canDelete = false, onDelete }) => {
+const ArticlesList = ({
+  articles,
+  canDelete = false,
+  currentPage: controlledPage,
+  listRef,
+  onDelete,
+  onPageChange,
+}) => {
   const dispatch = useDispatch();
   const authors = useSelector(selectCreators);
   const isLoggedIn = useSelector(selectIsLoggedIn);
   const userId = useSelector(selectUserId);
 
   // 🔹 pagination
-  const [currentPage, setCurrentPage] = useState(1);
+  const [internalPage, setInternalPage] = useState(1);
   const articlesPerPage = 6;
+  const currentPage = controlledPage || internalPage;
 
   useEffect(() => {
     dispatch(fetchAuthors());
@@ -49,10 +57,22 @@ const ArticlesList = ({ articles, canDelete = false, onDelete }) => {
   const currentArticles = articles.slice(indexOfFirstArticle, indexOfLastArticle);
 
   const totalPages = Math.ceil(articles.length / articlesPerPage);
+  const handlePageChange = (nextPage) => {
+    if (onPageChange) {
+      onPageChange(nextPage);
+      return;
+    }
+
+    setInternalPage(nextPage);
+  };
 
   return (
     <>
-      <ul className={s.articlesList} style={{ listStyle: "none", padding: 0, margin: 0 }}>
+      <ul
+        ref={listRef}
+        className={s.articlesList}
+        style={{ listStyle: "none", padding: 0, margin: 0 }}
+      >
         {currentArticles.map((article) => (
           <li key={article._id}>
             <ArticlesItem
@@ -69,7 +89,7 @@ const ArticlesList = ({ articles, canDelete = false, onDelete }) => {
       <Pagination
         currentPage={currentPage}
         totalPages={totalPages}
-        onPageChange={setCurrentPage}
+        onPageChange={handlePageChange}
       />
     </>
   );
