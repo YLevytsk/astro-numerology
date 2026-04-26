@@ -163,24 +163,7 @@ const ArticlePage = () => {
             dangerouslySetInnerHTML={{ __html: formattedText }}
           />
 
-          {isOwnArticle ? (
-            <div className={s.ownerActions}>
-              <Link
-                to="/profile/articles/new"
-                state={{ article }}
-                className={s.ownerEditButton}
-              >
-                Edit
-              </Link>
-              <button
-                type="button"
-                className={s.ownerDeleteButton}
-                onClick={handleDeleteOwnArticle}
-              >
-                Delete
-              </button>
-            </div>
-          ) : (
+          {!isOwnArticle && (
           <div className={s.wrapper}>
             <div className={s.metaBlock}>
               <p className={s.author}>
@@ -242,6 +225,25 @@ const ArticlePage = () => {
           </div>
           )}
         </div>
+
+        {isOwnArticle && (
+          <div className={s.ownerActions}>
+            <Link
+              to="/profile/articles/new"
+              state={{ article }}
+              className={s.ownerEditButton}
+            >
+              Edit
+            </Link>
+            <button
+              type="button"
+              className={s.ownerDeleteButton}
+              onClick={handleDeleteOwnArticle}
+            >
+              Delete
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );
