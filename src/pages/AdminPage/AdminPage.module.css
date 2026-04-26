@@ -159,6 +159,12 @@
   cursor: pointer;
 }
 
+.actionGroup {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
 .dangerButton {
   border-color: #e2b9b9;
   color: #a82c2c;

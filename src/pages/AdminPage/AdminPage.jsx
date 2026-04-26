@@ -103,6 +103,32 @@ export default function AdminPage() {
     }
   };
 
+  const handleDeleteUser = async (user) => {
+    const userLabel = user.email || user.name || "this user";
+    const confirmed = window.confirm(
+      `Delete account ${userLabel}? This cannot be undone.`
+    );
+
+    if (!confirmed) return;
+
+    const actionKey = `delete-user-${user._id}`;
+    setPendingAction(actionKey);
+    setError("");
+
+    try {
+      await axiosAPI.delete(`/admin/users/${user._id}`);
+      setUsers((prev) => prev.filter((item) => item._id !== user._id));
+      await refreshStats();
+      toast.success("User account deleted");
+    } catch (err) {
+      const message = err.response?.data?.message || "Failed to delete user";
+      setError(message);
+      toast.error(message);
+    } finally {
+      setPendingAction("");
+    }
+  };
+
   const handleDeleteArticle = async (article) => {
     const confirmed = window.confirm(
       `Delete article "${article.title || "Untitled"}"? This cannot be undone.`
@@ -206,18 +232,33 @@ export default function AdminPage() {
                     <td>{user.articlesAmount ?? 0}</td>
                     <td>{formatDate(user.createdAt)}</td>
                     <td>
-                      <button
-                        className={user.isBlocked ? s.actionButton : s.dangerButton}
-                        type="button"
-                        onClick={() => handleToggleBlockUser(user)}
-                        disabled={user.role === "admin" || pendingAction === `user-${user._id}`}
-                      >
-                        {pendingAction === `user-${user._id}`
-                          ? "Saving..."
-                          : user.isBlocked
-                            ? "Unblock"
-                            : "Block"}
-                      </button>
+                      <div className={s.actionGroup}>
+                        <button
+                          className={user.isBlocked ? s.actionButton : s.dangerButton}
+                          type="button"
+                          onClick={() => handleToggleBlockUser(user)}
+                          disabled={user.role === "admin" || pendingAction === `user-${user._id}`}
+                        >
+                          {pendingAction === `user-${user._id}`
+                            ? "Saving..."
+                            : user.isBlocked
+                              ? "Unblock"
+                              : "Block"}
+                        </button>
+                        <button
+                          className={s.dangerButton}
+                          type="button"
+                          onClick={() => handleDeleteUser(user)}
+                          disabled={
+                            user.role === "admin" ||
+                            pendingAction === `delete-user-${user._id}`
+                          }
+                        >
+                          {pendingAction === `delete-user-${user._id}`
+                            ? "Deleting..."
+                            : "Delete"}
+                        </button>
+                      </div>
                     </td>
                   </tr>
                 ))}
