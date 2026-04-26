@@ -3,6 +3,8 @@ import toast from "react-hot-toast";
 import { axiosAPI } from "../../redux/auth/operations";
 import s from "./AdminPage.module.css";
 
+const ARTICLE_TITLE_MAX_LENGTH = 48;
+
 const initialAiForm = {
   topic: "",
   keywords: "",
@@ -223,6 +225,11 @@ export default function AdminPage() {
     const articleId = getArticleId(editingArticle);
     if (!articleId) return;
 
+    if (editForm.title.trim().length > ARTICLE_TITLE_MAX_LENGTH) {
+      toast.error(`Title must be ${ARTICLE_TITLE_MAX_LENGTH} characters or less`);
+      return;
+    }
+
     const actionKey = `save-article-${articleId}`;
     const formData = new FormData();
 
@@ -316,6 +323,7 @@ export default function AdminPage() {
         language: aiForm.language.trim(),
         tone: aiForm.tone.trim(),
         length: Number(aiForm.length) || 1200,
+        titleMaxLength: ARTICLE_TITLE_MAX_LENGTH,
       });
       const createdArticle = res.data?.data || res.data?.article || res.data;
 
@@ -376,6 +384,7 @@ export default function AdminPage() {
                 name="topic"
                 value={aiForm.topic}
                 onChange={handleAiFieldChange}
+                maxLength="120"
                 placeholder="Numerology compatibility by birth date"
                 required
               />
@@ -527,8 +536,12 @@ export default function AdminPage() {
                 name="title"
                 value={editForm.title}
                 onChange={handleEditFieldChange}
+                maxLength={ARTICLE_TITLE_MAX_LENGTH}
                 required
               />
+              <span className={s.fieldHint}>
+                {editForm.title.length}/{ARTICLE_TITLE_MAX_LENGTH} characters
+              </span>
             </label>
 
             <label className={s.field}>

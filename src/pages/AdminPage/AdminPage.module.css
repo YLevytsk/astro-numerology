@@ -118,6 +118,12 @@
   resize: vertical;
 }
 
+.fieldHint {
+  color: #6b647e;
+  font-size: 12px;
+  font-weight: 600;
+}
+
 .aiResult {
   margin-top: 18px;
   border-top: 1px solid #edf0f5;
