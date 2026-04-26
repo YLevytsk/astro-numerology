@@ -1,5 +1,5 @@
 import { Routes, Route } from "react-router-dom";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import Navbar from "./components/Navbar.jsx";
@@ -31,6 +31,7 @@ export default function App() {
   const dispatch = useDispatch();
   const { isRefreshing, token, userId } = useSelector((state) => state.auth);
   const initRef = useRef(false);
+  const [authReady, setAuthReady] = useState(false);
 
   /* ================= RESTORE SESSION ================= */
   useEffect(() => {
@@ -38,7 +39,7 @@ export default function App() {
     initRef.current = true;
 
     if (token && userId) {
-      dispatch(fetchCurrentUserThunk());
+      dispatch(fetchCurrentUserThunk()).finally(() => setAuthReady(true));
       return;
     }
 
@@ -46,12 +47,15 @@ export default function App() {
       getCookie("refreshToken") || localStorage.getItem("refreshToken");
 
     if (refreshToken) {
-      dispatch(refreshThunk());
+      dispatch(refreshThunk()).finally(() => setAuthReady(true));
+      return;
     }
+
+    setAuthReady(true);
   }, [dispatch, token, userId]);
 
   /* ⛔ НЕ РЕНДЕРИМ РОУТЫ, ПОКА REFRESH */
-  if (isRefreshing) {
+  if (!authReady || isRefreshing) {
     return null; // или <Loader />
   }
 
