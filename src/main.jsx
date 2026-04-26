@@ -11,6 +11,12 @@ import { store, persistor } from "./redux/store";
 import { setAuthHeader } from "./redux/api/privateAPI";
 import { getCookie } from "./utils/cookies.js";
 
+const redirectedPath = sessionStorage.getItem("redirect");
+if (redirectedPath) {
+  sessionStorage.removeItem("redirect");
+  window.history.replaceState(null, "", redirectedPath);
+}
+
 // восстановление accessToken при старте
 const token =
   getCookie("accessToken") ||
