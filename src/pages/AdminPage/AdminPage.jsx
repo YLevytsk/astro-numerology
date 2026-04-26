@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import toast from "react-hot-toast";
 import { axiosAPI } from "../../redux/auth/operations";
 import s from "./AdminPage.module.css";
@@ -45,6 +45,7 @@ export default function AdminPage() {
   const [editForm, setEditForm] = useState(initialEditForm);
   const [pendingAction, setPendingAction] = useState("");
   const [error, setError] = useState("");
+  const editorRef = useRef(null);
 
   useEffect(() => {
     let ignore = false;
@@ -205,6 +206,12 @@ export default function AdminPage() {
       image: null,
     });
   };
+
+  useEffect(() => {
+    if (editingArticle && editorRef.current) {
+      editorRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  }, [editingArticle]);
 
   const closeEditForm = () => {
     setEditingArticle(null);
@@ -500,7 +507,7 @@ export default function AdminPage() {
       </section>
 
       {editingArticle && (
-        <section className={s.editorPanel} aria-label="Edit article">
+        <section ref={editorRef} className={s.editorPanel} aria-label="Edit article">
           <div className={s.aiPanelHeader}>
             <div>
               <p className={s.kicker}>Article editor</p>
