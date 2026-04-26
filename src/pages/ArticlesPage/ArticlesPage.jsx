@@ -4,7 +4,6 @@ import { useSelector, useDispatch } from "react-redux";
 import SectionTitle from "../../components/SectionTitle/SectionTitle";
 import ArticlesList from "../../components/ArticlesList/ArticlesList";
 import Container from "../../components/Container/Container";
-import LoadMoreBtn from "../../components/LoadMoreBtn/LoadMoreBtn.jsx";
 import Loader from "../../components/Loader/Loader";
 
 import { loadArticles } from "../../redux/articles/operations.js";
@@ -15,7 +14,6 @@ import {
   selectLoading,
   selectPage,
   selectFilter,
-  selectHasMore,
 } from "../../redux/articles/selectors.js";
 
 import s from "./ArticlesPage.module.css";
@@ -29,7 +27,6 @@ const ArticlesPage = () => {
   const loading = useSelector(selectLoading);
   const page = useSelector(selectPage);
   const filter = useSelector(selectFilter);
-  const hasMore = useSelector(selectHasMore);
 
   const [isOpen, setIsOpen] = useState(false);
   const listRef = useRef(null);

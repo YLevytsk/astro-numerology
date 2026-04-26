@@ -13,7 +13,7 @@ const ArticlesItem = ({
   canDelete = false,
   onDelete,
 }) => {
-  const { _id, title, desc, img, ownerId } = article;
+  const { _id, title, desc, img } = article;
 
   const imageSrc =
     img && (img.startsWith("http") ? img : `${API_URL}${img}`);
