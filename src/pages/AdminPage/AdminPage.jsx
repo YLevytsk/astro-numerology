@@ -11,6 +11,19 @@ const initialAiForm = {
   length: "1200",
 };
 
+const initialEditForm = {
+  title: "",
+  seoTitle: "",
+  metaDescription: "",
+  slug: "",
+  desc: "",
+  article: "",
+  image: null,
+};
+
+const getArticleId = (article) =>
+  article?._id?.$oid || article?._id || article?.id || "";
+
 const formatDate = (value) => {
   if (!value) return "-";
   const date = new Date(value);
@@ -26,6 +39,8 @@ export default function AdminPage() {
   const [isAiFormOpen, setIsAiFormOpen] = useState(false);
   const [aiForm, setAiForm] = useState(initialAiForm);
   const [generatedArticle, setGeneratedArticle] = useState(null);
+  const [editingArticle, setEditingArticle] = useState(null);
+  const [editForm, setEditForm] = useState(initialEditForm);
   const [pendingAction, setPendingAction] = useState("");
   const [error, setError] = useState("");
 
@@ -76,6 +91,16 @@ export default function AdminPage() {
   const refreshStats = async () => {
     const statsRes = await axiosAPI.get("/admin/stats");
     setStats(statsRes.data?.data || null);
+  };
+
+  const replaceArticle = (updatedArticle) => {
+    const updatedId = getArticleId(updatedArticle);
+
+    setArticles((prev) =>
+      prev.map((article) =>
+        getArticleId(article) === updatedId ? updatedArticle : article
+      )
+    );
   };
 
   const handleToggleBlockUser = async (user) => {
@@ -141,23 +166,121 @@ export default function AdminPage() {
   };
 
   const handleDeleteArticle = async (article) => {
+    const articleId = getArticleId(article);
     const confirmed = window.confirm(
       `Delete article "${article.title || "Untitled"}"? This cannot be undone.`
     );
 
     if (!confirmed) return;
 
-    const actionKey = `article-${article._id}`;
+    const actionKey = `article-${articleId}`;
     setPendingAction(actionKey);
     setError("");
 
     try {
-      await axiosAPI.delete(`/admin/articles/${article._id}`);
-      setArticles((prev) => prev.filter((item) => item._id !== article._id));
+      await axiosAPI.delete(`/admin/articles/${articleId}`);
+      setArticles((prev) => prev.filter((item) => getArticleId(item) !== articleId));
       await refreshStats();
       toast.success("Article deleted");
     } catch (err) {
       const message = err.response?.data?.message || "Failed to delete article";
+      setError(message);
+      toast.error(message);
+    } finally {
+      setPendingAction("");
+    }
+  };
+
+  const openEditForm = (article) => {
+    setEditingArticle(article);
+    setEditForm({
+      title: article.title || "",
+      seoTitle: article.seoTitle || article.title || "",
+      metaDescription: article.metaDescription || article.desc || "",
+      slug: article.slug || "",
+      desc: article.desc || article.metaDescription || "",
+      article: article.article || article.content || "",
+      image: null,
+    });
+  };
+
+  const closeEditForm = () => {
+    setEditingArticle(null);
+    setEditForm(initialEditForm);
+  };
+
+  const handleEditFieldChange = (event) => {
+    const { name, value, files } = event.target;
+    setEditForm((prev) => ({
+      ...prev,
+      [name]: files ? files[0] || null : value,
+    }));
+  };
+
+  const handleSaveArticle = async (event) => {
+    event.preventDefault();
+
+    const articleId = getArticleId(editingArticle);
+    if (!articleId) return;
+
+    const actionKey = `save-article-${articleId}`;
+    const formData = new FormData();
+
+    formData.append("title", editForm.title);
+    formData.append("seoTitle", editForm.seoTitle);
+    formData.append("metaDescription", editForm.metaDescription);
+    formData.append("slug", editForm.slug);
+    formData.append("desc", editForm.desc);
+    formData.append("article", editForm.article);
+    formData.append("content", editForm.article);
+
+    if (editForm.image) {
+      formData.append("img", editForm.image);
+    }
+
+    setPendingAction(actionKey);
+    setError("");
+
+    try {
+      const res = await axiosAPI.patch(`/admin/articles/${articleId}`, formData);
+      const updatedArticle = res.data?.data || res.data;
+      replaceArticle(updatedArticle);
+      setEditingArticle(updatedArticle);
+      setEditForm((prev) => ({ ...prev, image: null }));
+      toast.success("Article updated");
+    } catch (err) {
+      const message = err.response?.data?.message || "Failed to update article";
+      setError(message);
+      toast.error(message);
+    } finally {
+      setPendingAction("");
+    }
+  };
+
+  const handlePublishArticle = async (article) => {
+    const articleId = getArticleId(article);
+    if (!articleId) return;
+
+    const confirmed = window.confirm(
+      `Publish article "${article.title || "Untitled"}"?`
+    );
+
+    if (!confirmed) return;
+
+    const actionKey = `publish-article-${articleId}`;
+    setPendingAction(actionKey);
+    setError("");
+
+    try {
+      const res = await axiosAPI.patch(`/admin/articles/${articleId}/publish`);
+      const updatedArticle = res.data?.data || res.data;
+      replaceArticle(updatedArticle);
+      if (getArticleId(editingArticle) === articleId) {
+        setEditingArticle(updatedArticle);
+      }
+      toast.success("Article published");
+    } catch (err) {
+      const message = err.response?.data?.message || "Failed to publish article";
       setError(message);
       toast.error(message);
     } finally {
@@ -464,7 +587,7 @@ export default function AdminPage() {
               </thead>
               <tbody>
                 {articles.map((article) => (
-                  <tr key={article._id}>
+                  <tr key={getArticleId(article)}>
                     <td>{article.title || "-"}</td>
                     <td>{article.author || article.name || "-"}</td>
                     <td>
@@ -480,14 +603,43 @@ export default function AdminPage() {
                     <td>{formatDate(article.createdAt || article.date)}</td>
                     <td>{formatDate(article.updatedAt)}</td>
                     <td>
-                      <button
-                        className={s.dangerButton}
-                        type="button"
-                        onClick={() => handleDeleteArticle(article)}
-                        disabled={pendingAction === `article-${article._id}`}
-                      >
-                        {pendingAction === `article-${article._id}` ? "Deleting..." : "Delete"}
-                      </button>
+                      <div className={s.actionGroup}>
+                        <button
+                          className={s.actionButton}
+                          type="button"
+                          onClick={() => openEditForm(article)}
+                        >
+                          Edit
+                        </button>
+                        {article.status === "draft" && (
+                          <button
+                            className={s.actionButton}
+                            type="button"
+                            onClick={() => handlePublishArticle(article)}
+                            disabled={
+                              pendingAction ===
+                              `publish-article-${getArticleId(article)}`
+                            }
+                          >
+                            {pendingAction ===
+                            `publish-article-${getArticleId(article)}`
+                              ? "Publishing..."
+                              : "Publish"}
+                          </button>
+                        )}
+                        <button
+                          className={s.dangerButton}
+                          type="button"
+                          onClick={() => handleDeleteArticle(article)}
+                          disabled={
+                            pendingAction === `article-${getArticleId(article)}`
+                          }
+                        >
+                          {pendingAction === `article-${getArticleId(article)}`
+                            ? "Deleting..."
+                            : "Delete"}
+                        </button>
+                      </div>
                     </td>
                   </tr>
                 ))}
@@ -496,6 +648,124 @@ export default function AdminPage() {
           </div>
         )}
       </section>
+
+      {editingArticle && (
+        <section className={s.editorPanel} aria-label="Edit article">
+          <div className={s.aiPanelHeader}>
+            <div>
+              <p className={s.kicker}>Article editor</p>
+              <h2 className={s.panelTitle}>{editingArticle.title || "Untitled"}</h2>
+            </div>
+            <div className={s.actionGroup}>
+              {editingArticle.status === "draft" && (
+                <button
+                  className={s.primaryButton}
+                  type="button"
+                  onClick={() => handlePublishArticle(editingArticle)}
+                  disabled={
+                    pendingAction ===
+                    `publish-article-${getArticleId(editingArticle)}`
+                  }
+                >
+                  {pendingAction ===
+                  `publish-article-${getArticleId(editingArticle)}`
+                    ? "Publishing..."
+                    : "Publish"}
+                </button>
+              )}
+              <button className={s.actionButton} type="button" onClick={closeEditForm}>
+                Close
+              </button>
+            </div>
+          </div>
+
+          <form className={s.editorForm} onSubmit={handleSaveArticle}>
+            <label className={s.field}>
+              Title
+              <input
+                name="title"
+                value={editForm.title}
+                onChange={handleEditFieldChange}
+                required
+              />
+            </label>
+
+            <label className={s.field}>
+              SEO title
+              <input
+                name="seoTitle"
+                value={editForm.seoTitle}
+                onChange={handleEditFieldChange}
+              />
+            </label>
+
+            <label className={s.field}>
+              Meta description
+              <textarea
+                name="metaDescription"
+                value={editForm.metaDescription}
+                onChange={handleEditFieldChange}
+                rows="3"
+              />
+            </label>
+
+            <label className={s.field}>
+              Slug
+              <input
+                name="slug"
+                value={editForm.slug}
+                onChange={handleEditFieldChange}
+              />
+            </label>
+
+            <label className={s.field}>
+              Card description
+              <textarea
+                name="desc"
+                value={editForm.desc}
+                onChange={handleEditFieldChange}
+                rows="3"
+              />
+            </label>
+
+            <label className={s.field}>
+              Upload image
+              <input
+                name="image"
+                type="file"
+                accept="image/jpeg,image/png,image/webp"
+                onChange={handleEditFieldChange}
+              />
+            </label>
+
+            <label className={`${s.field} ${s.fullField}`}>
+              Article text
+              <textarea
+                name="article"
+                value={editForm.article}
+                onChange={handleEditFieldChange}
+                rows="14"
+                required
+              />
+            </label>
+
+            <div className={s.editorActions}>
+              <button
+                className={s.primaryButton}
+                type="submit"
+                disabled={
+                  pendingAction ===
+                  `save-article-${getArticleId(editingArticle)}`
+                }
+              >
+                {pendingAction === `save-article-${getArticleId(editingArticle)}`
+                  ? "Saving..."
+                  : "Save changes"}
+              </button>
+            </div>
+          </form>
+        </section>
+      )}
     </main>
   );
 }

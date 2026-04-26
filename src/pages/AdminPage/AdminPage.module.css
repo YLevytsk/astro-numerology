@@ -102,7 +102,8 @@
 }
 
 .field input,
-.field select {
+.field select,
+.field textarea {
   width: 100%;
   min-height: 42px;
   border: 1px solid #d7d1eb;
@@ -110,6 +111,11 @@
   padding: 9px 11px;
   background: #fff;
   color: #342d47;
+  font: inherit;
+}
+
+.field textarea {
+  resize: vertical;
 }
 
 .aiResult {
@@ -182,6 +188,7 @@
   border-radius: 8px;
   background: #fff;
   overflow: hidden;
+  margin-bottom: 24px;
 }
 
 .tabs {
@@ -299,6 +306,30 @@
   color: #6b647e;
 }
 
+.editorPanel {
+  border: 1px solid #e1e4ed;
+  border-radius: 8px;
+  padding: 18px;
+  background: #fff;
+  box-shadow: 0 8px 24px rgba(31, 41, 55, 0.06);
+}
+
+.editorForm {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.fullField {
+  grid-column: 1 / -1;
+}
+
+.editorActions {
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: flex-end;
+}
+
 @media (max-width: 760px) {
   .page {
     width: min(100% - 20px, 1180px);
@@ -316,8 +347,14 @@
   }
 
   .aiForm,
-  .aiResult dl {
+  .aiResult dl,
+  .editorForm {
     grid-template-columns: 1fr;
+  }
+
+  .fullField,
+  .editorActions {
+    grid-column: auto;
   }
 
   .title {
