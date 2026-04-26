@@ -206,8 +206,11 @@ export default function AdminPage() {
       toast.success("AI article saved as draft");
       setActiveTab("articles");
     } catch (err) {
+      const status = err.response?.status;
       const message =
-        err.response?.data?.message || "Failed to generate AI article";
+        status === 404
+          ? "AI article generation endpoint is not deployed on the server yet."
+          : err.response?.data?.message || "Failed to generate AI article";
       setError(message);
       toast.error(message);
     } finally {
