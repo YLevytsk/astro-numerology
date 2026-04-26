@@ -38,20 +38,27 @@ export default function App() {
     if (initRef.current) return;
     initRef.current = true;
 
-    if (token && userId) {
-      dispatch(fetchCurrentUserThunk()).finally(() => setAuthReady(true));
-      return;
-    }
+    const restoreSession = async () => {
+      const refreshToken =
+        getCookie("refreshToken") || localStorage.getItem("refreshToken");
 
-    const refreshToken =
-      getCookie("refreshToken") || localStorage.getItem("refreshToken");
+      if (token && userId) {
+        const currentAction = await dispatch(fetchCurrentUserThunk());
 
-    if (refreshToken) {
-      dispatch(refreshThunk()).finally(() => setAuthReady(true));
-      return;
-    }
+        if (fetchCurrentUserThunk.fulfilled.match(currentAction)) {
+          setAuthReady(true);
+          return;
+        }
+      }
 
-    setAuthReady(true);
+      if (refreshToken) {
+        await dispatch(refreshThunk());
+      }
+
+      setAuthReady(true);
+    };
+
+    restoreSession();
   }, [dispatch, token, userId]);
 
   /* ⛔ НЕ РЕНДЕРИМ РОУТЫ, ПОКА REFRESH */
