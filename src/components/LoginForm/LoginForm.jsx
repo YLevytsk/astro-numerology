@@ -18,8 +18,19 @@ const LoginForm = () => {
   const formikRef = useRef(null);
 
   const validationSchema = Yup.object().shape({
-    email: Yup.string().email("Invalid email format").required("Email is required"),
-    password: Yup.string().min(6, "Password must be at least 6 characters").required("Password is required"),
+    email: Yup.string()
+      .trim()
+      .email("Enter a valid email address")
+      .max(64, "Email must be at most 64 characters")
+      .required("Email is required"),
+    password: Yup.string()
+      .min(8, "Password must be at least 8 characters")
+      .max(64, "Password must be at most 64 characters")
+      .matches(
+        /^[A-Za-z0-9!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?`~]+$/,
+        "Password contains unsupported characters"
+      )
+      .required("Password is required"),
   });
 
   const [showPassword, setShowPassword] = useState(false);
@@ -31,14 +42,17 @@ const LoginForm = () => {
     formikRef.current?.resetForm();
   }, []);
 
-  const handleSubmit = async (values, { setSubmitting }) => {
+  const handleSubmit = async (values, { setSubmitting, setStatus }) => {
     try {
+      setStatus("");
       await dispatch(loginThunk(values)).unwrap();
       const redirectTo = location.state?.from?.pathname || "/profile";
       navigate(redirectTo, { replace: true });
       toast.success("Login successful!");
     } catch (error) {
-      toast.error(error || "Login failed");
+      const message = error || "Login failed";
+      setStatus(message);
+      toast.error(message);
     } finally {
       setSubmitting(false);
     }
@@ -55,8 +69,10 @@ const LoginForm = () => {
           onSubmit={handleSubmit}
           innerRef={formikRef}
         >
-          {({ isSubmitting }) => (
+          {({ isSubmitting, status }) => (
           <Form>
+            {status && <div className={css.formError}>{status}</div>}
+
             <div className={css.inputGroup}>
               <label htmlFor={emailId} className={css.label}>Email</label>
               <Field name="email" type="email" id={emailId} className={css.input} />

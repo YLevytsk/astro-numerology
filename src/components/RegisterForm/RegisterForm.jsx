@@ -13,11 +13,14 @@ import { registerThunk } from "../../redux/auth/operations";
 
 const validationSchema = Yup.object({
   name: Yup.string()
+    .trim()
     .min(2, "Name must be at least 2 characters")
     .max(32, "Name must be at most 32 characters")
+    .matches(/^[A-Za-zА-Яа-яЁёІіЇїЄєҐґ' -]+$/, "Name contains unsupported characters")
     .required("Name is required"),
 
   email: Yup.string()
+    .trim()
     .email("Invalid email format")
     .max(64, "Email must be at most 64 characters")
     .required("Email is required"),
@@ -25,6 +28,10 @@ const validationSchema = Yup.object({
   password: Yup.string()
     .min(8, "Password must be at least 8 characters")
     .max(64, "Password must be at most 64 characters")
+    .matches(
+      /^[A-Za-z0-9!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?`~]+$/,
+      "Password contains unsupported characters"
+    )
     .required("Password is required"),
 
   confirmPassword: Yup.string()
@@ -51,8 +58,9 @@ const RegisterForm = () => {
     formikRef.current?.resetForm();
   }, []);
 
-  const handleSubmit = async (values, { setSubmitting, resetForm }) => {
+  const handleSubmit = async (values, { setSubmitting, resetForm, setStatus }) => {
     setSubmitting(true);
+    setStatus("");
 
     const payload = {
       name: values.name.trim(),
@@ -68,7 +76,9 @@ const RegisterForm = () => {
         navigate("/profile"); // 👉 после регистрации открыть личный кабинет
       })
       .catch((error) => {
-        toast.error(error || "Registration failed");
+        const message = error || "Registration failed";
+        setStatus(message);
+        toast.error(message);
       })
       .finally(() => {
         setSubmitting(false);
@@ -85,8 +95,10 @@ const RegisterForm = () => {
         onSubmit={handleSubmit}
         innerRef={formikRef}
       >
-        {({ isSubmitting }) => (
+        {({ isSubmitting, status }) => (
           <Form className={s.registerForm}>
+            {status && <div className={s.formError}>{status}</div>}
+
             {/* NAME */}
             <div className={s.fieldWrapper}>
               <label className={s.labelForm} htmlFor="name">
