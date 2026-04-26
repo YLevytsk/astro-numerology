@@ -490,6 +490,124 @@ export default function AdminPage() {
         </div>
       </section>
 
+      {editingArticle && (
+        <section className={s.editorPanel} aria-label="Edit article">
+          <div className={s.aiPanelHeader}>
+            <div>
+              <p className={s.kicker}>Article editor</p>
+              <h2 className={s.panelTitle}>{editingArticle.title || "Untitled"}</h2>
+            </div>
+            <div className={s.actionGroup}>
+              {editingArticle.status === "draft" && (
+                <button
+                  className={s.primaryButton}
+                  type="button"
+                  onClick={() => handlePublishArticle(editingArticle)}
+                  disabled={
+                    pendingAction ===
+                    `publish-article-${getArticleId(editingArticle)}`
+                  }
+                >
+                  {pendingAction ===
+                  `publish-article-${getArticleId(editingArticle)}`
+                    ? "Publishing..."
+                    : "Publish"}
+                </button>
+              )}
+              <button className={s.actionButton} type="button" onClick={closeEditForm}>
+                Close
+              </button>
+            </div>
+          </div>
+
+          <form className={s.editorForm} onSubmit={handleSaveArticle}>
+            <label className={s.field}>
+              Title
+              <input
+                name="title"
+                value={editForm.title}
+                onChange={handleEditFieldChange}
+                required
+              />
+            </label>
+
+            <label className={s.field}>
+              SEO title
+              <input
+                name="seoTitle"
+                value={editForm.seoTitle}
+                onChange={handleEditFieldChange}
+              />
+            </label>
+
+            <label className={s.field}>
+              Meta description
+              <textarea
+                name="metaDescription"
+                value={editForm.metaDescription}
+                onChange={handleEditFieldChange}
+                rows="3"
+              />
+            </label>
+
+            <label className={s.field}>
+              Slug
+              <input
+                name="slug"
+                value={editForm.slug}
+                onChange={handleEditFieldChange}
+              />
+            </label>
+
+            <label className={s.field}>
+              Card description
+              <textarea
+                name="desc"
+                value={editForm.desc}
+                onChange={handleEditFieldChange}
+                rows="3"
+              />
+            </label>
+
+            <label className={s.field}>
+              Upload image
+              <input
+                name="image"
+                type="file"
+                accept="image/jpeg,image/png,image/webp"
+                onChange={handleEditFieldChange}
+              />
+            </label>
+
+            <label className={`${s.field} ${s.fullField}`}>
+              Article text
+              <textarea
+                name="article"
+                value={editForm.article}
+                onChange={handleEditFieldChange}
+                rows="14"
+                required
+              />
+            </label>
+
+            <div className={s.editorActions}>
+              <button
+                className={s.primaryButton}
+                type="submit"
+                disabled={
+                  pendingAction ===
+                  `save-article-${getArticleId(editingArticle)}`
+                }
+              >
+                {pendingAction === `save-article-${getArticleId(editingArticle)}`
+                  ? "Saving..."
+                  : "Save changes"}
+              </button>
+            </div>
+          </form>
+        </section>
+      )}
+
       <section className={s.panel}>
         <div className={s.tabs} role="tablist" aria-label="Admin tables">
           <button
@@ -649,123 +767,6 @@ export default function AdminPage() {
         )}
       </section>
 
-      {editingArticle && (
-        <section className={s.editorPanel} aria-label="Edit article">
-          <div className={s.aiPanelHeader}>
-            <div>
-              <p className={s.kicker}>Article editor</p>
-              <h2 className={s.panelTitle}>{editingArticle.title || "Untitled"}</h2>
-            </div>
-            <div className={s.actionGroup}>
-              {editingArticle.status === "draft" && (
-                <button
-                  className={s.primaryButton}
-                  type="button"
-                  onClick={() => handlePublishArticle(editingArticle)}
-                  disabled={
-                    pendingAction ===
-                    `publish-article-${getArticleId(editingArticle)}`
-                  }
-                >
-                  {pendingAction ===
-                  `publish-article-${getArticleId(editingArticle)}`
-                    ? "Publishing..."
-                    : "Publish"}
-                </button>
-              )}
-              <button className={s.actionButton} type="button" onClick={closeEditForm}>
-                Close
-              </button>
-            </div>
-          </div>
-
-          <form className={s.editorForm} onSubmit={handleSaveArticle}>
-            <label className={s.field}>
-              Title
-              <input
-                name="title"
-                value={editForm.title}
-                onChange={handleEditFieldChange}
-                required
-              />
-            </label>
-
-            <label className={s.field}>
-              SEO title
-              <input
-                name="seoTitle"
-                value={editForm.seoTitle}
-                onChange={handleEditFieldChange}
-              />
-            </label>
-
-            <label className={s.field}>
-              Meta description
-              <textarea
-                name="metaDescription"
-                value={editForm.metaDescription}
-                onChange={handleEditFieldChange}
-                rows="3"
-              />
-            </label>
-
-            <label className={s.field}>
-              Slug
-              <input
-                name="slug"
-                value={editForm.slug}
-                onChange={handleEditFieldChange}
-              />
-            </label>
-
-            <label className={s.field}>
-              Card description
-              <textarea
-                name="desc"
-                value={editForm.desc}
-                onChange={handleEditFieldChange}
-                rows="3"
-              />
-            </label>
-
-            <label className={s.field}>
-              Upload image
-              <input
-                name="image"
-                type="file"
-                accept="image/jpeg,image/png,image/webp"
-                onChange={handleEditFieldChange}
-              />
-            </label>
-
-            <label className={`${s.field} ${s.fullField}`}>
-              Article text
-              <textarea
-                name="article"
-                value={editForm.article}
-                onChange={handleEditFieldChange}
-                rows="14"
-                required
-              />
-            </label>
-
-            <div className={s.editorActions}>
-              <button
-                className={s.primaryButton}
-                type="submit"
-                disabled={
-                  pendingAction ===
-                  `save-article-${getArticleId(editingArticle)}`
-                }
-              >
-                {pendingAction === `save-article-${getArticleId(editingArticle)}`
-                  ? "Saving..."
-                  : "Save changes"}
-              </button>
-            </div>
-          </form>
-        </section>
-      )}
     </main>
   );
 }

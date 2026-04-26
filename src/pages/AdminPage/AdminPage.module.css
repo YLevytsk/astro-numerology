@@ -307,6 +307,7 @@
 }
 
 .editorPanel {
+  margin-bottom: 24px;
   border: 1px solid #e1e4ed;
   border-radius: 8px;
   padding: 18px;
