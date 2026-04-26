@@ -41,6 +41,55 @@
   gap: 24px;
 }
 
+.ownerActions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  min-width: 300px;
+  align-self: flex-start;
+}
+
+.ownerEditButton,
+.ownerDeleteButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 42px;
+  padding: 9px 16px;
+  border-radius: 8px;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 0.2s ease, border-color 0.2s ease,
+    color 0.2s ease, transform 0.2s ease;
+}
+
+.ownerEditButton {
+  border: 1px solid #5b4b8a;
+  background: rgba(91, 75, 138, 0.08);
+  color: #5b4b8a;
+}
+
+.ownerDeleteButton {
+  border: 1px solid #dc3545;
+  background: #dc3545;
+  color: #fff;
+}
+
+.ownerEditButton:hover,
+.ownerEditButton:focus-visible {
+  background: #5b4b8a;
+  color: #fff;
+  transform: translateY(-1px);
+}
+
+.ownerDeleteButton:hover,
+.ownerDeleteButton:focus-visible {
+  border-color: #b02a37;
+  background: #b02a37;
+  transform: translateY(-1px);
+}
+
 .metaBlock {
   display: flex;
   flex-direction: column;

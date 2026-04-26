@@ -1,4 +1,4 @@
-﻿import { useParams, Link } from "react-router-dom";
+﻿import { useNavigate, useParams, Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
@@ -9,6 +9,7 @@ import Loader from "../../components/Loader/Loader.jsx";
 import { selectIsLoggedIn, selectUserId } from "../../redux/auth/selectors.js";
 import { useToggle } from "../../hooks/useToggle.js";
 import AuthModal from "../../components/ModalErrorSave/ModalErrorSave.jsx";
+import { deleteArticle } from "../../redux/articles/operations.js";
 import {
   addBookmark,
   fetchBookmarks,
@@ -27,6 +28,7 @@ const ArticlePage = () => {
   const normalizedArticleId = String(articleId);
   const isBookmarked = bookmarks.includes(normalizedArticleId);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const userId = useSelector(selectUserId);
   const { isOpen, close, open } = useToggle();
 
@@ -110,6 +112,21 @@ const ArticlePage = () => {
     }
   };
 
+  const handleDeleteOwnArticle = async () => {
+    const confirmed = window.confirm(
+      `Delete article "${article.title || "Untitled"}"? This cannot be undone.`
+    );
+
+    if (!confirmed) return;
+
+    try {
+      await dispatch(deleteArticle(normalizedArticleId)).unwrap();
+      navigate("/profile", { replace: true });
+    } catch (error) {
+      console.error("Error while deleting article:", error);
+    }
+  };
+
   if (loading.article || loading.users) return <Loader />;
 
   if (!article) {
@@ -121,6 +138,7 @@ const ArticlePage = () => {
   const articleOwnerId = article.ownerId?.$oid ?? article.ownerId;
   const user = users.find(({ _id }) => _id === articleOwnerId);
   const authorName = user?.name ?? "Unknown author";
+  const isOwnArticle = Boolean(userId) && String(userId) === String(articleOwnerId);
 
   return (
     <div className="container">
@@ -145,6 +163,24 @@ const ArticlePage = () => {
             dangerouslySetInnerHTML={{ __html: formattedText }}
           />
 
+          {isOwnArticle ? (
+            <div className={s.ownerActions}>
+              <Link
+                to="/profile/articles/new"
+                state={{ article }}
+                className={s.ownerEditButton}
+              >
+                Edit
+              </Link>
+              <button
+                type="button"
+                className={s.ownerDeleteButton}
+                onClick={handleDeleteOwnArticle}
+              >
+                Delete
+              </button>
+            </div>
+          ) : (
           <div className={s.wrapper}>
             <div className={s.metaBlock}>
               <p className={s.author}>
@@ -204,6 +240,7 @@ const ArticlePage = () => {
 
             {!isLoggedIn && isOpen && <AuthModal onClose={close} />}
           </div>
+          )}
         </div>
       </div>
     </div>
